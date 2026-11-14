@@ -39,7 +39,7 @@
       max-width: 900px;
       margin: 0 auto;
       padding: 32px 16px;
-      color: #1c1917;
+      color: #78ff0a;            /* all text on these screens is green */
     }
     .back-btn,
     .cal-nav button {
@@ -49,7 +49,11 @@
       border: 1px solid #78ff0a;
       border-radius: 8px;
       background: #78ff0a;
+<<<<<<< Updated upstream
       color: inherit;
+=======
+      color: #000000;            /* black text on the green button so it's readable */
+>>>>>>> Stashed changes
       cursor: pointer;
     }
     .back-btn:hover,
@@ -78,7 +82,11 @@
       margin-bottom: -1px;
     }
     .tab.active {
+<<<<<<< Updated upstream
       color: #ffffff;
+=======
+      color: #78ff0a;
+>>>>>>> Stashed changes
       border-bottom-color:#78ff0a;
       font-weight: 500;
     }
@@ -221,6 +229,7 @@
     }
     .source a { color: inherit; }
 
+<<<<<<< Updated upstream
     /* ---- Tech support page (green phone and link) ---- */
     .support-card {
       background: #000000;
@@ -245,6 +254,83 @@
     .support-phone:hover,
     .support-link:hover { text-decoration: underline; }
     .support-phone svg { width: 18px; height: 18px; flex-shrink: 0; }
+=======
+    /* ---- Sources list at the bottom of the CPR, First Aid and Exercise pages ---- */
+    .source h2 { font-size: 15px; margin: 0 0 6px; color: #78ff0a; }
+    .source ol { margin: 0; padding-left: 20px; line-height: 1.6; }
+    .disclaimer { font-size: 13px; margin-top: 16px; color: #78ff0a; font-style: italic; }
+
+    /* ---- Make all dashboard text green ----
+       !important is used so these win over any colors set in app.css */
+    .dashboard,
+    .dashboard h2,
+    .dashboard h3,
+    .dashboard a,
+    .dashboard li,
+    .dashboard figcaption {
+      color: #78ff0a !important;
+    }
+
+    /* ---- Top tabs on the home page ---- */
+    .top-tabs {
+      display: flex;
+      flex-wrap: wrap;               /* tabs wrap onto a second line on small screens */
+      justify-content: center;
+      gap: 4px;
+      padding: 12px 16px 0;
+      border-bottom: 1px solid #78ff0a;
+      font-family: "Schibsted Grotesk", sans-serif;
+    }
+    .top-tabs[hidden] { display: none; }   /* hide the tab bar on non-tab screens */
+    .top-tab {
+      font: inherit;
+      font-size: 15px;
+      padding: 10px 16px;
+      background: none;
+      border: 1px solid #78ff0a;
+      border-bottom: none;
+      border-radius: 8px 8px 0 0;
+      color: #78ff0a;
+      cursor: pointer;
+    }
+    .top-tab:hover { background: #78ff0a; color: #000000; }
+    .top-tab.active {
+      background: #78ff0a;
+      color: #000000;
+      font-weight: 700;
+    }
+
+    /* ---- Reading cards (Space Radiation, Wellness, Internals, Ambient) ---- */
+    .reading-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+    }
+    .reading-card {
+      background: #000000;
+      border: 1px solid #78ff0a;
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .reading-label { font-size: 13px; margin-bottom: 6px; }
+    .reading-value {
+      font-size: 32px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+    .reading-unit { font-size: 14px; font-weight: 400; margin-left: 4px; }
+    .reading-status {
+      display: inline-block;
+      margin-top: 8px;
+      font-size: 12px;
+      padding: 2px 8px;
+      border: 1px solid #78ff0a;
+      border-radius: 999px;
+    }
+    /* Warning: green pill with black text so it stands out */
+    .reading-status.alert { background: #78ff0a; color: #000000; font-weight: 700; }
+    .placeholder-note { font-size: 13px; font-style: italic; margin-top: 16px; }
+>>>>>>> Stashed changes
 
     /* ---- Timer page ---- */
     .timer-wrap {
@@ -292,6 +378,19 @@
   </style>
 </head>
 <body>
+<<<<<<< Updated upstream
+=======
+  <!-- ===== Tabs at the top of the home page =====
+       Shown on Home and the four tab screens; hidden on the other screens. -->
+  <div class="top-tabs" id="top-tabs" role="tablist">
+    <button type="button" class="top-tab active" data-tab="dashboard" role="tab">Home</button>
+    <button type="button" class="top-tab" data-tab="radiation" role="tab">Space Radiation</button>
+    <button type="button" class="top-tab" data-tab="wellness" role="tab">Wellness Check</button>
+    <button type="button" class="top-tab" data-tab="internals" role="tab">Internals</button>
+    <button type="button" class="top-tab" data-tab="ambient" role="tab">Ambient Conditions</button>
+  </div>
+
+>>>>>>> Stashed changes
   <main class="dashboard view active" data-view="dashboard">
 
     <!-- Tasks (left column) -->
@@ -343,8 +442,11 @@
         </svg>
       </svg>
       <!-- badge: uses the same radiationTooHigh boolean as the rays -->
+      <!-- radiation symbol (trefoil), drawn in green to match the theme.
+           viewBox is cropped to the symbol's edges and the svg is sized to 100%
+           so the symbol fills the whole badge circle -->
       <div class="badge" aria-hidden="true">
-        <svg viewBox="0 0 48 48"><path d="M24 8 L40 38 H8 Z M24 20 L30 32 H18 Z" fill-rule="evenodd"/></svg>
+        <svg viewBox="60 60 492 492" style="width: 100%; height: 100%; display: block;"><path d="M296.1 61.19C386.91 56.2 473.34 106.69 518.79 184.6C537.53 216.73 547.51 252.93 550.16 289.79C551.47 308.08 551.22 327.08 547.89 345.12C537.03 403.97 507.34 458.95 459.6 496.79C445.69 507.82 430.82 516.68 415.28 525.13C385.04 541.57 349.18 549.39 314.92 550.84C283.65 552.16 251.67 546.98 222.58 536.2C128.14 501.22 63.18 412.57 61.05 311.59C60.53 287.29 63.84 262.91 70.11 239.64C80.43 201.38 101.66 165.94 128.84 136.95C147.71 116.82 170.58 99.93 195.21 87.65C226.94 71.83 260.59 63.14 296.1 61.19ZM301.07 81.87C267.44 83.07 235.68 90.39 205.56 105.28C183.08 116.4 161.63 131.89 144.46 150.32C119.57 177.06 99.9 208.87 90.18 244.09C66.87 328.55 93.35 421.03 161.41 477.68C179.28 492.55 199.07 504.17 220.31 513.3C252.13 526.98 286.82 531.53 321.65 529.96C336.28 529.31 351.56 526.48 365.41 522.25C394.44 513.36 421.58 500.92 445.62 481.72C507.84 432.05 540.61 350.39 527.88 271.59C515 191.84 465.17 131.3 391.68 98.7C363.82 86.34 331.78 80.77 301.07 81.87ZM204.28 129.77C227.89 170.82 251.49 211.86 275.1 252.9C273.7 254.78 271.15 255.75 269.26 257.25C264.43 261.1 259.71 265.31 256.28 270.52C251.71 277.46 247.78 285.1 246.11 293.21C245.25 297.36 245.65 302.01 244.52 305.98C197.18 305.98 149.84 305.98 102.5 305.98C100.57 302.1 102.08 294.56 102.65 290.32C104.12 279.3 105.36 268.7 107.85 257.92C117.4 216.7 140.96 178.39 173.49 150.89C179.94 145.44 186.58 140.49 193.57 135.78C196.59 133.74 200.63 130.15 204.28 129.77ZM408.28 129.53C419.2 134.52 429.41 143.14 438.51 150.88C471.11 178.64 494.39 216.63 504.17 257.91C506.67 268.5 507.91 278.94 509.29 289.79C509.87 294.38 511.37 301.68 509.53 305.98C462.18 305.98 414.83 305.98 367.48 305.98C366.3 301.82 366.93 297.05 365.83 292.75C363.84 284.91 360.61 277.1 355.79 270.45C352.68 266.17 348.96 261.84 344.7 258.65C342.3 256.86 338.08 254.89 336.78 252.35C360.61 211.41 384.45 170.47 408.28 129.53ZM302.25 265.18C326.55 262.19 348.26 284.4 346.94 308.24C345.82 328.56 328.91 345.32 308.79 346.91C284.79 348.8 262.18 326.62 265.18 302.25C267.59 282.62 282.63 267.59 302.25 265.18ZM336.63 359.1C360.35 400.27 384.06 441.44 407.78 482.61C403.87 484.35 400.22 486.89 396.37 488.79C384.65 494.58 372.14 499.44 359.56 502.84C320.38 513.44 277.85 512.1 239.64 498.87C227.24 494.57 215.99 488.29 204.19 482.61C227.88 441.45 251.57 400.29 275.26 359.12C277.71 359.16 280.82 361.76 283.19 362.67C288.43 364.67 293.95 366.25 299.55 366.92C308.28 367.96 317.87 366.67 326.03 363.76C329.54 362.5 333.07 359.85 336.63 359.1Z" fill-rule="evenodd" style="fill: #78ff0a; stroke: none;"/></svg>
       </div>
     </section>
       <!-- reports should tie back to a website and be in a loop so they update -->
@@ -393,21 +495,172 @@
     </section>
 
     <!-- Quick links (full-width bottom bar) -->
+<<<<<<< Updated upstream
     <!-- Links with data-open switch screens on this page.
          Links with a real web address open that website in a new tab. -->
+=======
+    <!-- Each link switches to a screen on this page (each has a back button) -->
+>>>>>>> Stashed changes
     <nav class="quick-links" aria-labelledby="links-title">
       <h2 id="links-title">Quick Links</h2>
       <ul>
         <li><a href="#" data-open="calendar">Calendar</a></li>
+<<<<<<< Updated upstream
         <li><a href="https://mail.google.com" target="_blank" rel="noopener">Inbox</a></li>
         <li><a href="#" data-open="exercise">Exercise</a></li>
         <li><a href="https://www.nasa.gov/news-release/" target="_blank" rel="noopener">Company news</a></li>
         <li><a href="#" data-open="support">Tech support</a></li>
         <li><a href="#" data-open="timer">Timer</a></li>
+=======
+        <li><a href="#" data-open="exercise">Exercise</a></li>
+        <li><a href="#" data-open="timer">Timer</a></li>
+        <li><a href="#" data-open="cpr">CPR</a></li>
+        <li><a href="#" data-open="firstaid">First aid</a></li>
+>>>>>>> Stashed changes
       </ul>
     </nav>
 
   </main>
+
+  <!-- ===== Tab: Space Radiation ===== -->
+  <section class="task-view view" data-view="radiation" aria-labelledby="radiation-title">
+    <h1 id="radiation-title">Space Radiation</h1>
+    <div class="reading-grid">
+      <div class="reading-card">
+        <div class="reading-label">Current radiation level</div>
+        <div class="reading-value" id="rad-level">--</div>
+        <span class="reading-status" id="rad-status">--</span>
+      </div>
+      <div class="reading-card">
+        <div class="reading-label">Warning threshold</div>
+        <div class="reading-value" id="rad-threshold">--</div>
+        <span class="reading-status">Set in the script</span>
+      </div>
+      <div class="reading-card">
+        <div class="reading-label">How far over or under the threshold</div>
+        <div class="reading-value" id="rad-diff">--</div>
+        <span class="reading-status" id="rad-diff-note">--</span>
+      </div>
+    </div>
+    <p class="placeholder-note">These use the same placeholder numbers as the rays and badge (RADIATION_THRESHOLD and radiationLevel in the script). Change them there and this tab updates too.</p>
+  </section>
+
+  <!-- ===== Tab: Wellness Check ===== -->
+  <!-- PLACEHOLDER READINGS: replace with real values when available -->
+  <section class="task-view view" data-view="wellness" aria-labelledby="wellness-title">
+    <h1 id="wellness-title">Wellness Check</h1>
+    <div class="reading-grid">
+        <div class="reading-card">
+          <div class="reading-label">Heart rate</div>
+          <div class="reading-value">72<span class="reading-unit">bpm</span></div>
+          <span class="reading-status">Normal</span>
+        </div>
+        <div class="reading-card">
+          <div class="reading-label">Blood pressure</div>
+          <div class="reading-value">118/76<span class="reading-unit">mmHg</span></div>
+          <span class="reading-status">Normal</span>
+        </div>
+        <div class="reading-card">
+          <div class="reading-label">Blood oxygen</div>
+          <div class="reading-value">98<span class="reading-unit">%</span></div>
+          <span class="reading-status">Normal</span>
+        </div>
+        <div class="reading-card">
+          <div class="reading-label">Body temperature</div>
+          <div class="reading-value">98.4<span class="reading-unit">°F</span></div>
+          <span class="reading-status">Normal</span>
+        </div>
+        <div class="reading-card">
+          <div class="reading-label">Breathing rate</div>
+          <div class="reading-value">14<span class="reading-unit">breaths/min</span></div>
+          <span class="reading-status">Normal</span>
+        </div>
+        <div class="reading-card">
+          <div class="reading-label">Sleep last night</div>
+          <div class="reading-value">7.2<span class="reading-unit">hours</span></div>
+          <span class="reading-status">Normal</span>
+        </div>
+    </div>
+    <p class="placeholder-note">Placeholder readings. Replace them with real numbers when you have them.</p>
+  </section>
+
+  <!-- ===== Tab: Internals (spacecraft systems) ===== -->
+  <!-- PLACEHOLDER READINGS: replace with real values when available -->
+  <section class="task-view view" data-view="internals" aria-labelledby="internals-title">
+    <h1 id="internals-title">Internals</h1>
+    <div class="reading-grid">
+        <div class="reading-card">
+          <div class="reading-label">Power</div>
+          <div class="reading-value">87<span class="reading-unit">%</span></div>
+          <span class="reading-status">Normal</span>
+        </div>
+        <div class="reading-card">
+          <div class="reading-label">Water supply</div>
+          <div class="reading-value">64<span class="reading-unit">%</span></div>
+          <span class="reading-status">Normal</span>
+        </div>
+        <div class="reading-card">
+          <div class="reading-label">Oxygen generator</div>
+          <div class="reading-value">On<span class="reading-unit"></span></div>
+          <span class="reading-status">Normal</span>
+        </div>
+        <div class="reading-card">
+          <div class="reading-label">CO₂ scrubber</div>
+          <div class="reading-value">On<span class="reading-unit"></span></div>
+          <span class="reading-status">Normal</span>
+        </div>
+        <div class="reading-card">
+          <div class="reading-label">Cooling system</div>
+          <div class="reading-value">On<span class="reading-unit"></span></div>
+          <span class="reading-status">Normal</span>
+        </div>
+        <div class="reading-card">
+          <div class="reading-label">Hull</div>
+          <div class="reading-value">Sealed<span class="reading-unit"></span></div>
+          <span class="reading-status">Normal</span>
+        </div>
+    </div>
+    <p class="placeholder-note">Placeholder readings. Replace them with real numbers when you have them.</p>
+  </section>
+
+  <!-- ===== Tab: Ambient Conditions (cabin environment) ===== -->
+  <!-- PLACEHOLDER READINGS: replace with real values when available -->
+  <section class="task-view view" data-view="ambient" aria-labelledby="ambient-title">
+    <h1 id="ambient-title">Ambient Conditions</h1>
+    <div class="reading-grid">
+        <div class="reading-card">
+          <div class="reading-label">Cabin temperature</div>
+          <div class="reading-value">72<span class="reading-unit">°F</span></div>
+          <span class="reading-status">Normal</span>
+        </div>
+        <div class="reading-card">
+          <div class="reading-label">Humidity</div>
+          <div class="reading-value">45<span class="reading-unit">%</span></div>
+          <span class="reading-status">Normal</span>
+        </div>
+        <div class="reading-card">
+          <div class="reading-label">Cabin pressure</div>
+          <div class="reading-value">14.7<span class="reading-unit">psi</span></div>
+          <span class="reading-status">Normal</span>
+        </div>
+        <div class="reading-card">
+          <div class="reading-label">Oxygen</div>
+          <div class="reading-value">21<span class="reading-unit">%</span></div>
+          <span class="reading-status">Normal</span>
+        </div>
+        <div class="reading-card">
+          <div class="reading-label">CO₂</div>
+          <div class="reading-value">2,000<span class="reading-unit">ppm</span></div>
+          <span class="reading-status">Normal</span>
+        </div>
+        <div class="reading-card">
+          <div class="reading-label">Noise</div>
+          <div class="reading-value">58<span class="reading-unit">dB</span></div>
+          <span class="reading-status">Normal</span>
+        </div>
+    </div>
+    <p class="placeholder-note">Placeholder readings. Replace them with real numbers when you have them.</p>
+  </section>
 
   <!-- ===== Task view (hidden until a task is clicked) ===== -->
   <section class="task-view view" data-view="tasks" aria-labelledby="all-tasks-title">
@@ -449,6 +702,7 @@
     </div>
   </section>
 
+<<<<<<< Updated upstream
   <!-- ===== Exercise view: key points from Mayo Clinic's stretching guide ===== -->
   <section class="task-view view" data-view="exercise" aria-labelledby="exercise-title">
     <button type="button" class="back-btn">&larr; Back to dashboard</button>
@@ -465,11 +719,27 @@
         <li>Aim for at least 2 to 3 days a week.</li>
         <li>Pain means you've gone too far, so ease off.</li>
         <li>If you have an injury or health condition, ask a doctor or physical therapist which stretches are right for you.</li>
+=======
+  <!-- ===== Exercise view: zero-gravity exercise (ISS) ===== -->
+  <section class="task-view view" data-view="exercise" aria-labelledby="exercise-title">
+    <button type="button" class="back-btn">&larr; Back to dashboard</button>
+    <h1 id="exercise-title">Zero-Gravity Exercise</h1>
+    <p class="intro">Without gravity, bones and muscles weaken. Astronauts on the International Space Station (ISS) work out about two hours a day on machines built for weightlessness. [1][2]</p>
+
+    <div class="tips">
+      <h2>How astronauts train</h2>
+      <ul>
+        <li>Plan on about two hours of exercise a day, mixing strength training and cardio. [1][2]</li>
+        <li>Strap in first. The machines use harnesses, clip-in shoes and hand grips so you don't float away mid-workout. [2]</li>
+        <li>Short, hard workouts work too. NASA found that shorter, higher-intensity sessions gave results similar to longer ones. [1]</li>
+        <li>Results vary from person to person, so routines are set by an exercise specialist. [1][2]</li>
+>>>>>>> Stashed changes
       </ul>
     </div>
 
     <div class="stretch-grid">
       <article class="stretch-card">
+<<<<<<< Updated upstream
         <h3>Calf stretch</h3>
         <p>Stand an arm's length from a wall with one foot behind the other. Bend your front knee forward, keeping your back leg straight and its heel on the floor.</p>
       </article>
@@ -528,6 +798,146 @@
         (312) 555-0147
       </a>
       <a class="support-link" href="https://www.nasa.gov" target="_blank" rel="noopener">Visit NASA.gov</a>
+=======
+        <h3>Squats (ARED machine)</h3>
+        <p>The ARED (Advanced Resistive Exercise Device) uses vacuum cylinders to create up to 272 kg (600 lb) of resistance, like lifting free weights. Set the resistance, position the bar on your shoulders and squat. [2]</p>
+      </article>
+      <article class="stretch-card">
+        <h3>Deadlifts (ARED machine)</h3>
+        <p>Use the same ARED bar to lift from low to standing. This works the legs, hips and back, which helps keep bones strong. [2]</p>
+      </article>
+      <article class="stretch-card">
+        <h3>Heel raises (ARED machine)</h3>
+        <p>With the bar loaded, rise up onto your toes and lower back down. This works the calves, which barely get used when you're floating. [2]</p>
+      </article>
+      <article class="stretch-card">
+        <h3>Running (treadmill with harness)</h3>
+        <p>Put on the harness, which pulls your shoulders and hips down toward the belt. The pull starts at about 60% of your body weight and is raised to about 85% over the mission. Then run. [2]</p>
+      </article>
+      <article class="stretch-card">
+        <h3>Cycling (CEVIS bike)</h3>
+        <p>The space bike has no seat. Clip your cycling shoes into the pedals, hold the hand grips to stay in place, and pedal. A computer keeps the resistance steady. [1][2]</p>
+      </article>
+    </div>
+
+    <div class="source">
+      <h2>Sources</h2>
+      <ol>
+        <li>NASA, “Astronaut Exercise,” <a href="https://www.nasa.gov/missions/station/iss-research/astronaut-exercise/" target="_blank" rel="noopener">nasa.gov</a></li>
+        <li>Canadian Space Agency, “Physical activity in space,” <a href="https://asc-csa.gc.ca/eng/astronauts/living-in-space/physical-activity-in-space.asp" target="_blank" rel="noopener">asc-csa.gc.ca</a></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ===== CPR view: CPR in zero gravity ===== -->
+  <section class="task-view view" data-view="cpr" aria-labelledby="cpr-title">
+    <button type="button" class="back-btn">&larr; Back to dashboard</button>
+    <h1 id="cpr-title">CPR in Zero Gravity</h1>
+    <p class="intro">On Earth, gravity holds the patient down and lets you use your body weight. In weightlessness, pushing on someone's chest just pushes you both apart, so the rescuer has to anchor themselves first. [1][2]</p>
+
+    <div class="tips">
+      <h2>Before you start</h2>
+      <ul>
+        <li>On Earth? Call 911 and do standard CPR.</li>
+        <li>Alert the rest of the crew and the flight surgeons (space doctors) on the ground right away. [5]</li>
+        <li>Get the defibrillator (AED), which shocks the heart back into rhythm, from the medical kit. [6]</li>
+        <li>If you can, strap the patient to the folding patient restraint table so they don't drift away. [6]</li>
+      </ul>
+    </div>
+
+    <div class="tips">
+      <h2>Compression targets</h2>
+      <ul>
+        <li>Push about 5 to 6 cm (2 to 2.4 inches) deep. [1]</li>
+        <li>Aim for 100 to 120 compressions per minute. [3]</li>
+      </ul>
+    </div>
+
+    <div class="stretch-grid">
+      <article class="stretch-card">
+        <h3>Handstand method (NASA's current method)</h3>
+        <p>Float above the patient. Brace your legs against the wall or ceiling of the spacecraft, then push down on their chest with straight arms, like doing a handstand on it. Use this when there's a surface to push your feet against. [1]</p>
+      </article>
+      <article class="stretch-card">
+        <h3>Evetts-Russomano method (open space)</h3>
+        <p>Use this when there's no wall close enough to brace against. Wrap your left leg over the patient's right shoulder and your right leg around their waist, and cross your ankles behind their back. That locks you to their body so you can do compressions. [4]</p>
+      </article>
+      <article class="stretch-card">
+        <h3>Reverse bear hug</h3>
+        <p>A third hands-only method, done from behind the patient. In testing, it and the Evetts-Russomano method did not push deep enough. [1]</p>
+      </article>
+      <article class="stretch-card">
+        <h3>Machine CPR (newer research)</h3>
+        <p>A 2025 study in simulated weightlessness found that a mechanical piston device reached the target depth. The handstand method averaged about 3.5 cm, which is too shallow. Researchers hope future space guidelines include the device. [1]</p>
+      </article>
+    </div>
+
+    <p class="disclaimer">This page is a quick reference, not training. Take a certified CPR course to learn hands-on.</p>
+
+    <div class="source">
+      <h2>Sources</h2>
+      <ol>
+        <li>European Society of Cardiology, “Cardiac arrest in space: new research shows that automatic chest compressions are more effective for CPR…” (2025), <a href="https://www.escardio.org/news/press/press-releases/cardiac-arrest-in-space-new-research-shows-that-automatic-chest-compressions-are-more-effective-for-cpr-when-both-rescuer-and-patient-are-floating-in-microgravity/" target="_blank" rel="noopener">escardio.org</a></li>
+        <li>CNN via WRAL, “What happens if astronauts get sick in space?” <a href="https://www.wral.com/what-happens-if-astronauts-get-sick-in-space-/16775540/" target="_blank" rel="noopener">wral.com</a></li>
+        <li>Discover Magazine, “CPR in Space – How Can We Save a Life Without Gravity?” <a href="https://www.discovermagazine.com/cpr-in-space-how-to-save-a-life-without-gravity-47972" target="_blank" rel="noopener">discovermagazine.com</a></li>
+        <li>InnovaSpace, on the Evetts-Russomano technique, <a href="https://www.innovaspace.org/blog/archives/06-2017" target="_blank" rel="noopener">innovaspace.org</a></li>
+        <li>NASA, “FAQ: The Real Story About Astronaut Health Care in Space,” <a href="https://www.nasa.gov/missions/station/faq-the-real-story-about-astronaut-health-care-in-space" target="_blank" rel="noopener">nasa.gov</a></li>
+        <li>Smithsonian Air &amp; Space, “Space Station ER,” <a href="https://www.smithsonianmag.com/air-space-magazine/space-station-er-180956246/" target="_blank" rel="noopener">smithsonianmag.com</a></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ===== First aid view: first aid in zero gravity ===== -->
+  <section class="task-view view" data-view="firstaid" aria-labelledby="firstaid-title">
+    <button type="button" class="back-btn">&larr; Back to dashboard</button>
+    <h1 id="firstaid-title">First Aid in Zero Gravity</h1>
+    <p class="intro">Every astronaut gets medical training and stays in touch with doctors on the ground. [1] The basics of first aid are the same as on Earth, but floating changes how you do them.</p>
+
+    <div class="tips">
+      <h2>First steps</h2>
+      <ul>
+        <li>Anchor yourself and the patient first. The station has a folding patient restraint table that also works as a stretcher. [3]</li>
+        <li>Contact the flight surgeons (space doctors) on the ground. They can talk you through treatment. [1][3]</li>
+        <li>Treat the biggest threat first: make sure the person can breathe, then stop any bleeding. [4]</li>
+      </ul>
+    </div>
+
+    <div class="stretch-grid">
+      <article class="stretch-card">
+        <h3>Bleeding</h3>
+        <p>Blood doesn't drip in weightlessness. It bubbles up into a dome over the wound, and drops can break off and float around the cabin. [3] Press firmly and keep pressing with a bandage or cloth, and pack deep wounds with gauze. [5] For life-threatening bleeding, use a tourniquet and clotting gauze early. [4]</p>
+      </article>
+      <article class="stretch-card">
+        <h3>Protect faces from floating blood</h3>
+        <p>Floating drops of blood can drift into the patient's eyes, nose and throat, so keep the wound covered while you work. [6]</p>
+      </article>
+      <article class="stretch-card">
+        <h3>What's in the medical kit</h3>
+        <p>The station has a first aid kit, a pharmacy (medicines), a defibrillator, a portable ultrasound and devices to help with breathing. [1][2][3]</p>
+      </article>
+      <article class="stretch-card">
+        <h3>Astronaut medical training</h3>
+        <p>Before flying, astronauts take about 40 hours of medical training. They learn skills like stitching a wound, pulling a tooth, giving a shot and reading an ultrasound. [2]</p>
+      </article>
+      <article class="stretch-card">
+        <h3>Serious injuries</h3>
+        <p>If someone needs urgent care the station can't give, the crew returns to Earth in the spacecraft they launched on. [1]</p>
+      </article>
+    </div>
+
+    <p class="disclaimer">This page is a quick reference, not training. On Earth, call 911 for emergencies and take a certified first aid course.</p>
+
+    <div class="source">
+      <h2>Sources</h2>
+      <ol>
+        <li>NASA, “FAQ: The Real Story About Astronaut Health Care in Space,” <a href="https://www.nasa.gov/missions/station/faq-the-real-story-about-astronaut-health-care-in-space" target="_blank" rel="noopener">nasa.gov</a></li>
+        <li>The Science Explorer, “What Happens If an Astronaut Gets Sick in Space?” <a href="https://www.thescienceexplorer.com/what-happens-if-an-astronaut-gets-sick-in-space-802" target="_blank" rel="noopener">thescienceexplorer.com</a></li>
+        <li>Smithsonian Air &amp; Space, “Space Station ER,” <a href="https://www.smithsonianmag.com/air-space-magazine/space-station-er-180956246/" target="_blank" rel="noopener">smithsonianmag.com</a></li>
+        <li>Kuypers et al., review of bleeding control in spaceflight, <i>Wilderness &amp; Environmental Medicine</i> (2023), <a href="https://pesquisa.bvsalud.org/sms/resource/pt/mdl-36906432" target="_blank" rel="noopener">abstract</a></li>
+        <li>NASA Kennedy Space Center, “Stop the Bleed,” <a href="https://www.nasa.gov/kennedy/stop-the-bleed/" target="_blank" rel="noopener">nasa.gov</a></li>
+        <li>Scientific American, “During Medical Emergencies on Deep-Space Flights Fluid-Filled Domes Could Stanch Bleeding,” <a href="https://www.scientificamerican.com/article/during-medical-emergencies-on-deep-space-flights-fluid-filled-domes-could-stanch-bleeding/" target="_blank" rel="noopener">scientificamerican.com</a></li>
+      </ol>
+>>>>>>> Stashed changes
     </div>
   </section>
 
@@ -554,6 +964,16 @@
 
     // Show the rays and badge only when radiationTooHigh is true
     document.body.classList.toggle("radiation-high", radiationTooHigh);
+
+    // Fill in the Space Radiation tab from the same numbers
+    document.getElementById("rad-level").textContent = radiationLevel;
+    document.getElementById("rad-threshold").textContent = RADIATION_THRESHOLD;
+    const radStatus = document.getElementById("rad-status");
+    radStatus.textContent = radiationTooHigh ? "Too high" : "Normal";
+    radStatus.classList.toggle("alert", radiationTooHigh);
+    const radDiff = radiationLevel - RADIATION_THRESHOLD;
+    document.getElementById("rad-diff").textContent = (radDiff > 0 ? "+" : "") + radDiff;
+    document.getElementById("rad-diff-note").textContent = radDiff > 0 ? "Over the threshold" : "At or under the threshold";
 
 
     // ---- Due dates for the calendar ----
@@ -585,10 +1005,27 @@
 
     // ---- Switching screens ----
     // Shows the screen whose data-view matches the name, hides the rest
+<<<<<<< Updated upstream
+=======
+    // Screens that show the tab bar at the top
+    const TAB_VIEWS = ["dashboard", "radiation", "wellness", "internals", "ambient"];
+
+>>>>>>> Stashed changes
     function showView(name) {
       document.querySelectorAll(".view").forEach(function (view) {
         view.classList.toggle("active", view.dataset.view === name);
       });
+<<<<<<< Updated upstream
+=======
+
+      // Tab bar: only on Home and the four tab screens; highlight the current tab
+      document.getElementById("top-tabs").hidden = !TAB_VIEWS.includes(name);
+      document.querySelectorAll(".top-tab").forEach(function (tab) {
+        const isCurrent = tab.dataset.tab === name;
+        tab.classList.toggle("active", isCurrent);
+        tab.setAttribute("aria-selected", isCurrent);
+      });
+>>>>>>> Stashed changes
       window.scrollTo(0, 0);
     }
 
@@ -617,6 +1054,16 @@
 
     // Quick links that open a screen on this page, and every back button
     document.addEventListener("click", function (event) {
+<<<<<<< Updated upstream
+=======
+      const topTab = event.target.closest(".top-tab");
+      if (topTab) {
+        showView(topTab.dataset.tab);
+        if (topTab.dataset.tab === "dashboard") clearCheckedFromDashboard();
+        return;
+      }
+
+>>>>>>> Stashed changes
       if (event.target.closest(".back-btn")) {
         showView("dashboard");
         clearCheckedFromDashboard();   // hide anything checked off while you were away
@@ -632,7 +1079,11 @@
         showView("tasks");
         showTab("calendar");
       } else {
+<<<<<<< Updated upstream
         showView(link.dataset.open);   // "exercise", "support" or "timer"
+=======
+        showView(link.dataset.open);   // "exercise", "timer", "cpr" or "firstaid"
+>>>>>>> Stashed changes
       }
     });
 
