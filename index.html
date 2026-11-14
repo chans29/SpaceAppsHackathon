@@ -26,12 +26,26 @@
     }
     .task-link:hover { text-decoration: underline; }
 
-    /* ---- Crossing off: checked tasks get a line through them, everywhere ---- */
-    li:has(input:checked) .task-link,
-    label:has(input:checked) {
-      text-decoration: line-through;
-      color: #78ff0a;
+    /* ---- Dashboard tasks (built by tasks.js) ---- */
+    .task-panels { display: flex; flex-direction: column; gap: 16px; flex: 1; }
+    .task-item { display: flex; align-items: flex-start; gap: 10px; }
+    .task-mark {
+      flex: 0 0 18px;
+      height: 18px;
+      margin-top: 2px;
+      border: 1.5px solid #78ff0a;
+      border-radius: 50%;
+      font-size: 12px;
+      line-height: 15px;
+      text-align: center;
+      font-weight: 700;
     }
+    .task-item.done .task-mark { background: #78ff0a; color: #000000; }
+    .task-item.done .task-link { text-decoration: line-through; opacity: 0.7; }
+    .task-item.overdue .task-mark { border-color: #e0a030; color: #e0a030; }
+    .task-meta { font-size: 12px; opacity: 0.75; }
+    .task-item.overdue .task-meta { color: #e0a030; opacity: 1; }
+    .task-empty { font-size: 13px; opacity: 0.6; }
 
     /* ---- Task view (list + calendar) ---- */
     .task-view {
@@ -104,7 +118,10 @@
       border-bottom: 1px solid #f0efee;
     }
     .task-list li:last-child { border-bottom: none; }
-    .task-list label { flex: 1; cursor: pointer; }
+    .task-list li { cursor: pointer; }
+    .task-list-text { flex: 1; }
+    .task-list-name { font-weight: 500; }
+    .task-list li.done .task-list-name { text-decoration: line-through; }
 
     /* Small tag showing which group the task came from */
     .tag {
@@ -117,22 +134,14 @@
       white-space: nowrap;
     }
 
-    /* Highlight the task you clicked */
-    .task-list li:hover {
+    /* Highlight the task under the mouse */
+    .task-list li:hover,
+    .task-list li:focus-visible {
       background: #78ff0a;
       color: #000000;
+      outline: none;
     }
-    /* Finished tasks are removed from the dashboard (they stay in the list and calendar) */
-    .checklist li.cleared { display: none; }
-
-    /* Finished tasks are also removed from All Tasks the next time it's opened */
-    .task-list li.cleared { display: none; }
-
-    /* Checked-off task while hovered: black text and black line-through,
-       so it shows up on the green background */
-    .task-list li:hover label:has(input:checked) {
-      color: #000000;
-    }
+    .task-list li:hover .tag { background: #000000; }
 
     /* ---- Calendar ---- */
     .cal-header {
@@ -173,11 +182,12 @@
       border-color: transparent;
     }
     .cal-day.today { border: 2px solid #78ff0a; }
-    .cal-date { font-weight: 500; }
+    .cal-date { font-weight: 500; color: #78ff0a; }
     .cal-task {
-      display: flex;
-      align-items: flex-start;
-      gap: 4px;
+      display: block;
+      width: 100%;
+      font: inherit;
+      text-align: left;
       background: #000000;
       color: #78ff0a;
       border-radius: 4px;
@@ -187,7 +197,117 @@
       cursor: pointer;
       overflow-wrap: anywhere;
     }
-    .cal-task input { margin: 1px 0 0; flex-shrink: 0; }
+    .cal-task:hover { background: #78ff0a; color: #000000; }
+    .cal-task.done { text-decoration: line-through; opacity: 0.6; }
+    .cal-task.overdue { border-color: #e0a030; color: #e0a030; }
+    .cal-task.missed { border-style: dashed; opacity: 0.45; }
+
+    /* ---- Questionnaire ---- */
+    .q-kicker { margin: 16px 0 0; font-size: 13px; color: #78ff0a; opacity: 0.8; }
+    .task-view .q-kicker + h1 { margin-top: 4px; }
+    .q-progress { height: 6px; border: 1px solid #78ff0a; border-radius: 999px; overflow: hidden; max-width: 640px; }
+    .q-progress-bar { height: 100%; width: 0; background: #78ff0a; transition: width 0.25s; }
+    .q-count { font-size: 13px; color: #78ff0a; margin: 6px 0 14px; }
+    .q-card {
+      max-width: 640px;
+      background: #000000;
+      border: 1px solid #78ff0a;
+      border-radius: 10px;
+      padding: 20px 22px;
+      color: #78ff0a;
+      line-height: 1.55;
+    }
+    .q-card h2 { font-size: 20px; margin: 0 0 10px; }
+    .q-card p { margin: 0 0 10px; }
+    .q-steps { margin: 0 0 12px; padding-left: 22px; }
+    .q-steps li { margin-bottom: 6px; }
+    .q-fields { display: flex; flex-direction: column; gap: 18px; margin-top: 8px; }
+    .q-label { font-weight: 500; margin-bottom: 6px; }
+    .q-number { display: flex; align-items: center; gap: 8px; }
+    .q-number input {
+      font: inherit;
+      font-size: 18px;
+      width: 160px;
+      padding: 8px 10px;
+      background: #000000;
+      color: #78ff0a;
+      border: 1px solid #78ff0a;
+      border-radius: 8px;
+    }
+    .q-unit { opacity: 0.8; }
+    .q-choices { display: flex; flex-wrap: wrap; gap: 8px; }
+    .q-choice {
+      font: inherit;
+      min-width: 56px;
+      padding: 8px 14px;
+      background: #000000;
+      color: #78ff0a;
+      border: 1px solid #78ff0a;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .q-scale .q-choice { min-width: 48px; font-size: 18px; }
+    .q-choice:hover { background: rgba(120, 255, 10, 0.15); }
+    .q-choice[aria-checked="true"],
+    .q-choice[aria-pressed="true"] { background: #78ff0a; color: #000000; font-weight: 700; }
+    .q-scale-ends { display: flex; justify-content: space-between; max-width: 300px; font-size: 12px; opacity: 0.75; margin-top: 4px; }
+    .q-error { color: #ff6b6b; font-size: 13px; min-height: 0; margin-top: 4px; }
+    .q-field.invalid input,
+    .q-field.invalid .q-choice { border-color: #ff6b6b; }
+    .q-review { display: grid; grid-template-columns: 1fr auto; gap: 6px 16px; margin: 8px 0 0; }
+    .q-review dt { opacity: 0.85; }
+    .q-review dd { margin: 0; font-weight: 500; text-align: right; }
+    .q-nav { display: flex; justify-content: space-between; max-width: 640px; margin-top: 16px; }
+    .q-nav .q-btn:only-child, .q-nav #q-next { margin-left: auto; }
+    .q-btn {
+      font: inherit;
+      font-size: 15px;
+      font-weight: 500;
+      padding: 10px 22px;
+      border: 1px solid #78ff0a;
+      border-radius: 8px;
+      background: #78ff0a;
+      color: #000000;
+      cursor: pointer;
+    }
+    .q-btn:hover { background: #000000; color: #78ff0a; }
+    .q-btn:disabled { opacity: 0.5; cursor: wait; }
+    .q-btn.secondary { background: #000000; color: #78ff0a; }
+    .q-btn.secondary:hover { background: #78ff0a; color: #000000; }
+    .q-countdown {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 6px 0 14px;
+      padding: 12px 16px;
+      border: 1px dashed #78ff0a;
+      border-radius: 8px;
+    }
+    .q-countdown-time { font-size: 32px; font-weight: 700; font-variant-numeric: tabular-nums; min-width: 96px; }
+    .q-countdown.finished { border-style: solid; background: rgba(120, 255, 10, 0.12); }
+
+    /* Reaction-time test */
+    .pvt { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+    .pvt-target {
+      font: inherit;
+      font-size: 22px;
+      font-weight: 700;
+      width: 100%;
+      max-width: 420px;
+      height: 150px;
+      border: 2px solid #78ff0a;
+      border-radius: 12px;
+      background: #000000;
+      color: #78ff0a;
+      cursor: pointer;
+      touch-action: manipulation;
+      user-select: none;
+      font-variant-numeric: tabular-nums;
+    }
+    .pvt-target.waiting { border-style: dashed; color: rgba(120, 255, 10, 0.6); }
+    .pvt-target.go { background: #78ff0a; color: #000000; }
+    .pvt-target.early { border-color: #ff6b6b; color: #ff6b6b; }
+    .pvt-info { font-size: 13px; opacity: 0.85; }
 
     /* ---- Exercise page ---- */
     .intro { color: #78ff0a; max-width: 640px; margin: 0 0 16px; }
@@ -295,36 +415,10 @@
   <main class="dashboard view active" data-view="dashboard">
 
     <!-- Tasks (left column) -->
-    <!-- Clicking a task's text switches to the task view; clicking the box still checks it off -->
+    <!-- Filled in by tasks.js from the test schedule. Clicking a task opens its questionnaire. -->
     <section class="tasks" aria-labelledby="tasks-title">
       <h2 id="tasks-title">Tasks</h2>
-
-      <article class="panel">
-        <h3><a class="task-link" href="#">Today</a></h3>
-        <ul class="checklist">
-          <li><input type="checkbox" data-task="review-draft" aria-label="Done"> <a class="task-link" href="#" data-task="review-draft">Review draft proposal</a></li>
-          <li><input type="checkbox" data-task="vendor-quote" aria-label="Done"> <a class="task-link" href="#" data-task="vendor-quote">Reply to vendor quote</a></li>
-          <li><input type="checkbox" data-task="standup" aria-label="Done"> <a class="task-link" href="#" data-task="standup">Prep Thursday standup</a></li>
-        </ul>
-      </article>
-
-      <article class="panel">
-        <h3><a class="task-link" href="#">This week</a></h3>
-        <ul class="checklist">
-          <li><input type="checkbox" data-task="onboarding" aria-label="Done"> <a class="task-link" href="#" data-task="onboarding">Update onboarding guide</a></li>
-          <li><input type="checkbox" data-task="q4-budget" aria-label="Done"> <a class="task-link" href="#" data-task="q4-budget">Approve Q4 budget lines</a></li>
-          <li><input type="checkbox" data-task="offsite" aria-label="Done"> <a class="task-link" href="#" data-task="offsite">Book team offsite venue</a></li>
-        </ul>
-      </article>
-
-      <article class="panel">
-        <h3><a class="task-link" href="#">Waiting on others</a></h3>
-        <ul class="checklist">
-          <li><input type="checkbox" data-task="legal" aria-label="Done"> <a class="task-link" href="#" data-task="legal">Legal sign-off on contract</a></li>
-          <li><input type="checkbox" data-task="design-review" aria-label="Done"> <a class="task-link" href="#" data-task="design-review">Design review comments</a></li>
-          <li><input type="checkbox" data-task="it-access" aria-label="Done"> <a class="task-link" href="#" data-task="it-access">Access request from IT</a></li>
-        </ul>
-      </article>
+      <div id="dashboard-tasks" class="task-panels">Loading tasks…</div>
     </section>
 
     <!-- Center figure -->
@@ -385,17 +479,8 @@
 
     <!-- List tab -->
     <div id="list-panel" role="tabpanel">
-      <ul class="task-list">
-        <li data-task="review-draft"><label><input type="checkbox" data-task="review-draft"> Review draft proposal</label><span class="tag">Today</span></li>
-        <li data-task="vendor-quote"><label><input type="checkbox" data-task="vendor-quote"> Reply to vendor quote</label><span class="tag">Today</span></li>
-        <li data-task="standup"><label><input type="checkbox" data-task="standup"> Prep Thursday standup</label><span class="tag">Today</span></li>
-        <li data-task="onboarding"><label><input type="checkbox" data-task="onboarding"> Update onboarding guide</label><span class="tag">This week</span></li>
-        <li data-task="q4-budget"><label><input type="checkbox" data-task="q4-budget"> Approve Q4 budget lines</label><span class="tag">This week</span></li>
-        <li data-task="offsite"><label><input type="checkbox" data-task="offsite"> Book team offsite venue</label><span class="tag">This week</span></li>
-        <li data-task="legal"><label><input type="checkbox" data-task="legal"> Legal sign-off on contract</label><span class="tag">Waiting on others</span></li>
-        <li data-task="design-review"><label><input type="checkbox" data-task="design-review"> Design review comments</label><span class="tag">Waiting on others</span></li>
-        <li data-task="it-access"><label><input type="checkbox" data-task="it-access"> Access request from IT</label><span class="tag">Waiting on others</span></li>
-      </ul>
+      <!-- Filled in by tasks.js. Click a test to start it. -->
+      <ul class="task-list" id="task-list"></ul>
     </div>
 
     <!-- Calendar tab (filled in by the script below) -->
@@ -408,6 +493,20 @@
         </div>
       </div>
       <div class="cal-grid" id="cal-grid"></div>
+    </div>
+  </section>
+
+  <!-- ===== Questionnaire view: walks through one test step by step (filled in by tasks.js) ===== -->
+  <section class="task-view view" data-view="questionnaire" aria-labelledby="q-title">
+    <button type="button" class="back-btn">&larr; Back to dashboard</button>
+    <p class="q-kicker" id="q-kicker"></p>
+    <h1 id="q-title">Test</h1>
+    <div class="q-progress" aria-hidden="true"><div class="q-progress-bar" id="q-bar"></div></div>
+    <p class="q-count" id="q-count"></p>
+    <div class="q-card" id="q-body" aria-live="polite"></div>
+    <div class="q-nav">
+      <button type="button" class="q-btn secondary" id="q-prev">Back</button>
+      <button type="button" class="q-btn" id="q-next">Next</button>
     </div>
   </section>
 
@@ -505,6 +604,7 @@
     </div>
   </section>
 
+  <script src="data.js"></script>
   <script>
     // ---- Radiation check ----
     // PLACEHOLDER NUMBERS: real levels haven't been decided yet.
@@ -518,33 +618,6 @@
     document.body.classList.toggle("radiation-high", radiationTooHigh);
 
 
-    // ---- Due dates for the calendar ----
-    // PLACEHOLDER DUE DATES: how many days from today each task is due.
-    // 0 = today, 1 = tomorrow, and so on. Change these when real dates are known.
-    const DUE_IN_DAYS = {
-      "review-draft": 0,
-      "vendor-quote": 0,
-      "standup": 0,
-      "onboarding": 1,
-      "q4-budget": 2,
-      "offsite": 3,
-      "legal": 4,
-      "design-review": 6,
-      "it-access": 8
-    };
-
-    // Build the calendar's task info from the list, so names match
-    const today = new Date();
-    const tasks = Array.from(document.querySelectorAll(".task-list li")).map(function (item) {
-      const id = item.dataset.task;
-      return {
-        id: id,
-        name: item.querySelector("label").textContent.trim(),
-        due: new Date(today.getFullYear(), today.getMonth(), today.getDate() + (DUE_IN_DAYS[id] || 0))
-      };
-    });
-
-
     // ---- Switching screens ----
     // Shows the screen whose data-view matches the name, hides the rest
     function showView(name) {
@@ -554,34 +627,10 @@
       window.scrollTo(0, 0);
     }
 
-    // Show the task view (List tab) and highlight the task that was clicked
-    function showTaskList(taskId) {
-      clearCheckedFromTaskView();   // remove tasks finished before this visit
-      showView("tasks");
-      showTab("list");
-
-      document.querySelectorAll(".task-list li").forEach(function (item) {
-        const isClicked = item.dataset.task === taskId;
-        item.classList.toggle("selected", isClicked);
-        if (isClicked) {
-          item.scrollIntoView({ block: "nearest" });  // scroll the box to it
-        }
-      });
-    }
-
-    // Clicking a task's text on the dashboard opens the task view
-    document.querySelectorAll(".task-link").forEach(function (link) {
-      link.addEventListener("click", function (event) {
-        event.preventDefault();  // stop the "#" link from jumping the page
-        showTaskList(link.dataset.task);
-      });
-    });
-
     // Quick links that open a screen on this page, and every back button
     document.addEventListener("click", function (event) {
       if (event.target.closest(".back-btn")) {
         showView("dashboard");
-        clearCheckedFromDashboard();   // hide anything checked off while you were away
         return;
       }
 
@@ -590,7 +639,6 @@
       event.preventDefault();
 
       if (link.dataset.open === "calendar") {
-        clearCheckedFromTaskView();   // remove tasks finished before this visit
         showView("tasks");
         showTab("calendar");
       } else {
@@ -612,146 +660,11 @@
       listTab.setAttribute("aria-selected", isList);
       calTab.setAttribute("aria-selected", !isList);
 
-      if (!isList) renderCalendar();
+      if (!isList) renderCalendar();   // from tasks.js
     }
 
     document.getElementById("tab-list").addEventListener("click", function () { showTab("list"); });
     document.getElementById("tab-calendar").addEventListener("click", function () { showTab("calendar"); });
-
-
-    // ---- Calendar ----
-    // The month being shown (starts on the current month)
-    const shownMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-
-    // Is this task checked off? (the list's checkbox is the record)
-    function isDone(taskId) {
-      return document.querySelector('.task-list input[data-task="' + taskId + '"]').checked;
-    }
-
-    function renderCalendar() {
-      const year = shownMonth.getFullYear();
-      const month = shownMonth.getMonth();
-      document.getElementById("cal-title").textContent =
-        shownMonth.toLocaleDateString("en-US", { month: "long", year: "numeric" });
-
-      const grid = document.getElementById("cal-grid");
-      grid.innerHTML = "";
-
-      // Day names across the top
-      ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].forEach(function (dayName) {
-        const el = document.createElement("div");
-        el.className = "cal-weekday";
-        el.textContent = dayName;
-        grid.appendChild(el);
-      });
-
-      // Blank boxes before the 1st, so the 1st lands on the right weekday
-      const firstWeekday = new Date(year, month, 1).getDay();
-      for (let i = 0; i < firstWeekday; i++) {
-        const blank = document.createElement("div");
-        blank.className = "cal-day empty";
-        grid.appendChild(blank);
-      }
-
-      // One box per day of the month
-      const daysInMonth = new Date(year, month + 1, 0).getDate();
-      for (let day = 1; day <= daysInMonth; day++) {
-        const cell = document.createElement("div");
-        cell.className = "cal-day";
-        if (year === today.getFullYear() && month === today.getMonth() && day === today.getDate()) {
-          cell.classList.add("today");
-        }
-
-        const dateNum = document.createElement("div");
-        dateNum.className = "cal-date";
-        dateNum.textContent = day;
-        cell.appendChild(dateNum);
-
-        // Tasks due on this day, each with a checkbox to cross it off
-        tasks.forEach(function (task) {
-          if (clearedTasks.has(task.id)) return;   // finished before this visit, so skip it
-          if (task.due.getFullYear() === year && task.due.getMonth() === month && task.due.getDate() === day) {
-            const label = document.createElement("label");
-            label.className = "cal-task";
-
-            const box = document.createElement("input");
-            box.type = "checkbox";
-            box.dataset.task = task.id;
-            box.checked = isDone(task.id);
-
-            label.appendChild(box);
-            label.appendChild(document.createTextNode(task.name));
-            cell.appendChild(label);
-          }
-        });
-
-        grid.appendChild(cell);
-      }
-    }
-
-    // Arrows to move between months
-    document.getElementById("cal-prev").addEventListener("click", function () {
-      shownMonth.setMonth(shownMonth.getMonth() - 1);
-      renderCalendar();
-    });
-    document.getElementById("cal-next").addEventListener("click", function () {
-      shownMonth.setMonth(shownMonth.getMonth() + 1);
-      renderCalendar();
-    });
-
-
-    // ---- Remove finished tasks from the dashboard ----
-
-    // Hide every checked task on the dashboard, and show any that were unchecked
-    function clearCheckedFromDashboard() {
-      document.querySelectorAll(".checklist li").forEach(function (item) {
-        const box = item.querySelector('input[type="checkbox"]');
-        item.classList.toggle("cleared", box.checked);
-      });
-    }
-
-    // Tasks that were already checked when the task view was last opened.
-    // These are hidden from All Tasks and the calendar. Tasks you check during a
-    // visit stay (crossed off) until you go back to the dashboard and open it again.
-    const clearedTasks = new Set();
-
-    function clearCheckedFromTaskView() {
-      document.querySelectorAll(".task-list li").forEach(function (item) {
-        const box = item.querySelector('input[type="checkbox"]');
-        if (box.checked) clearedTasks.add(item.dataset.task);
-        item.classList.toggle("cleared", clearedTasks.has(item.dataset.task));
-      });
-    }
-
-    // Checking a task on the dashboard: it disappears once the mouse moves off it
-    document.querySelectorAll(".checklist input[type='checkbox']").forEach(function (box) {
-      box.addEventListener("change", function () {
-        if (!box.checked) return;
-        const item = box.closest("li");
-
-        // Hide it only if it's still checked (in case you unchecked it first)
-        function hideIfStillChecked() {
-          if (box.checked) item.classList.add("cleared");
-        }
-
-        if (item.matches(":hover")) {
-          item.addEventListener("mouseleave", hideIfStillChecked, { once: true });
-        } else {
-          hideIfStillChecked();   // not being hovered (e.g. used the keyboard), so hide now
-        }
-      });
-    });
-
-
-    // ---- Keep checkboxes matched in every view ----
-    // Checking a task anywhere (dashboard, list or calendar) checks it everywhere.
-    document.addEventListener("change", function (event) {
-      const box = event.target;
-      if (!box.matches('input[type="checkbox"][data-task]')) return;
-      document.querySelectorAll('input[data-task="' + box.dataset.task + '"]').forEach(function (other) {
-        other.checked = box.checked;
-      });
-    });
 
 
     // ---- Timer (counts up, like a stopwatch) ----
@@ -804,7 +717,7 @@
       updateTimer();
     });
   </script>
-<script type="module" src="main.js"></script>
+<script src="tasks.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <script src="main.js"></script>
 </body>

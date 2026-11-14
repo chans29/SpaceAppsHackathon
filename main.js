@@ -1,9 +1,3 @@
-const FILES = [
-  'microbiome', 'cellular_profile', 'cognition', 'personality_questionnaire',
-  'actigraphy', 'sleep_team_questionnaire', 'sensorimotor',
-  'biochemical_markers', 'carotid_intima_media_thickness'
-]
-
 Chart.defaults.color = '#78ff0a'
 Chart.defaults.font.family = '"Courier New", monospace'
 Chart.defaults.font.size = 10
@@ -14,6 +8,7 @@ const CREW_COLORS = { 'CM-01': '#78ff0a'}
 const crews = Object.keys(CREW_COLORS)
 const day = (ts) => ts.slice(0, 10)
 const container = document.getElementById('charts')
+let charts = []
 
 const RED = 'rgba(255, 60, 60, 0.20)'
 const AMBER = 'rgba(224, 160, 48, 0.20)'
@@ -67,7 +62,7 @@ function addChart(title, config) {
     legend: { display: false },
     ...(config.options.plugins || {})
   }
-  new Chart(canvas, config)
+  charts.push(new Chart(canvas, config))
 }
 
 function lineByCrew(title, rows, getValue, yTitle, bands) {
@@ -102,19 +97,12 @@ function lineByCrew(title, rows, getValue, yTitle, bands) {
   })
 }
 
-async function load() {
-  const entries = await Promise.all(
-    FILES.map(async (name) => {
-      const res = await fetch(`data/${name}.json`)
-      if (!res.ok) throw new Error(`Could not load data/${name}.json (${res.status})`)
-      const json = await res.json()
-      return [name, json.data]
-    })
-  )
-  return Object.fromEntries(entries)
-}
+// Data comes from data.js (HealthData), which also holds records saved by the task questionnaires
+function renderCharts(d) {
+  charts.forEach(c => c.destroy())
+  charts = []
+  container.innerHTML = ''
 
-load().then((d) => {
   lineByCrew('Microbiome: fecal Shannon diversity',
   d.microbiome.filter(r => r.sample_site === 'fecal'),
   r => r.shannon_diversity, 'index', [
@@ -123,7 +111,7 @@ load().then((d) => {
   ])
 
 lineByCrew('Cellular: saliva cortisol',
-  d.cellular_profile, r => r.saliva.cortisol_nmol_l, 'nmol/L', [
+  d.cellular_profile, r => r.saliva?.cortisol_nmol_l, 'nmol/L', [
     { max: 3, color: RED, label: 'low' },
     { min: 20, max: 30, color: AMBER, label: 'elevated' },
     { min: 30, color: RED, label: 'high' }
@@ -154,7 +142,7 @@ lineByCrew('Sensorimotor: balance sway path',
   ])
 
 lineByCrew('Biochemical: vitamin D',
-  d.biochemical_markers, r => r.blood.vitamin_d_ng_ml, 'ng/mL', [
+  d.biochemical_markers, r => r.blood?.vitamin_d_ng_ml, 'ng/mL', [
     { max: 20, color: RED, label: 'deficient' },
     { min: 20, max: 30, color: AMBER, label: 'insufficient' },
     { min: 100, color: RED, label: 'excess' }
@@ -166,7 +154,12 @@ lineByCrew('Carotid intima-media thickness',
     { min: 0.8, max: 0.9, color: AMBER, label: 'borderline' },
     { min: 0.9, color: RED, label: 'thickened' }
   ])
-}).catch((err) => {
+}
+
+HealthData.ready.then(renderCharts).catch((err) => {
   console.error(err)
   container.textContent = 'Failed to load charts: ' + err.message
 })
+
+// Redraw when a questionnaire saves new data
+document.addEventListener('health-data-changed', () => renderCharts(HealthData.data))
