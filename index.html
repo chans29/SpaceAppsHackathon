@@ -350,47 +350,9 @@
       <!-- reports should tie back to a website and be in a loop so they update -->
     <!-- Reports (right column) -->
     <section class="reports" aria-labelledby="reports-title">
-      <h2 id="reports-title">Reports</h2>
-
-      <div class="rail">
-        <figure class="chart">
-          <svg viewBox="0 0 200 80" preserveAspectRatio="none" role="img" aria-label="Revenue, trending up">
-            <path class="fill" d="M0 70 L30 58 L60 62 L90 34 L120 44 L150 22 L180 30 L200 20 L200 80 L0 80 Z"/>
-            <polyline class="line" points="0,70 30,58 60,62 90,34 120,44 150,22 180,30 200,20"/>
-          </svg>
-          <figcaption>Revenue</figcaption>
-        </figure>
-
-        <figure class="chart">
-          <svg viewBox="0 0 200 80" preserveAspectRatio="none" role="img" aria-label="Orders by region, bar chart">
-            <g class="bars">
-              <rect x="10"  y="30" width="22" height="50"/>
-              <rect x="44"  y="46" width="22" height="34"/>
-              <rect x="78"  y="18" width="22" height="62"/>
-              <rect x="112" y="40" width="22" height="40"/>
-              <rect x="146" y="10" width="22" height="70"/>
-            </g>
-          </svg>
-          <figcaption>Orders by region</figcaption>
-        </figure>
-
-        <figure class="chart">
-          <svg viewBox="0 0 200 80" preserveAspectRatio="none" role="img" aria-label="Active users, fluctuating">
-            <path class="fill" d="M0 60 L25 40 L50 50 L75 24 L100 38 L125 20 L150 46 L175 34 L200 44 L200 80 L0 80 Z"/>
-            <polyline class="line" points="0,60 25,40 50,50 75,24 100,38 125,20 150,46 175,34 200,44"/>
-          </svg>
-          <figcaption>Active users</figcaption>
-        </figure>
-
-        <figure class="chart">
-          <svg viewBox="0 0 200 80" preserveAspectRatio="none" role="img" aria-label="Support backlog, trending down">
-            <path class="fill" d="M0 14 L30 26 L60 22 L90 44 L120 40 L150 58 L180 56 L200 66 L200 80 L0 80 Z"/>
-            <polyline class="line" points="0,14 30,26 60,22 90,44 120,40 150,58 180,56 200,66"/>
-          </svg>
-          <figcaption>Support backlog</figcaption>
-        </figure>
-      </div>
-    </section>
+  <h2 id="reports-title">Reports</h2>
+  <div class="rail" id="charts"></div>
+</section>
 
     <!-- Quick links (full-width bottom bar) -->
     <!-- Links with data-open switch screens on this page.
@@ -842,5 +804,8 @@
       updateTimer();
     });
   </script>
+<script type="module" src="main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script src="main.js"></script>
 </body>
 </html>

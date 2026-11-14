@@ -60,6 +60,9 @@ h3 { font-size: 1rem; }
 .tasks   { grid-area: tasks; }
 .hero    { grid-area: hero; }
 .reports { grid-area: reports; }
+.reports { max-height: calc(100vh - 64px); min-height: 0; }
+.rail { overflow-y: auto; min-height: 0; }
+.report-card { position: relative; height: 190px; flex: 0 0 190px; }
 .quick-links { grid-area: links; }
  
 .tasks, .reports {
