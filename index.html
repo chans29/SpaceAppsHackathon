@@ -224,18 +224,9 @@
       <!-- reports should tie back to a website and be in a loop so they update -->
     <!-- Reports (right column) -->
     <section class="reports" aria-labelledby="reports-title">
-      <h2 id="reports-title">Reports</h2>
-      <div>
-        <head>
-          <script src="https://jsdelivr.net"></script>
-        </head>
-        <body>
-          <div class="chart-container">
-            <canvas id="myChart"></canvas>
-          </div>
-          <script src="main.js"></script>
-      </div>
-    </section>
+  <h2 id="reports-title">Reports</h2>
+  <div class="rail" id="charts"></div>
+</section>
 
     <!-- Quick links (full-width bottom bar) -->
     <nav class="quick-links" aria-labelledby="links-title">
@@ -479,5 +470,8 @@
       });
     });
   </script>
+<script type="module" src="main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script src="main.js"></script>
 </body>
 </html>
