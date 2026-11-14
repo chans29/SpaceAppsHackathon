@@ -16,10 +16,8 @@
     }
 
     /* ---- Switching views ----
-       Normal: show the dashboard, hide the task view.
-       When the body has the class "show-tasks": hide the dashboard, show the task view. */
-    body.show-tasks .dashboard { display: none; }
-    body:not(.show-tasks) .task-view { display: none; }
+       Every screen has the class "view". Only the one with "active" is shown. */
+    .view:not(.active) { display: none !important; }
 
     /* Task links on the dashboard look like normal text, underline on hover */
     .task-link {
@@ -48,21 +46,25 @@
       font: inherit;
       font-size: 14px;
       padding: 8px 14px;
-      border: 1px solid #d6d3d1;
+      border: 1px solid #78ff0a;
       border-radius: 8px;
-      background: #fff;
+      background: #78ff0a;
       color: inherit;
       cursor: pointer;
     }
     .back-btn:hover,
-    .cal-nav button:hover { background: #f5f5f4; }
-    .task-view h1 { margin: 16px 0 12px; }
-
+    .cal-nav button:hover { 
+    background: #000000;
+    color: #78ff0a;
+    }
+    .task-view h1 { margin: 16px 0 12px;
+    color: #78ff0a; }
+    
     /* Tabs to switch between List and Calendar */
     .tabs {
       display: flex;
       gap: 4px;
-      border-bottom: 1px solid #e7e5e4;
+      border-bottom: 1px solid #78ff0a;
       margin-bottom: 16px;
     }
     .tab {
@@ -71,13 +73,13 @@
       border: none;
       border-bottom: 2px solid transparent;
       background: none;
-      color: #78716c;
+      color: #78ff0a;
       cursor: pointer;
       margin-bottom: -1px;
     }
     .tab.active {
-      color: #1c1917;
-      border-bottom-color: #1c1917;
+      color: #ffffff;
+      border-bottom-color:#78ff0a;
       font-weight: 500;
     }
 
@@ -89,8 +91,9 @@
       max-width: 560px;
       max-height: 320px;         /* about 6 tasks tall, so the rest scroll */
       overflow-y: scroll;        /* always shows the scroll bar */
-      background: #fff;
-      border: 1px solid #e7e5e4;
+      background: #000000;
+      border: 1px solid #78ff0a;
+      color: #78ff0a;
       border-radius: 10px;
     }
     .task-list li {
@@ -108,13 +111,22 @@
       font-size: 12px;
       padding: 2px 8px;
       border-radius: 999px;
-      background: #f0efee;
-      color: #57534e;
+      border: 1px solid #78ff0a;
+      background: #000000;
+      color: #78ff0a;
       white-space: nowrap;
     }
 
     /* Highlight the task you clicked */
-    .task-list li.selected { background: #fef9c3; }
+    .task-list li:hover {
+      background: #78ff0a;
+      color: #000000;
+    }
+    /* Checked-off task while hovered: black text and black line-through,
+       so it shows up on the green background */
+    .task-list li:hover label:has(input:checked) {
+      color: #000000;
+    }
 
     /* ---- Calendar ---- */
     .cal-header {
@@ -123,7 +135,9 @@
       justify-content: space-between;
       margin-bottom: 12px;
     }
-    .cal-header h2 { margin: 0; font-size: 20px; }
+    .cal-header h2 { margin: 0; font-size: 20px; 
+      color: #78ff0a;
+    }
     .cal-nav { display: flex; gap: 6px; }
     .cal-grid {
       display: grid;
@@ -132,15 +146,15 @@
     }
     .cal-weekday {
       font-size: 12px;
-      color: #78716c;
+      color: #78ff0a;
       text-align: center;
       padding: 4px 0;
     }
     .cal-day {
       min-height: 90px;
       min-width: 0;
-      background: #fff;
-      border: 1px solid #e7e5e4;
+      background: #000000;
+      border: 1px solid #78ff0a;
       border-radius: 8px;
       padding: 6px;
       font-size: 12px;
@@ -152,24 +166,127 @@
       background: transparent;
       border-color: transparent;
     }
-    .cal-day.today { border: 2px solid #1c1917; }
+    .cal-day.today { border: 2px solid #78ff0a; }
     .cal-date { font-weight: 500; }
     .cal-task {
       display: flex;
       align-items: flex-start;
       gap: 4px;
-      background: #f5f5f4;
+      background: #000000;
+      color: #78ff0a;
       border-radius: 4px;
+      border: 1px solid #78ff0a;
       padding: 3px 4px;
       line-height: 1.3;
       cursor: pointer;
       overflow-wrap: anywhere;
     }
     .cal-task input { margin: 1px 0 0; flex-shrink: 0; }
+
+    /* ---- Exercise page ---- */
+    .intro { color: #78ff0a; max-width: 640px; margin: 0 0 16px; }
+    .tips {
+      background: #000000;
+      border: 1px solid #78ff0a;
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-bottom: 20px;
+      color: #78ff0a;
+    }
+    .tips h2 { font-size: 17px; margin: 0 0 8px; color: #78ff0a; }
+    .tips ul { margin: 0; padding-left: 20px; line-height: 1.6; }
+    .stretch-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 12px;
+    }
+    .stretch-card {
+      background: #000000;
+      border: 1px solid #78ff0a;
+      border-radius: 10px;
+      padding: 14px 16px;
+    }
+    .stretch-card h3 { margin: 0 0 6px; font-size: 16px; color: #78ff0a; }
+    .stretch-card p { margin: 0; font-size: 14px; line-height: 1.5; color: #78ff0a; }
+    .source {
+      margin-top: 20px;
+      font-size: 13px;
+      color: #78ff0a;
+    }
+    .source a { color: inherit; }
+
+    /* ---- Tech support page (green phone and link) ---- */
+    .support-card {
+      background: #000000;
+      border: 1px solid #78ff0a;
+      border-radius: 10px;
+      padding: 20px;
+      max-width: 560px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .support-phone,
+    .support-link {
+      color: #78ff0a;            /* green */
+      font-size: 18px;
+      font-weight: 500;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .support-phone:hover,
+    .support-link:hover { text-decoration: underline; }
+    .support-phone svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+    /* ---- Timer page ---- */
+    .timer-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      padding: 32px 0;
+    }
+    .timer-display {
+      font-size: clamp(32px, 9vw, 72px);  /* shrinks on small screens so it fits */
+      font-weight: 700;
+      color: #78ff0a;            /* green numbers */
+      font-variant-numeric: tabular-nums;  /* digits don't jiggle as they change */
+      letter-spacing: 2px;
+    }
+    /* Start: green circle, black letters */
+    .timer-btn {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      border: 3px solid #78ff0a;
+      background: #78ff0a;
+      color: #000000;
+      font: inherit;
+      font-size: 20px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    /* While running (Stop): black circle, green letters
+       (green outline kept so the button shows up on a black background) */
+    .timer-btn.running {
+      background: #000000;
+      color: #78ff0a;
+    }
+    .timer-reset {
+      font: inherit;
+      font-size: 14px;
+      background: none;
+      border: none;
+      color: #78ff0a;
+      text-decoration: underline;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
-  <main class="dashboard">
+  <main class="dashboard view active" data-view="dashboard">
 
     <!-- Tasks (left column) -->
     <!-- Clicking a task's text switches to the task view; clicking the box still checks it off -->
@@ -225,39 +342,68 @@
     <!-- Reports (right column) -->
     <section class="reports" aria-labelledby="reports-title">
       <h2 id="reports-title">Reports</h2>
-      <div>
-        <head>
-          <script src="https://jsdelivr.net"></script>
-        </head>
-        <body>
-          <div class="chart-container">
-            <canvas id="myChart"></canvas>
-          </div>
-          <script src="main.js"></script>
+
+      <div class="rail">
+        <figure class="chart">
+          <svg viewBox="0 0 200 80" preserveAspectRatio="none" role="img" aria-label="Revenue, trending up">
+            <path class="fill" d="M0 70 L30 58 L60 62 L90 34 L120 44 L150 22 L180 30 L200 20 L200 80 L0 80 Z"/>
+            <polyline class="line" points="0,70 30,58 60,62 90,34 120,44 150,22 180,30 200,20"/>
+          </svg>
+          <figcaption>Revenue</figcaption>
+        </figure>
+
+        <figure class="chart">
+          <svg viewBox="0 0 200 80" preserveAspectRatio="none" role="img" aria-label="Orders by region, bar chart">
+            <g class="bars">
+              <rect x="10"  y="30" width="22" height="50"/>
+              <rect x="44"  y="46" width="22" height="34"/>
+              <rect x="78"  y="18" width="22" height="62"/>
+              <rect x="112" y="40" width="22" height="40"/>
+              <rect x="146" y="10" width="22" height="70"/>
+            </g>
+          </svg>
+          <figcaption>Orders by region</figcaption>
+        </figure>
+
+        <figure class="chart">
+          <svg viewBox="0 0 200 80" preserveAspectRatio="none" role="img" aria-label="Active users, fluctuating">
+            <path class="fill" d="M0 60 L25 40 L50 50 L75 24 L100 38 L125 20 L150 46 L175 34 L200 44 L200 80 L0 80 Z"/>
+            <polyline class="line" points="0,60 25,40 50,50 75,24 100,38 125,20 150,46 175,34 200,44"/>
+          </svg>
+          <figcaption>Active users</figcaption>
+        </figure>
+
+        <figure class="chart">
+          <svg viewBox="0 0 200 80" preserveAspectRatio="none" role="img" aria-label="Support backlog, trending down">
+            <path class="fill" d="M0 14 L30 26 L60 22 L90 44 L120 40 L150 58 L180 56 L200 66 L200 80 L0 80 Z"/>
+            <polyline class="line" points="0,14 30,26 60,22 90,44 120,40 150,58 180,56 200,66"/>
+          </svg>
+          <figcaption>Support backlog</figcaption>
+        </figure>
       </div>
     </section>
 
     <!-- Quick links (full-width bottom bar) -->
+    <!-- Links with data-open switch screens on this page.
+         Links with a real web address open that website in a new tab. -->
     <nav class="quick-links" aria-labelledby="links-title">
       <h2 id="links-title">Quick Links</h2>
       <ul>
-        <li><a href="#">Calendar</a></li>
-        <li><a href="#">Inbox</a></li>
-        <li><a href="#">Shared drive</a></li>
-        <li><a href="#">Team directory</a></li>
-        <li><a href="#">Expenses</a></li>
-        <li><a href="#">Time off</a></li>
-        <li><a href="#">IT help</a></li>
-        <li><a href="#">Company news</a></li>
+        <li><a href="#" data-open="calendar">Calendar</a></li>
+        <li><a href="https://mail.google.com" target="_blank" rel="noopener">Inbox</a></li>
+        <li><a href="#" data-open="exercise">Exercise</a></li>
+        <li><a href="https://www.nasa.gov/news-release/" target="_blank" rel="noopener">Company news</a></li>
+        <li><a href="#" data-open="support">Tech support</a></li>
+        <li><a href="#" data-open="timer">Timer</a></li>
       </ul>
     </nav>
 
   </main>
 
   <!-- ===== Task view (hidden until a task is clicked) ===== -->
-  <section class="task-view" aria-labelledby="all-tasks-title">
+  <section class="task-view view" data-view="tasks" aria-labelledby="all-tasks-title">
     <!-- Back button sits above the tabs, so it works from both List and Calendar -->
-    <button type="button" class="back-btn" id="back-btn">&larr; Back to dashboard</button>
+    <button type="button" class="back-btn">&larr; Back to dashboard</button>
     <h1 id="all-tasks-title">All Tasks</h1>
 
     <!-- Tabs -->
@@ -291,6 +437,100 @@
         </div>
       </div>
       <div class="cal-grid" id="cal-grid"></div>
+    </div>
+  </section>
+
+  <!-- ===== Exercise view: key points from Mayo Clinic's stretching guide ===== -->
+  <section class="task-view view" data-view="exercise" aria-labelledby="exercise-title">
+    <button type="button" class="back-btn">&larr; Back to dashboard</button>
+    <h1 id="exercise-title">Basic Stretches</h1>
+    <p class="intro">Stretching can make you more flexible and help your joints move through their full range. Here are the main points from Mayo Clinic's guide.</p>
+
+    <div class="tips">
+      <h2>Stretch safely</h2>
+      <ul>
+        <li>Warm up first with 5 to 10 minutes of light activity, like walking. Stretching after a workout is usually best.</li>
+        <li>Move slowly and gently. Don't bounce, and keep breathing.</li>
+        <li>Stretch until you feel a slight pull, then hold for about 30 seconds.</li>
+        <li>Do each stretch 2 to 4 times on each side.</li>
+        <li>Aim for at least 2 to 3 days a week.</li>
+        <li>Pain means you've gone too far, so ease off.</li>
+        <li>If you have an injury or health condition, ask a doctor or physical therapist which stretches are right for you.</li>
+      </ul>
+    </div>
+
+    <div class="stretch-grid">
+      <article class="stretch-card">
+        <h3>Calf stretch</h3>
+        <p>Stand an arm's length from a wall with one foot behind the other. Bend your front knee forward, keeping your back leg straight and its heel on the floor.</p>
+      </article>
+      <article class="stretch-card">
+        <h3>Hamstring stretch</h3>
+        <p>Lie on the floor next to a doorway or wall. Rest one heel up on the wall with the knee slightly bent, then slowly straighten that leg.</p>
+      </article>
+      <article class="stretch-card">
+        <h3>Quadriceps stretch</h3>
+        <p>Hold a wall for balance. Grab one ankle and gently pull your heel up behind you. Keep your knees together and your stomach tight.</p>
+      </article>
+      <article class="stretch-card">
+        <h3>Hip flexor stretch</h3>
+        <p>Kneel on one knee, with a folded towel under it, and put the other foot in front of you. Keep your back straight and lean your hips forward.</p>
+      </article>
+      <article class="stretch-card">
+        <h3>Outer thigh (IT band) stretch</h3>
+        <p>Stand beside a wall for support. Cross one ankle over the other, then reach that same arm up and over toward the opposite side.</p>
+      </article>
+      <article class="stretch-card">
+        <h3>Knee-to-chest stretch</h3>
+        <p>Lie on your back and gently pull one knee toward your chest until you feel it in your lower back. Skip this one if you have osteoporosis.</p>
+      </article>
+      <article class="stretch-card">
+        <h3>Shoulder stretch</h3>
+        <p>Bring one arm across your body. Use your other arm to hold it just above or below the elbow.</p>
+      </article>
+      <article class="stretch-card">
+        <h3>Shoulder stretch with towel</h3>
+        <p>Hold a rolled towel behind your back with one hand above your head and one low. Pull up with the top hand so the lower hand slides up your back.</p>
+      </article>
+      <article class="stretch-card">
+        <h3>Neck stretch</h3>
+        <p>Tilt your head forward and a little to one side. Use the hand on that side to gently pull your head down.</p>
+      </article>
+    </div>
+
+    <p class="source">
+      Source: Mayo Clinic Staff, “A guide to basic stretches,”
+      <a href="https://www.mayoclinic.org/healthy-lifestyle/fitness/in-depth/stretching/art-20546848" target="_blank" rel="noopener">mayoclinic.org</a>.
+      Summarized here; see the full guide for pictures and complete steps.
+    </p>
+  </section>
+
+  <!-- ===== Tech support view ===== -->
+  <section class="task-view view" data-view="support" aria-labelledby="support-title">
+    <button type="button" class="back-btn">&larr; Back to dashboard</button>
+    <h1 id="support-title">Tech Support</h1>
+
+    <div class="support-card">
+      <!-- PROP NUMBER: 555-01xx numbers are set aside for fake/example use -->
+      <a class="support-phone" href="tel:+13125550147">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+        </svg>
+        (312) 555-0147
+      </a>
+      <a class="support-link" href="https://www.nasa.gov" target="_blank" rel="noopener">Visit NASA.gov</a>
+    </div>
+  </section>
+
+  <!-- ===== Timer view ===== -->
+  <section class="task-view view" data-view="timer" aria-labelledby="timer-title">
+    <button type="button" class="back-btn">&larr; Back to dashboard</button>
+    <h1 id="timer-title">Timer</h1>
+
+    <div class="timer-wrap">
+      <div class="timer-display" id="timer-display">00:00:00.000</div>
+      <button type="button" class="timer-btn" id="timer-btn">Start</button>
+      <button type="button" class="timer-reset" id="timer-reset">Reset</button>
     </div>
   </section>
 
@@ -334,13 +574,19 @@
     });
 
 
-    // ---- Switching between the dashboard and the task view ----
+    // ---- Switching screens ----
+    // Shows the screen whose data-view matches the name, hides the rest
+    function showView(name) {
+      document.querySelectorAll(".view").forEach(function (view) {
+        view.classList.toggle("active", view.dataset.view === name);
+      });
+      window.scrollTo(0, 0);
+    }
 
     // Show the task view (List tab) and highlight the task that was clicked
     function showTaskList(taskId) {
-      document.body.classList.add("show-tasks");
+      showView("tasks");
       showTab("list");
-      window.scrollTo(0, 0);
 
       document.querySelectorAll(".task-list li").forEach(function (item) {
         const isClicked = item.dataset.task === taskId;
@@ -351,12 +597,6 @@
       });
     }
 
-    // Go back to the dashboard (tasks, graphs and the figure)
-    function showDashboard() {
-      document.body.classList.remove("show-tasks");
-      window.scrollTo(0, 0);
-    }
-
     // Clicking a task's text on the dashboard opens the task view
     document.querySelectorAll(".task-link").forEach(function (link) {
       link.addEventListener("click", function (event) {
@@ -365,8 +605,24 @@
       });
     });
 
-    // The back button returns to the dashboard
-    document.getElementById("back-btn").addEventListener("click", showDashboard);
+    // Quick links that open a screen on this page, and every back button
+    document.addEventListener("click", function (event) {
+      if (event.target.closest(".back-btn")) {
+        showView("dashboard");
+        return;
+      }
+
+      const link = event.target.closest("[data-open]");
+      if (!link) return;
+      event.preventDefault();
+
+      if (link.dataset.open === "calendar") {
+        showView("tasks");
+        showTab("calendar");
+      } else {
+        showView(link.dataset.open);   // "exercise", "support" or "timer"
+      }
+    });
 
 
     // ---- Tabs: List or Calendar ----
@@ -477,6 +733,57 @@
       document.querySelectorAll('input[data-task="' + box.dataset.task + '"]').forEach(function (other) {
         other.checked = box.checked;
       });
+    });
+
+
+    // ---- Timer (counts up, like a stopwatch) ----
+    const timerDisplay = document.getElementById("timer-display");
+    const timerBtn = document.getElementById("timer-btn");
+    let timerStartedAt = 0;    // when the current run started
+    let timerSaved = 0;        // time from earlier runs, in milliseconds
+    let timerTick = null;      // the repeating update; null means stopped
+
+    // Turn milliseconds into HH:MM:SS.mmm (hours : minutes : seconds . milliseconds)
+    function formatTime(ms) {
+      const totalMs = Math.floor(ms);
+      const hours = Math.floor(totalMs / 3600000);           // 3,600,000 ms in an hour
+      const minutes = Math.floor((totalMs % 3600000) / 60000); // 60,000 ms in a minute
+      const seconds = Math.floor((totalMs % 60000) / 1000);
+      const millis = totalMs % 1000;
+      return String(hours).padStart(2, "0") + ":" +
+             String(minutes).padStart(2, "0") + ":" +
+             String(seconds).padStart(2, "0") + "." +
+             String(millis).padStart(3, "0");
+    }
+
+    function updateTimer() {
+      // performance.now() is a more precise clock than Date.now()
+      const running = timerTick !== null ? performance.now() - timerStartedAt : 0;
+      timerDisplay.textContent = formatTime(timerSaved + running);
+    }
+
+    // One button: Start (green circle) <-> Stop (black circle)
+    timerBtn.addEventListener("click", function () {
+      if (timerTick === null) {
+        timerStartedAt = performance.now();
+        timerTick = setInterval(updateTimer, 10);   // refresh the display every 10 ms
+        timerBtn.textContent = "Stop";
+        timerBtn.classList.add("running");
+      } else {
+        timerSaved += performance.now() - timerStartedAt;
+        clearInterval(timerTick);
+        timerTick = null;
+        timerBtn.textContent = "Start";
+        timerBtn.classList.remove("running");
+      }
+      updateTimer();
+    });
+
+    // Reset back to zero (keeps running if it was running)
+    document.getElementById("timer-reset").addEventListener("click", function () {
+      timerSaved = 0;
+      timerStartedAt = performance.now();
+      updateTimer();
     });
   </script>
 </body>
