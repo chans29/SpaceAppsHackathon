@@ -1,0 +1,150 @@
+{
+  "measurement": "carotid_intima_media_thickness",
+  "method": "ultrasound",
+  "data": [
+    {
+      "crew_id": "CM-01",
+      "phase": "pre-flight",
+      "timestamp": "2025-12-06T12:00:00Z",
+      "unit": "mm",
+      "left_cca_imt": 0.637,
+      "right_cca_imt": 0.681,
+      "plaque_detected": false
+    },
+    {
+      "crew_id": "CM-01",
+      "phase": "in-flight",
+      "timestamp": "2026-02-19T12:00:00Z",
+      "unit": "mm",
+      "left_cca_imt": 0.731,
+      "right_cca_imt": 0.703,
+      "plaque_detected": false
+    },
+    {
+      "crew_id": "CM-01",
+      "phase": "in-flight",
+      "timestamp": "2026-05-20T12:00:00Z",
+      "unit": "mm",
+      "left_cca_imt": 0.752,
+      "right_cca_imt": 0.764,
+      "plaque_detected": false
+    },
+    {
+      "crew_id": "CM-01",
+      "phase": "post-flight",
+      "timestamp": "2026-01-08T12:00:00Z",
+      "unit": "mm",
+      "left_cca_imt": 0.666,
+      "right_cca_imt": 0.683,
+      "plaque_detected": false
+    },
+    {
+      "crew_id": "CM-02",
+      "phase": "pre-flight",
+      "timestamp": "2025-12-06T12:00:00Z",
+      "unit": "mm",
+      "left_cca_imt": 0.687,
+      "right_cca_imt": 0.684,
+      "plaque_detected": false
+    },
+    {
+      "crew_id": "CM-02",
+      "phase": "in-flight",
+      "timestamp": "2026-02-19T12:00:00Z",
+      "unit": "mm",
+      "left_cca_imt": 0.74,
+      "right_cca_imt": 0.718,
+      "plaque_detected": false
+    },
+    {
+      "crew_id": "CM-02",
+      "phase": "in-flight",
+      "timestamp": "2026-05-20T12:00:00Z",
+      "unit": "mm",
+      "left_cca_imt": 0.757,
+      "right_cca_imt": 0.762,
+      "plaque_detected": false
+    },
+    {
+      "crew_id": "CM-02",
+      "phase": "post-flight",
+      "timestamp": "2026-01-08T12:00:00Z",
+      "unit": "mm",
+      "left_cca_imt": 0.698,
+      "right_cca_imt": 0.712,
+      "plaque_detected": false
+    },
+    {
+      "crew_id": "CM-03",
+      "phase": "pre-flight",
+      "timestamp": "2025-12-06T12:00:00Z",
+      "unit": "mm",
+      "left_cca_imt": 0.659,
+      "right_cca_imt": 0.654,
+      "plaque_detected": false
+    },
+    {
+      "crew_id": "CM-03",
+      "phase": "in-flight",
+      "timestamp": "2026-02-19T12:00:00Z",
+      "unit": "mm",
+      "left_cca_imt": 0.631,
+      "right_cca_imt": 0.661,
+      "plaque_detected": false
+    },
+    {
+      "crew_id": "CM-03",
+      "phase": "in-flight",
+      "timestamp": "2026-05-20T12:00:00Z",
+      "unit": "mm",
+      "left_cca_imt": 0.672,
+      "right_cca_imt": 0.698,
+      "plaque_detected": false
+    },
+    {
+      "crew_id": "CM-03",
+      "phase": "post-flight",
+      "timestamp": "2026-01-08T12:00:00Z",
+      "unit": "mm",
+      "left_cca_imt": 0.633,
+      "right_cca_imt": 0.639,
+      "plaque_detected": false
+    },
+    {
+      "crew_id": "CM-04",
+      "phase": "pre-flight",
+      "timestamp": "2025-12-06T12:00:00Z",
+      "unit": "mm",
+      "left_cca_imt": 0.535,
+      "right_cca_imt": 0.56,
+      "plaque_detected": false
+    },
+    {
+      "crew_id": "CM-04",
+      "phase": "in-flight",
+      "timestamp": "2026-02-19T12:00:00Z",
+      "unit": "mm",
+      "left_cca_imt": 0.571,
+      "right_cca_imt": 0.596,
+      "plaque_detected": false
+    },
+    {
+      "crew_id": "CM-04",
+      "phase": "in-flight",
+      "timestamp": "2026-05-20T12:00:00Z",
+      "unit": "mm",
+      "left_cca_imt": 0.599,
+      "right_cca_imt": 0.618,
+      "plaque_detected": false
+    },
+    {
+      "crew_id": "CM-04",
+      "phase": "post-flight",
+      "timestamp": "2026-01-08T12:00:00Z",
+      "unit": "mm",
+      "left_cca_imt": 0.563,
+      "right_cca_imt": 0.549,
+      "plaque_detected": false
+    }
+  ]
+}
