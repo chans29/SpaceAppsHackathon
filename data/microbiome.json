@@ -1,0 +1,1229 @@
+{
+  "measurement": "microbiome",
+  "data": [
+    {
+      "crew_id": "CM-01",
+      "phase": "pre-flight",
+      "timestamp": "2025-12-06T12:00:00Z",
+      "sample_site": "fecal",
+      "shannon_diversity": 3.25,
+      "relative_abundance": {
+        "Bacteroides": 0.125,
+        "Faecalibacterium": 0.0237,
+        "Prevotella": 0.051,
+        "Bifidobacterium": 0.2466,
+        "Ruminococcus": 0.2346,
+        "Akkermansia": 0.019,
+        "Lachnospiraceae": 0.147,
+        "Other": 0.1531
+      }
+    },
+    {
+      "crew_id": "CM-01",
+      "phase": "pre-flight",
+      "timestamp": "2025-12-06T12:00:00Z",
+      "sample_site": "saliva",
+      "shannon_diversity": 2.75,
+      "relative_abundance": {
+        "Streptococcus": 0.1131,
+        "Veillonella": 0.056,
+        "Prevotella": 0.0723,
+        "Neisseria": 0.0212,
+        "Haemophilus": 0.1986,
+        "Actinomyces": 0.4006,
+        "Rothia": 0.0425,
+        "Other": 0.0958
+      }
+    },
+    {
+      "crew_id": "CM-01",
+      "phase": "pre-flight",
+      "timestamp": "2025-12-06T12:00:00Z",
+      "sample_site": "skin",
+      "shannon_diversity": 2.73,
+      "relative_abundance": {
+        "Staphylococcus": 0.015,
+        "Cutibacterium": 0.2038,
+        "Corynebacterium": 0.1172,
+        "Micrococcus": 0.0618,
+        "Streptococcus": 0.0326,
+        "Malassezia": 0.2958,
+        "Other": 0.116,
+        "Other2": 0.1577
+      }
+    },
+    {
+      "crew_id": "CM-01",
+      "phase": "in-flight",
+      "timestamp": "2026-01-20T12:00:00Z",
+      "sample_site": "fecal",
+      "shannon_diversity": 3.24,
+      "relative_abundance": {
+        "Bacteroides": 0.1888,
+        "Faecalibacterium": 0.0328,
+        "Prevotella": 0.0879,
+        "Bifidobacterium": 0.1526,
+        "Ruminococcus": 0.0482,
+        "Akkermansia": 0.2902,
+        "Lachnospiraceae": 0.1838,
+        "Other": 0.0157
+      }
+    },
+    {
+      "crew_id": "CM-01",
+      "phase": "in-flight",
+      "timestamp": "2026-01-20T12:00:00Z",
+      "sample_site": "saliva",
+      "shannon_diversity": 2.44,
+      "relative_abundance": {
+        "Streptococcus": 0.0921,
+        "Veillonella": 0.0385,
+        "Prevotella": 0.1763,
+        "Neisseria": 0.0321,
+        "Haemophilus": 0.1504,
+        "Actinomyces": 0.0785,
+        "Rothia": 0.1889,
+        "Other": 0.2431
+      }
+    },
+    {
+      "crew_id": "CM-01",
+      "phase": "in-flight",
+      "timestamp": "2026-01-20T12:00:00Z",
+      "sample_site": "skin",
+      "shannon_diversity": 3.32,
+      "relative_abundance": {
+        "Staphylococcus": 0.2368,
+        "Cutibacterium": 0.0203,
+        "Corynebacterium": 0.0777,
+        "Micrococcus": 0.2316,
+        "Streptococcus": 0.0455,
+        "Malassezia": 0.0208,
+        "Other": 0.2213,
+        "Other2": 0.1461
+      }
+    },
+    {
+      "crew_id": "CM-01",
+      "phase": "in-flight",
+      "timestamp": "2026-02-19T12:00:00Z",
+      "sample_site": "fecal",
+      "shannon_diversity": 3.51,
+      "relative_abundance": {
+        "Bacteroides": 0.1154,
+        "Faecalibacterium": 0.0972,
+        "Prevotella": 0.1243,
+        "Bifidobacterium": 0.1157,
+        "Ruminococcus": 0.0518,
+        "Akkermansia": 0.0902,
+        "Lachnospiraceae": 0.2688,
+        "Other": 0.1367
+      }
+    },
+    {
+      "crew_id": "CM-01",
+      "phase": "in-flight",
+      "timestamp": "2026-02-19T12:00:00Z",
+      "sample_site": "saliva",
+      "shannon_diversity": 2.66,
+      "relative_abundance": {
+        "Streptococcus": 0.0962,
+        "Veillonella": 0.073,
+        "Prevotella": 0.209,
+        "Neisseria": 0.0995,
+        "Haemophilus": 0.0742,
+        "Actinomyces": 0.1889,
+        "Rothia": 0.0887,
+        "Other": 0.1704
+      }
+    },
+    {
+      "crew_id": "CM-01",
+      "phase": "in-flight",
+      "timestamp": "2026-02-19T12:00:00Z",
+      "sample_site": "skin",
+      "shannon_diversity": 2.97,
+      "relative_abundance": {
+        "Staphylococcus": 0.2187,
+        "Cutibacterium": 0.1144,
+        "Corynebacterium": 0.0481,
+        "Micrococcus": 0.1146,
+        "Streptococcus": 0.0403,
+        "Malassezia": 0.0142,
+        "Other": 0.2597,
+        "Other2": 0.19
+      }
+    },
+    {
+      "crew_id": "CM-01",
+      "phase": "in-flight",
+      "timestamp": "2026-04-05T12:00:00Z",
+      "sample_site": "fecal",
+      "shannon_diversity": 3.82,
+      "relative_abundance": {
+        "Bacteroides": 0.3521,
+        "Faecalibacterium": 0.0408,
+        "Prevotella": 0.072,
+        "Bifidobacterium": 0.1206,
+        "Ruminococcus": 0.085,
+        "Akkermansia": 0.0328,
+        "Lachnospiraceae": 0.2679,
+        "Other": 0.0287
+      }
+    },
+    {
+      "crew_id": "CM-01",
+      "phase": "in-flight",
+      "timestamp": "2026-04-05T12:00:00Z",
+      "sample_site": "saliva",
+      "shannon_diversity": 2.38,
+      "relative_abundance": {
+        "Streptococcus": 0.483,
+        "Veillonella": 0.0426,
+        "Prevotella": 0.0265,
+        "Neisseria": 0.0319,
+        "Haemophilus": 0.0451,
+        "Actinomyces": 0.0265,
+        "Rothia": 0.24,
+        "Other": 0.1045
+      }
+    },
+    {
+      "crew_id": "CM-01",
+      "phase": "in-flight",
+      "timestamp": "2026-04-05T12:00:00Z",
+      "sample_site": "skin",
+      "shannon_diversity": 2.83,
+      "relative_abundance": {
+        "Staphylococcus": 0.1153,
+        "Cutibacterium": 0.0152,
+        "Corynebacterium": 0.0286,
+        "Micrococcus": 0.1636,
+        "Streptococcus": 0.0145,
+        "Malassezia": 0.26,
+        "Other": 0.1389,
+        "Other2": 0.2639
+      }
+    },
+    {
+      "crew_id": "CM-01",
+      "phase": "in-flight",
+      "timestamp": "2026-05-20T12:00:00Z",
+      "sample_site": "fecal",
+      "shannon_diversity": 3.79,
+      "relative_abundance": {
+        "Bacteroides": 0.1649,
+        "Faecalibacterium": 0.0598,
+        "Prevotella": 0.1018,
+        "Bifidobacterium": 0.04,
+        "Ruminococcus": 0.1339,
+        "Akkermansia": 0.1872,
+        "Lachnospiraceae": 0.1612,
+        "Other": 0.1512
+      }
+    },
+    {
+      "crew_id": "CM-01",
+      "phase": "in-flight",
+      "timestamp": "2026-05-20T12:00:00Z",
+      "sample_site": "saliva",
+      "shannon_diversity": 2.95,
+      "relative_abundance": {
+        "Streptococcus": 0.1433,
+        "Veillonella": 0.256,
+        "Prevotella": 0.3243,
+        "Neisseria": 0.0244,
+        "Haemophilus": 0.042,
+        "Actinomyces": 0.139,
+        "Rothia": 0.0262,
+        "Other": 0.0449
+      }
+    },
+    {
+      "crew_id": "CM-01",
+      "phase": "in-flight",
+      "timestamp": "2026-05-20T12:00:00Z",
+      "sample_site": "skin",
+      "shannon_diversity": 2.84,
+      "relative_abundance": {
+        "Staphylococcus": 0.058,
+        "Cutibacterium": 0.0255,
+        "Corynebacterium": 0.1408,
+        "Micrococcus": 0.1096,
+        "Streptococcus": 0.2771,
+        "Malassezia": 0.1058,
+        "Other": 0.1057,
+        "Other2": 0.1774
+      }
+    },
+    {
+      "crew_id": "CM-01",
+      "phase": "post-flight",
+      "timestamp": "2026-01-08T12:00:00Z",
+      "sample_site": "fecal",
+      "shannon_diversity": 3.01,
+      "relative_abundance": {
+        "Bacteroides": 0.1598,
+        "Faecalibacterium": 0.1721,
+        "Prevotella": 0.0736,
+        "Bifidobacterium": 0.0193,
+        "Ruminococcus": 0.2146,
+        "Akkermansia": 0.1116,
+        "Lachnospiraceae": 0.0965,
+        "Other": 0.1527
+      }
+    },
+    {
+      "crew_id": "CM-01",
+      "phase": "post-flight",
+      "timestamp": "2026-01-08T12:00:00Z",
+      "sample_site": "saliva",
+      "shannon_diversity": 2.42,
+      "relative_abundance": {
+        "Streptococcus": 0.0682,
+        "Veillonella": 0.0835,
+        "Prevotella": 0.1876,
+        "Neisseria": 0.176,
+        "Haemophilus": 0.0718,
+        "Actinomyces": 0.2125,
+        "Rothia": 0.1555,
+        "Other": 0.0448
+      }
+    },
+    {
+      "crew_id": "CM-01",
+      "phase": "post-flight",
+      "timestamp": "2026-01-08T12:00:00Z",
+      "sample_site": "skin",
+      "shannon_diversity": 2.38,
+      "relative_abundance": {
+        "Staphylococcus": 0.0705,
+        "Cutibacterium": 0.0492,
+        "Corynebacterium": 0.1586,
+        "Micrococcus": 0.087,
+        "Streptococcus": 0.1609,
+        "Malassezia": 0.2757,
+        "Other": 0.0819,
+        "Other2": 0.1162
+      }
+    },
+    {
+      "crew_id": "CM-02",
+      "phase": "pre-flight",
+      "timestamp": "2025-12-06T12:00:00Z",
+      "sample_site": "fecal",
+      "shannon_diversity": 3.61,
+      "relative_abundance": {
+        "Bacteroides": 0.4386,
+        "Faecalibacterium": 0.0226,
+        "Prevotella": 0.0231,
+        "Bifidobacterium": 0.0591,
+        "Ruminococcus": 0.0227,
+        "Akkermansia": 0.0308,
+        "Lachnospiraceae": 0.3805,
+        "Other": 0.0226
+      }
+    },
+    {
+      "crew_id": "CM-02",
+      "phase": "pre-flight",
+      "timestamp": "2025-12-06T12:00:00Z",
+      "sample_site": "saliva",
+      "shannon_diversity": 2.78,
+      "relative_abundance": {
+        "Streptococcus": 0.0338,
+        "Veillonella": 0.146,
+        "Prevotella": 0.2127,
+        "Neisseria": 0.1643,
+        "Haemophilus": 0.2025,
+        "Actinomyces": 0.0705,
+        "Rothia": 0.085,
+        "Other": 0.0853
+      }
+    },
+    {
+      "crew_id": "CM-02",
+      "phase": "pre-flight",
+      "timestamp": "2025-12-06T12:00:00Z",
+      "sample_site": "skin",
+      "shannon_diversity": 2.45,
+      "relative_abundance": {
+        "Staphylococcus": 0.0341,
+        "Cutibacterium": 0.1518,
+        "Corynebacterium": 0.0431,
+        "Micrococcus": 0.0697,
+        "Streptococcus": 0.4878,
+        "Malassezia": 0.0652,
+        "Other": 0.067,
+        "Other2": 0.0813
+      }
+    },
+    {
+      "crew_id": "CM-02",
+      "phase": "in-flight",
+      "timestamp": "2026-01-20T12:00:00Z",
+      "sample_site": "fecal",
+      "shannon_diversity": 3.23,
+      "relative_abundance": {
+        "Bacteroides": 0.0324,
+        "Faecalibacterium": 0.0186,
+        "Prevotella": 0.0517,
+        "Bifidobacterium": 0.0942,
+        "Ruminococcus": 0.096,
+        "Akkermansia": 0.2857,
+        "Lachnospiraceae": 0.1811,
+        "Other": 0.2402
+      }
+    },
+    {
+      "crew_id": "CM-02",
+      "phase": "in-flight",
+      "timestamp": "2026-01-20T12:00:00Z",
+      "sample_site": "saliva",
+      "shannon_diversity": 3.03,
+      "relative_abundance": {
+        "Streptococcus": 0.0185,
+        "Veillonella": 0.1449,
+        "Prevotella": 0.0161,
+        "Neisseria": 0.2204,
+        "Haemophilus": 0.0613,
+        "Actinomyces": 0.2063,
+        "Rothia": 0.2819,
+        "Other": 0.0507
+      }
+    },
+    {
+      "crew_id": "CM-02",
+      "phase": "in-flight",
+      "timestamp": "2026-01-20T12:00:00Z",
+      "sample_site": "skin",
+      "shannon_diversity": 2.58,
+      "relative_abundance": {
+        "Staphylococcus": 0.19,
+        "Cutibacterium": 0.0134,
+        "Corynebacterium": 0.1336,
+        "Micrococcus": 0.1264,
+        "Streptococcus": 0.1602,
+        "Malassezia": 0.1894,
+        "Other": 0.0938,
+        "Other2": 0.0933
+      }
+    },
+    {
+      "crew_id": "CM-02",
+      "phase": "in-flight",
+      "timestamp": "2026-02-19T12:00:00Z",
+      "sample_site": "fecal",
+      "shannon_diversity": 4.2,
+      "relative_abundance": {
+        "Bacteroides": 0.0244,
+        "Faecalibacterium": 0.1498,
+        "Prevotella": 0.07,
+        "Bifidobacterium": 0.1701,
+        "Ruminococcus": 0.0723,
+        "Akkermansia": 0.2474,
+        "Lachnospiraceae": 0.0339,
+        "Other": 0.2322
+      }
+    },
+    {
+      "crew_id": "CM-02",
+      "phase": "in-flight",
+      "timestamp": "2026-02-19T12:00:00Z",
+      "sample_site": "saliva",
+      "shannon_diversity": 2.79,
+      "relative_abundance": {
+        "Streptococcus": 0.2495,
+        "Veillonella": 0.1541,
+        "Prevotella": 0.0235,
+        "Neisseria": 0.0957,
+        "Haemophilus": 0.2704,
+        "Actinomyces": 0.0291,
+        "Rothia": 0.0659,
+        "Other": 0.1118
+      }
+    },
+    {
+      "crew_id": "CM-02",
+      "phase": "in-flight",
+      "timestamp": "2026-02-19T12:00:00Z",
+      "sample_site": "skin",
+      "shannon_diversity": 2.9,
+      "relative_abundance": {
+        "Staphylococcus": 0.2038,
+        "Cutibacterium": 0.1179,
+        "Corynebacterium": 0.04,
+        "Micrococcus": 0.0703,
+        "Streptococcus": 0.0804,
+        "Malassezia": 0.1807,
+        "Other": 0.2122,
+        "Other2": 0.0947
+      }
+    },
+    {
+      "crew_id": "CM-02",
+      "phase": "in-flight",
+      "timestamp": "2026-04-05T12:00:00Z",
+      "sample_site": "fecal",
+      "shannon_diversity": 3.69,
+      "relative_abundance": {
+        "Bacteroides": 0.1217,
+        "Faecalibacterium": 0.1179,
+        "Prevotella": 0.3375,
+        "Bifidobacterium": 0.105,
+        "Ruminococcus": 0.0351,
+        "Akkermansia": 0.0391,
+        "Lachnospiraceae": 0.0759,
+        "Other": 0.1677
+      }
+    },
+    {
+      "crew_id": "CM-02",
+      "phase": "in-flight",
+      "timestamp": "2026-04-05T12:00:00Z",
+      "sample_site": "saliva",
+      "shannon_diversity": 2.94,
+      "relative_abundance": {
+        "Streptococcus": 0.1715,
+        "Veillonella": 0.0282,
+        "Prevotella": 0.0993,
+        "Neisseria": 0.0824,
+        "Haemophilus": 0.0388,
+        "Actinomyces": 0.0758,
+        "Rothia": 0.2154,
+        "Other": 0.2886
+      }
+    },
+    {
+      "crew_id": "CM-02",
+      "phase": "in-flight",
+      "timestamp": "2026-04-05T12:00:00Z",
+      "sample_site": "skin",
+      "shannon_diversity": 3.04,
+      "relative_abundance": {
+        "Staphylococcus": 0.1957,
+        "Cutibacterium": 0.1875,
+        "Corynebacterium": 0.1183,
+        "Micrococcus": 0.0659,
+        "Streptococcus": 0.2441,
+        "Malassezia": 0.0282,
+        "Other": 0.1403,
+        "Other2": 0.0201
+      }
+    },
+    {
+      "crew_id": "CM-02",
+      "phase": "in-flight",
+      "timestamp": "2026-05-20T12:00:00Z",
+      "sample_site": "fecal",
+      "shannon_diversity": 3.1,
+      "relative_abundance": {
+        "Bacteroides": 0.2129,
+        "Faecalibacterium": 0.021,
+        "Prevotella": 0.2189,
+        "Bifidobacterium": 0.04,
+        "Ruminococcus": 0.1597,
+        "Akkermansia": 0.0263,
+        "Lachnospiraceae": 0.2724,
+        "Other": 0.0487
+      }
+    },
+    {
+      "crew_id": "CM-02",
+      "phase": "in-flight",
+      "timestamp": "2026-05-20T12:00:00Z",
+      "sample_site": "saliva",
+      "shannon_diversity": 3.25,
+      "relative_abundance": {
+        "Streptococcus": 0.0555,
+        "Veillonella": 0.1054,
+        "Prevotella": 0.0621,
+        "Neisseria": 0.2316,
+        "Haemophilus": 0.0368,
+        "Actinomyces": 0.1351,
+        "Rothia": 0.2376,
+        "Other": 0.1361
+      }
+    },
+    {
+      "crew_id": "CM-02",
+      "phase": "in-flight",
+      "timestamp": "2026-05-20T12:00:00Z",
+      "sample_site": "skin",
+      "shannon_diversity": 2.99,
+      "relative_abundance": {
+        "Staphylococcus": 0.1093,
+        "Cutibacterium": 0.2581,
+        "Corynebacterium": 0.133,
+        "Micrococcus": 0.1239,
+        "Streptococcus": 0.0479,
+        "Malassezia": 0.2173,
+        "Other": 0.0817,
+        "Other2": 0.0288
+      }
+    },
+    {
+      "crew_id": "CM-02",
+      "phase": "post-flight",
+      "timestamp": "2026-01-08T12:00:00Z",
+      "sample_site": "fecal",
+      "shannon_diversity": 3.47,
+      "relative_abundance": {
+        "Bacteroides": 0.1415,
+        "Faecalibacterium": 0.0327,
+        "Prevotella": 0.0704,
+        "Bifidobacterium": 0.2495,
+        "Ruminococcus": 0.0144,
+        "Akkermansia": 0.1285,
+        "Lachnospiraceae": 0.1295,
+        "Other": 0.2336
+      }
+    },
+    {
+      "crew_id": "CM-02",
+      "phase": "post-flight",
+      "timestamp": "2026-01-08T12:00:00Z",
+      "sample_site": "saliva",
+      "shannon_diversity": 3.08,
+      "relative_abundance": {
+        "Streptococcus": 0.0548,
+        "Veillonella": 0.0188,
+        "Prevotella": 0.0413,
+        "Neisseria": 0.2532,
+        "Haemophilus": 0.0608,
+        "Actinomyces": 0.308,
+        "Rothia": 0.0941,
+        "Other": 0.1688
+      }
+    },
+    {
+      "crew_id": "CM-02",
+      "phase": "post-flight",
+      "timestamp": "2026-01-08T12:00:00Z",
+      "sample_site": "skin",
+      "shannon_diversity": 2.6,
+      "relative_abundance": {
+        "Staphylococcus": 0.1191,
+        "Cutibacterium": 0.0169,
+        "Corynebacterium": 0.0262,
+        "Micrococcus": 0.2885,
+        "Streptococcus": 0.1068,
+        "Malassezia": 0.1634,
+        "Other": 0.0151,
+        "Other2": 0.2639
+      }
+    },
+    {
+      "crew_id": "CM-03",
+      "phase": "pre-flight",
+      "timestamp": "2025-12-06T12:00:00Z",
+      "sample_site": "fecal",
+      "shannon_diversity": 3.64,
+      "relative_abundance": {
+        "Bacteroides": 0.0482,
+        "Faecalibacterium": 0.0978,
+        "Prevotella": 0.2037,
+        "Bifidobacterium": 0.017,
+        "Ruminococcus": 0.1748,
+        "Akkermansia": 0.0594,
+        "Lachnospiraceae": 0.0477,
+        "Other": 0.3514
+      }
+    },
+    {
+      "crew_id": "CM-03",
+      "phase": "pre-flight",
+      "timestamp": "2025-12-06T12:00:00Z",
+      "sample_site": "saliva",
+      "shannon_diversity": 2.77,
+      "relative_abundance": {
+        "Streptococcus": 0.0121,
+        "Veillonella": 0.0262,
+        "Prevotella": 0.045,
+        "Neisseria": 0.2363,
+        "Haemophilus": 0.232,
+        "Actinomyces": 0.2118,
+        "Rothia": 0.214,
+        "Other": 0.0227
+      }
+    },
+    {
+      "crew_id": "CM-03",
+      "phase": "pre-flight",
+      "timestamp": "2025-12-06T12:00:00Z",
+      "sample_site": "skin",
+      "shannon_diversity": 2.46,
+      "relative_abundance": {
+        "Staphylococcus": 0.0524,
+        "Cutibacterium": 0.0641,
+        "Corynebacterium": 0.0216,
+        "Micrococcus": 0.1829,
+        "Streptococcus": 0.1008,
+        "Malassezia": 0.16,
+        "Other": 0.2547,
+        "Other2": 0.1636
+      }
+    },
+    {
+      "crew_id": "CM-03",
+      "phase": "in-flight",
+      "timestamp": "2026-01-20T12:00:00Z",
+      "sample_site": "fecal",
+      "shannon_diversity": 3.59,
+      "relative_abundance": {
+        "Bacteroides": 0.0929,
+        "Faecalibacterium": 0.0591,
+        "Prevotella": 0.1668,
+        "Bifidobacterium": 0.1009,
+        "Ruminococcus": 0.027,
+        "Akkermansia": 0.1906,
+        "Lachnospiraceae": 0.1553,
+        "Other": 0.2075
+      }
+    },
+    {
+      "crew_id": "CM-03",
+      "phase": "in-flight",
+      "timestamp": "2026-01-20T12:00:00Z",
+      "sample_site": "saliva",
+      "shannon_diversity": 2.58,
+      "relative_abundance": {
+        "Streptococcus": 0.0218,
+        "Veillonella": 0.0166,
+        "Prevotella": 0.1256,
+        "Neisseria": 0.2055,
+        "Haemophilus": 0.2102,
+        "Actinomyces": 0.0563,
+        "Rothia": 0.21,
+        "Other": 0.1541
+      }
+    },
+    {
+      "crew_id": "CM-03",
+      "phase": "in-flight",
+      "timestamp": "2026-01-20T12:00:00Z",
+      "sample_site": "skin",
+      "shannon_diversity": 2.48,
+      "relative_abundance": {
+        "Staphylococcus": 0.0376,
+        "Cutibacterium": 0.0274,
+        "Corynebacterium": 0.1677,
+        "Micrococcus": 0.2849,
+        "Streptococcus": 0.0421,
+        "Malassezia": 0.3789,
+        "Other": 0.0357,
+        "Other2": 0.0255
+      }
+    },
+    {
+      "crew_id": "CM-03",
+      "phase": "in-flight",
+      "timestamp": "2026-02-19T12:00:00Z",
+      "sample_site": "fecal",
+      "shannon_diversity": 3.51,
+      "relative_abundance": {
+        "Bacteroides": 0.0326,
+        "Faecalibacterium": 0.2145,
+        "Prevotella": 0.2096,
+        "Bifidobacterium": 0.0306,
+        "Ruminococcus": 0.1304,
+        "Akkermansia": 0.1561,
+        "Lachnospiraceae": 0.0981,
+        "Other": 0.1281
+      }
+    },
+    {
+      "crew_id": "CM-03",
+      "phase": "in-flight",
+      "timestamp": "2026-02-19T12:00:00Z",
+      "sample_site": "saliva",
+      "shannon_diversity": 2.96,
+      "relative_abundance": {
+        "Streptococcus": 0.023,
+        "Veillonella": 0.0173,
+        "Prevotella": 0.3499,
+        "Neisseria": 0.1474,
+        "Haemophilus": 0.1427,
+        "Actinomyces": 0.1455,
+        "Rothia": 0.1389,
+        "Other": 0.0354
+      }
+    },
+    {
+      "crew_id": "CM-03",
+      "phase": "in-flight",
+      "timestamp": "2026-02-19T12:00:00Z",
+      "sample_site": "skin",
+      "shannon_diversity": 2.54,
+      "relative_abundance": {
+        "Staphylococcus": 0.0209,
+        "Cutibacterium": 0.0232,
+        "Corynebacterium": 0.2714,
+        "Micrococcus": 0.028,
+        "Streptococcus": 0.3159,
+        "Malassezia": 0.1113,
+        "Other": 0.1946,
+        "Other2": 0.0346
+      }
+    },
+    {
+      "crew_id": "CM-03",
+      "phase": "in-flight",
+      "timestamp": "2026-04-05T12:00:00Z",
+      "sample_site": "fecal",
+      "shannon_diversity": 3.62,
+      "relative_abundance": {
+        "Bacteroides": 0.02,
+        "Faecalibacterium": 0.0263,
+        "Prevotella": 0.0565,
+        "Bifidobacterium": 0.2572,
+        "Ruminococcus": 0.2359,
+        "Akkermansia": 0.2479,
+        "Lachnospiraceae": 0.0259,
+        "Other": 0.1303
+      }
+    },
+    {
+      "crew_id": "CM-03",
+      "phase": "in-flight",
+      "timestamp": "2026-04-05T12:00:00Z",
+      "sample_site": "saliva",
+      "shannon_diversity": 3.04,
+      "relative_abundance": {
+        "Streptococcus": 0.0283,
+        "Veillonella": 0.0285,
+        "Prevotella": 0.0252,
+        "Neisseria": 0.2982,
+        "Haemophilus": 0.0754,
+        "Actinomyces": 0.1336,
+        "Rothia": 0.1623,
+        "Other": 0.2485
+      }
+    },
+    {
+      "crew_id": "CM-03",
+      "phase": "in-flight",
+      "timestamp": "2026-04-05T12:00:00Z",
+      "sample_site": "skin",
+      "shannon_diversity": 2.59,
+      "relative_abundance": {
+        "Staphylococcus": 0.1545,
+        "Cutibacterium": 0.0994,
+        "Corynebacterium": 0.1728,
+        "Micrococcus": 0.1347,
+        "Streptococcus": 0.0486,
+        "Malassezia": 0.2207,
+        "Other": 0.0893,
+        "Other2": 0.0799
+      }
+    },
+    {
+      "crew_id": "CM-03",
+      "phase": "in-flight",
+      "timestamp": "2026-05-20T12:00:00Z",
+      "sample_site": "fecal",
+      "shannon_diversity": 2.56,
+      "relative_abundance": {
+        "Bacteroides": 0.1474,
+        "Faecalibacterium": 0.1743,
+        "Prevotella": 0.0164,
+        "Bifidobacterium": 0.0198,
+        "Ruminococcus": 0.0827,
+        "Akkermansia": 0.2621,
+        "Lachnospiraceae": 0.2621,
+        "Other": 0.0353
+      }
+    },
+    {
+      "crew_id": "CM-03",
+      "phase": "in-flight",
+      "timestamp": "2026-05-20T12:00:00Z",
+      "sample_site": "saliva",
+      "shannon_diversity": 2.6,
+      "relative_abundance": {
+        "Streptococcus": 0.014,
+        "Veillonella": 0.0545,
+        "Prevotella": 0.173,
+        "Neisseria": 0.2658,
+        "Haemophilus": 0.0234,
+        "Actinomyces": 0.0662,
+        "Rothia": 0.2265,
+        "Other": 0.1765
+      }
+    },
+    {
+      "crew_id": "CM-03",
+      "phase": "in-flight",
+      "timestamp": "2026-05-20T12:00:00Z",
+      "sample_site": "skin",
+      "shannon_diversity": 3.1,
+      "relative_abundance": {
+        "Staphylococcus": 0.0391,
+        "Cutibacterium": 0.0231,
+        "Corynebacterium": 0.0406,
+        "Micrococcus": 0.2658,
+        "Streptococcus": 0.1563,
+        "Malassezia": 0.2575,
+        "Other": 0.0787,
+        "Other2": 0.1389
+      }
+    },
+    {
+      "crew_id": "CM-03",
+      "phase": "post-flight",
+      "timestamp": "2026-01-08T12:00:00Z",
+      "sample_site": "fecal",
+      "shannon_diversity": 3.59,
+      "relative_abundance": {
+        "Bacteroides": 0.0352,
+        "Faecalibacterium": 0.1679,
+        "Prevotella": 0.3633,
+        "Bifidobacterium": 0.149,
+        "Ruminococcus": 0.0874,
+        "Akkermansia": 0.0661,
+        "Lachnospiraceae": 0.0216,
+        "Other": 0.1094
+      }
+    },
+    {
+      "crew_id": "CM-03",
+      "phase": "post-flight",
+      "timestamp": "2026-01-08T12:00:00Z",
+      "sample_site": "saliva",
+      "shannon_diversity": 2.79,
+      "relative_abundance": {
+        "Streptococcus": 0.2217,
+        "Veillonella": 0.2213,
+        "Prevotella": 0.2152,
+        "Neisseria": 0.0151,
+        "Haemophilus": 0.0402,
+        "Actinomyces": 0.1222,
+        "Rothia": 0.1444,
+        "Other": 0.02
+      }
+    },
+    {
+      "crew_id": "CM-03",
+      "phase": "post-flight",
+      "timestamp": "2026-01-08T12:00:00Z",
+      "sample_site": "skin",
+      "shannon_diversity": 2.67,
+      "relative_abundance": {
+        "Staphylococcus": 0.1488,
+        "Cutibacterium": 0.1226,
+        "Corynebacterium": 0.0155,
+        "Micrococcus": 0.1492,
+        "Streptococcus": 0.1568,
+        "Malassezia": 0.2714,
+        "Other": 0.1151,
+        "Other2": 0.0205
+      }
+    },
+    {
+      "crew_id": "CM-04",
+      "phase": "pre-flight",
+      "timestamp": "2025-12-06T12:00:00Z",
+      "sample_site": "fecal",
+      "shannon_diversity": 3.41,
+      "relative_abundance": {
+        "Bacteroides": 0.1472,
+        "Faecalibacterium": 0.0217,
+        "Prevotella": 0.033,
+        "Bifidobacterium": 0.0677,
+        "Ruminococcus": 0.3376,
+        "Akkermansia": 0.3313,
+        "Lachnospiraceae": 0.0318,
+        "Other": 0.0296
+      }
+    },
+    {
+      "crew_id": "CM-04",
+      "phase": "pre-flight",
+      "timestamp": "2025-12-06T12:00:00Z",
+      "sample_site": "saliva",
+      "shannon_diversity": 2.7,
+      "relative_abundance": {
+        "Streptococcus": 0.0382,
+        "Veillonella": 0.1536,
+        "Prevotella": 0.2564,
+        "Neisseria": 0.0351,
+        "Haemophilus": 0.0218,
+        "Actinomyces": 0.2258,
+        "Rothia": 0.2561,
+        "Other": 0.0132
+      }
+    },
+    {
+      "crew_id": "CM-04",
+      "phase": "pre-flight",
+      "timestamp": "2025-12-06T12:00:00Z",
+      "sample_site": "skin",
+      "shannon_diversity": 2.62,
+      "relative_abundance": {
+        "Staphylococcus": 0.2275,
+        "Cutibacterium": 0.0179,
+        "Corynebacterium": 0.1065,
+        "Micrococcus": 0.1069,
+        "Streptococcus": 0.2512,
+        "Malassezia": 0.1502,
+        "Other": 0.105,
+        "Other2": 0.0347
+      }
+    },
+    {
+      "crew_id": "CM-04",
+      "phase": "in-flight",
+      "timestamp": "2026-01-20T12:00:00Z",
+      "sample_site": "fecal",
+      "shannon_diversity": 3.12,
+      "relative_abundance": {
+        "Bacteroides": 0.0839,
+        "Faecalibacterium": 0.1408,
+        "Prevotella": 0.0171,
+        "Bifidobacterium": 0.2833,
+        "Ruminococcus": 0.0436,
+        "Akkermansia": 0.1523,
+        "Lachnospiraceae": 0.2472,
+        "Other": 0.0319
+      }
+    },
+    {
+      "crew_id": "CM-04",
+      "phase": "in-flight",
+      "timestamp": "2026-01-20T12:00:00Z",
+      "sample_site": "saliva",
+      "shannon_diversity": 2.92,
+      "relative_abundance": {
+        "Streptococcus": 0.0606,
+        "Veillonella": 0.0382,
+        "Prevotella": 0.1237,
+        "Neisseria": 0.0512,
+        "Haemophilus": 0.0368,
+        "Actinomyces": 0.2766,
+        "Rothia": 0.298,
+        "Other": 0.1149
+      }
+    },
+    {
+      "crew_id": "CM-04",
+      "phase": "in-flight",
+      "timestamp": "2026-01-20T12:00:00Z",
+      "sample_site": "skin",
+      "shannon_diversity": 2.88,
+      "relative_abundance": {
+        "Staphylococcus": 0.2595,
+        "Cutibacterium": 0.019,
+        "Corynebacterium": 0.0327,
+        "Micrococcus": 0.1218,
+        "Streptococcus": 0.135,
+        "Malassezia": 0.0944,
+        "Other": 0.0915,
+        "Other2": 0.246
+      }
+    },
+    {
+      "crew_id": "CM-04",
+      "phase": "in-flight",
+      "timestamp": "2026-02-19T12:00:00Z",
+      "sample_site": "fecal",
+      "shannon_diversity": 3.46,
+      "relative_abundance": {
+        "Bacteroides": 0.1592,
+        "Faecalibacterium": 0.0468,
+        "Prevotella": 0.0134,
+        "Bifidobacterium": 0.1668,
+        "Ruminococcus": 0.0401,
+        "Akkermansia": 0.2227,
+        "Lachnospiraceae": 0.1882,
+        "Other": 0.1628
+      }
+    },
+    {
+      "crew_id": "CM-04",
+      "phase": "in-flight",
+      "timestamp": "2026-02-19T12:00:00Z",
+      "sample_site": "saliva",
+      "shannon_diversity": 2.71,
+      "relative_abundance": {
+        "Streptococcus": 0.1556,
+        "Veillonella": 0.0372,
+        "Prevotella": 0.4517,
+        "Neisseria": 0.0907,
+        "Haemophilus": 0.1267,
+        "Actinomyces": 0.0539,
+        "Rothia": 0.0537,
+        "Other": 0.0306
+      }
+    },
+    {
+      "crew_id": "CM-04",
+      "phase": "in-flight",
+      "timestamp": "2026-02-19T12:00:00Z",
+      "sample_site": "skin",
+      "shannon_diversity": 2.28,
+      "relative_abundance": {
+        "Staphylococcus": 0.0945,
+        "Cutibacterium": 0.2533,
+        "Corynebacterium": 0.0828,
+        "Micrococcus": 0.0145,
+        "Streptococcus": 0.1442,
+        "Malassezia": 0.1044,
+        "Other": 0.1685,
+        "Other2": 0.1379
+      }
+    },
+    {
+      "crew_id": "CM-04",
+      "phase": "in-flight",
+      "timestamp": "2026-04-05T12:00:00Z",
+      "sample_site": "fecal",
+      "shannon_diversity": 3.66,
+      "relative_abundance": {
+        "Bacteroides": 0.034,
+        "Faecalibacterium": 0.1104,
+        "Prevotella": 0.1271,
+        "Bifidobacterium": 0.2637,
+        "Ruminococcus": 0.1239,
+        "Akkermansia": 0.0859,
+        "Lachnospiraceae": 0.1686,
+        "Other": 0.0863
+      }
+    },
+    {
+      "crew_id": "CM-04",
+      "phase": "in-flight",
+      "timestamp": "2026-04-05T12:00:00Z",
+      "sample_site": "saliva",
+      "shannon_diversity": 2.78,
+      "relative_abundance": {
+        "Streptococcus": 0.2445,
+        "Veillonella": 0.289,
+        "Prevotella": 0.0362,
+        "Neisseria": 0.0467,
+        "Haemophilus": 0.0304,
+        "Actinomyces": 0.0223,
+        "Rothia": 0.0926,
+        "Other": 0.2382
+      }
+    },
+    {
+      "crew_id": "CM-04",
+      "phase": "in-flight",
+      "timestamp": "2026-04-05T12:00:00Z",
+      "sample_site": "skin",
+      "shannon_diversity": 2.6,
+      "relative_abundance": {
+        "Staphylococcus": 0.1614,
+        "Cutibacterium": 0.0835,
+        "Corynebacterium": 0.0196,
+        "Micrococcus": 0.0649,
+        "Streptococcus": 0.2634,
+        "Malassezia": 0.0358,
+        "Other": 0.1733,
+        "Other2": 0.1981
+      }
+    },
+    {
+      "crew_id": "CM-04",
+      "phase": "in-flight",
+      "timestamp": "2026-05-20T12:00:00Z",
+      "sample_site": "fecal",
+      "shannon_diversity": 2.71,
+      "relative_abundance": {
+        "Bacteroides": 0.0663,
+        "Faecalibacterium": 0.0315,
+        "Prevotella": 0.081,
+        "Bifidobacterium": 0.2036,
+        "Ruminococcus": 0.3687,
+        "Akkermansia": 0.0364,
+        "Lachnospiraceae": 0.093,
+        "Other": 0.1195
+      }
+    },
+    {
+      "crew_id": "CM-04",
+      "phase": "in-flight",
+      "timestamp": "2026-05-20T12:00:00Z",
+      "sample_site": "saliva",
+      "shannon_diversity": 2.48,
+      "relative_abundance": {
+        "Streptococcus": 0.2356,
+        "Veillonella": 0.0278,
+        "Prevotella": 0.2366,
+        "Neisseria": 0.2859,
+        "Haemophilus": 0.0887,
+        "Actinomyces": 0.0873,
+        "Rothia": 0.0163,
+        "Other": 0.0217
+      }
+    },
+    {
+      "crew_id": "CM-04",
+      "phase": "in-flight",
+      "timestamp": "2026-05-20T12:00:00Z",
+      "sample_site": "skin",
+      "shannon_diversity": 2.42,
+      "relative_abundance": {
+        "Staphylococcus": 0.0189,
+        "Cutibacterium": 0.0667,
+        "Corynebacterium": 0.2033,
+        "Micrococcus": 0.2171,
+        "Streptococcus": 0.0672,
+        "Malassezia": 0.1815,
+        "Other": 0.2319,
+        "Other2": 0.0135
+      }
+    },
+    {
+      "crew_id": "CM-04",
+      "phase": "post-flight",
+      "timestamp": "2026-01-08T12:00:00Z",
+      "sample_site": "fecal",
+      "shannon_diversity": 3.35,
+      "relative_abundance": {
+        "Bacteroides": 0.1651,
+        "Faecalibacterium": 0.116,
+        "Prevotella": 0.0163,
+        "Bifidobacterium": 0.1241,
+        "Ruminococcus": 0.0518,
+        "Akkermansia": 0.2879,
+        "Lachnospiraceae": 0.2212,
+        "Other": 0.0176
+      }
+    },
+    {
+      "crew_id": "CM-04",
+      "phase": "post-flight",
+      "timestamp": "2026-01-08T12:00:00Z",
+      "sample_site": "saliva",
+      "shannon_diversity": 3.19,
+      "relative_abundance": {
+        "Streptococcus": 0.0344,
+        "Veillonella": 0.3604,
+        "Prevotella": 0.0786,
+        "Neisseria": 0.0909,
+        "Haemophilus": 0.1597,
+        "Actinomyces": 0.0369,
+        "Rothia": 0.1985,
+        "Other": 0.0405
+      }
+    },
+    {
+      "crew_id": "CM-04",
+      "phase": "post-flight",
+      "timestamp": "2026-01-08T12:00:00Z",
+      "sample_site": "skin",
+      "shannon_diversity": 3.15,
+      "relative_abundance": {
+        "Staphylococcus": 0.0425,
+        "Cutibacterium": 0.2304,
+        "Corynebacterium": 0.1624,
+        "Micrococcus": 0.0363,
+        "Streptococcus": 0.0169,
+        "Malassezia": 0.2401,
+        "Other": 0.0551,
+        "Other2": 0.2163
+      }
+    }
+  ]
+}

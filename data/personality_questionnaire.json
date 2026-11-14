@@ -1,0 +1,58 @@
+{
+  "measurement": "personality_questionnaire",
+  "scale": "percentile 1-99",
+  "data": [
+    {
+      "crew_id": "CM-01",
+      "timestamp": "2025-10-07T12:00:00Z",
+      "instrument": "IPIP-NEO",
+      "phase": "pre-flight",
+      "scores_percentile": {
+        "openness": 60,
+        "conscientiousness": 89,
+        "extraversion": 60,
+        "agreeableness": 75,
+        "neuroticism": 33
+      }
+    },
+    {
+      "crew_id": "CM-02",
+      "timestamp": "2025-10-06T12:00:00Z",
+      "instrument": "IPIP-NEO",
+      "phase": "pre-flight",
+      "scores_percentile": {
+        "openness": 67,
+        "conscientiousness": 87,
+        "extraversion": 63,
+        "agreeableness": 73,
+        "neuroticism": 1
+      }
+    },
+    {
+      "crew_id": "CM-03",
+      "timestamp": "2025-10-05T12:00:00Z",
+      "instrument": "IPIP-NEO",
+      "phase": "pre-flight",
+      "scores_percentile": {
+        "openness": 71,
+        "conscientiousness": 84,
+        "extraversion": 31,
+        "agreeableness": 68,
+        "neuroticism": 21
+      }
+    },
+    {
+      "crew_id": "CM-04",
+      "timestamp": "2025-10-04T12:00:00Z",
+      "instrument": "IPIP-NEO",
+      "phase": "pre-flight",
+      "scores_percentile": {
+        "openness": 75,
+        "conscientiousness": 76,
+        "extraversion": 50,
+        "agreeableness": 79,
+        "neuroticism": 23
+      }
+    }
+  ]
+}
