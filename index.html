@@ -1,0 +1,127 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="dashboard">
+ 
+    <!-- Tasks (left column) -->
+    <section class="tasks" aria-labelledby="tasks-title">
+      <h2 id="tasks-title">Tasks</h2>
+ 
+      <article class="panel">
+        <h3>Today</h3>
+        <ul class="checklist">
+          <li><label><input type="checkbox"> Review draft proposal</label></li>
+          <li><label><input type="checkbox"> Reply to vendor quote</label></li>
+          <li><label><input type="checkbox"> Prep Thursday standup</label></li>
+        </ul>
+      </article>
+ 
+      <article class="panel">
+        <h3>This week</h3>
+        <ul class="checklist">
+          <li><label><input type="checkbox"> Update onboarding guide</label></li>
+          <li><label><input type="checkbox"> Approve Q4 budget lines</label></li>
+          <li><label><input type="checkbox"> Book team offsite venue</label></li>
+        </ul>
+      </article>
+ 
+      <article class="panel">
+        <h3>Waiting on others</h3>
+        <ul class="checklist">
+          <li><label><input type="checkbox"> Legal sign-off on contract</label></li>
+          <li><label><input type="checkbox"> Design review comments</label></li>
+          <li><label><input type="checkbox"> Access request from IT</label></li>
+        </ul>
+      </article>
+    </section>
+ 
+    <!-- Center figure -->
+    <section class="hero" aria-label="Welcome">
+      <svg class="figure" viewBox="0 0 300 460" role="img" aria-label="Illustration of a person standing in the light">
+        <g class="rays">
+          <path d="M60 110 L38 98 M80 70 L66 48 M150 52 L150 26 M222 70 L236 48 M244 112 L268 100"/>
+          <path d="M40 200 L14 194 M262 200 L288 194 M34 300 L8 304 M268 300 L292 304"/>
+          <path d="M52 400 L30 414 M252 400 L274 414"/>
+        </g>
+        <!-- hood and head -->
+        <path class="body" d="M150 70 C112 70 98 104 100 138 C102 160 108 172 112 182 C84 194 70 222 68 262 L62 340 L82 346 L88 290 L96 420 L132 440 L142 330 L158 330 L168 440 L204 420 L212 290 L218 346 L238 340 L232 262 C230 222 216 194 188 182 C192 172 198 160 200 138 C202 104 188 70 150 70 Z"/>
+        <path class="seam" d="M150 190 L150 330"/>
+      </svg>
+      <div class="badge" aria-hidden="true">
+        <svg viewBox="0 0 48 48"><path d="M24 8 L40 38 H8 Z M24 20 L30 32 H18 Z" fill-rule="evenodd"/></svg>
+      </div>
+    </section>
+ 
+    <!-- Reports (right column) -->
+    <section class="reports" aria-labelledby="reports-title">
+      <h2 id="reports-title">Reports</h2>
+ 
+      <div class="rail">
+        <figure class="chart">
+          <svg viewBox="0 0 200 80" preserveAspectRatio="none" role="img" aria-label="Revenue, trending up">
+            <path class="fill" d="M0 70 L30 58 L60 62 L90 34 L120 44 L150 22 L180 30 L200 20 L200 80 L0 80 Z"/>
+            <polyline class="line" points="0,70 30,58 60,62 90,34 120,44 150,22 180,30 200,20"/>
+          </svg>
+          <figcaption>Revenue</figcaption>
+        </figure>
+ 
+        <figure class="chart">
+          <svg viewBox="0 0 200 80" preserveAspectRatio="none" role="img" aria-label="Orders by region, bar chart">
+            <g class="bars">
+              <rect x="10"  y="30" width="22" height="50"/>
+              <rect x="44"  y="46" width="22" height="34"/>
+              <rect x="78"  y="18" width="22" height="62"/>
+              <rect x="112" y="40" width="22" height="40"/>
+              <rect x="146" y="10" width="22" height="70"/>
+            </g>
+          </svg>
+          <figcaption>Orders by region</figcaption>
+        </figure>
+ 
+        <figure class="chart">
+          <svg viewBox="0 0 200 80" preserveAspectRatio="none" role="img" aria-label="Active users, fluctuating">
+            <path class="fill" d="M0 60 L25 40 L50 50 L75 24 L100 38 L125 20 L150 46 L175 34 L200 44 L200 80 L0 80 Z"/>
+            <polyline class="line" points="0,60 25,40 50,50 75,24 100,38 125,20 150,46 175,34 200,44"/>
+          </svg>
+          <figcaption>Active users</figcaption>
+        </figure>
+ 
+        <figure class="chart">
+          <svg viewBox="0 0 200 80" preserveAspectRatio="none" role="img" aria-label="Support backlog, trending down">
+            <path class="fill" d="M0 14 L30 26 L60 22 L90 44 L120 40 L150 58 L180 56 L200 66 L200 80 L0 80 Z"/>
+            <polyline class="line" points="0,14 30,26 60,22 90,44 120,40 150,58 180,56 200,66"/>
+          </svg>
+          <figcaption>Support backlog</figcaption>
+        </figure>
+      </div>
+    </section>
+ 
+    <!-- Quick links (full-width bottom bar) -->
+    <nav class="quick-links" aria-labelledby="links-title">
+      <h2 id="links-title">Quick Links</h2>
+      <ul>
+        <li><a href="#">Calendar</a></li>
+        <li><a href="#">Inbox</a></li>
+        <li><a href="#">Shared drive</a></li>
+        <li><a href="#">Team directory</a></li>
+        <li><a href="#">Expenses</a></li>
+        <li><a href="#">Time off</a></li>
+        <li><a href="#">IT help</a></li>
+        <li><a href="#">Company news</a></li>
+      </ul>
+    </nav>
+ 
+  </main>
+</body>
+</html>
+ 
