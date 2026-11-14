@@ -16,8 +16,8 @@
     }
 
     /* ---- Switching views ----
-       Normal: show the dashboard, hide the task list.
-       When the body has the class "show-tasks": hide the dashboard, show the list. */
+       Normal: show the dashboard, hide the task view.
+       When the body has the class "show-tasks": hide the dashboard, show the task view. */
     body.show-tasks .dashboard { display: none; }
     body:not(.show-tasks) .task-view { display: none; }
 
@@ -28,30 +28,65 @@
     }
     .task-link:hover { text-decoration: underline; }
 
-    /* ---- Task list view ---- */
+    /* ---- Crossing off: checked tasks get a line through them, everywhere ---- */
+    li:has(input:checked) .task-link,
+    label:has(input:checked) {
+      text-decoration: line-through;
+      color: #78ff0a;
+    }
+
+    /* ---- Task view (list + calendar) ---- */
     .task-view {
       font-family: "Schibsted Grotesk", sans-serif;
-      max-width: 560px;
+      max-width: 900px;
       margin: 0 auto;
       padding: 32px 16px;
+      color: #1c1917;
     }
-    .back-btn {
+    .back-btn,
+    .cal-nav button {
       font: inherit;
       font-size: 14px;
       padding: 8px 14px;
       border: 1px solid #d6d3d1;
       border-radius: 8px;
       background: #fff;
+      color: inherit;
       cursor: pointer;
     }
-    .back-btn:hover { background: #f5f5f4; }
-    .task-view h1 { margin: 16px 0; }
+    .back-btn:hover,
+    .cal-nav button:hover { background: #f5f5f4; }
+    .task-view h1 { margin: 16px 0 12px; }
+
+    /* Tabs to switch between List and Calendar */
+    .tabs {
+      display: flex;
+      gap: 4px;
+      border-bottom: 1px solid #e7e5e4;
+      margin-bottom: 16px;
+    }
+    .tab {
+      font: inherit;
+      padding: 8px 16px;
+      border: none;
+      border-bottom: 2px solid transparent;
+      background: none;
+      color: #78716c;
+      cursor: pointer;
+      margin-bottom: -1px;
+    }
+    .tab.active {
+      color: #1c1917;
+      border-bottom-color: #1c1917;
+      font-weight: 500;
+    }
 
     /* One combined list of every task, in a box you scroll inside */
     .task-list {
       list-style: none;
       margin: 0;
       padding: 0;
+      max-width: 560px;
       max-height: 320px;         /* about 6 tasks tall, so the rest scroll */
       overflow-y: scroll;        /* always shows the scroll bar */
       background: #fff;
@@ -80,13 +115,64 @@
 
     /* Highlight the task you clicked */
     .task-list li.selected { background: #fef9c3; }
+
+    /* ---- Calendar ---- */
+    .cal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .cal-header h2 { margin: 0; font-size: 20px; }
+    .cal-nav { display: flex; gap: 6px; }
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);  /* 7 days in a week */
+      gap: 4px;
+    }
+    .cal-weekday {
+      font-size: 12px;
+      color: #78716c;
+      text-align: center;
+      padding: 4px 0;
+    }
+    .cal-day {
+      min-height: 90px;
+      min-width: 0;
+      background: #fff;
+      border: 1px solid #e7e5e4;
+      border-radius: 8px;
+      padding: 6px;
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .cal-day.empty {
+      background: transparent;
+      border-color: transparent;
+    }
+    .cal-day.today { border: 2px solid #1c1917; }
+    .cal-date { font-weight: 500; }
+    .cal-task {
+      display: flex;
+      align-items: flex-start;
+      gap: 4px;
+      background: #f5f5f4;
+      border-radius: 4px;
+      padding: 3px 4px;
+      line-height: 1.3;
+      cursor: pointer;
+      overflow-wrap: anywhere;
+    }
+    .cal-task input { margin: 1px 0 0; flex-shrink: 0; }
   </style>
 </head>
 <body>
   <main class="dashboard">
 
     <!-- Tasks (left column) -->
-    <!-- Clicking a task's text switches to the list view; clicking the box still checks it off -->
+    <!-- Clicking a task's text switches to the task view; clicking the box still checks it off -->
     <section class="tasks" aria-labelledby="tasks-title">
       <h2 id="tasks-title">Tasks</h2>
 
@@ -197,22 +283,44 @@
 
   </main>
 
-  <!-- ===== Task list view (hidden until a task is clicked) ===== -->
+  <!-- ===== Task view (hidden until a task is clicked) ===== -->
   <section class="task-view" aria-labelledby="all-tasks-title">
+    <!-- Back button sits above the tabs, so it works from both List and Calendar -->
     <button type="button" class="back-btn" id="back-btn">&larr; Back to dashboard</button>
     <h1 id="all-tasks-title">All Tasks</h1>
 
-    <ul class="task-list">
-      <li data-task="review-draft"><label><input type="checkbox" data-task="review-draft"> Review draft proposal</label><span class="tag">Today</span></li>
-      <li data-task="vendor-quote"><label><input type="checkbox" data-task="vendor-quote"> Reply to vendor quote</label><span class="tag">Today</span></li>
-      <li data-task="standup"><label><input type="checkbox" data-task="standup"> Prep Thursday standup</label><span class="tag">Today</span></li>
-      <li data-task="onboarding"><label><input type="checkbox" data-task="onboarding"> Update onboarding guide</label><span class="tag">This week</span></li>
-      <li data-task="q4-budget"><label><input type="checkbox" data-task="q4-budget"> Approve Q4 budget lines</label><span class="tag">This week</span></li>
-      <li data-task="offsite"><label><input type="checkbox" data-task="offsite"> Book team offsite venue</label><span class="tag">This week</span></li>
-      <li data-task="legal"><label><input type="checkbox" data-task="legal"> Legal sign-off on contract</label><span class="tag">Waiting on others</span></li>
-      <li data-task="design-review"><label><input type="checkbox" data-task="design-review"> Design review comments</label><span class="tag">Waiting on others</span></li>
-      <li data-task="it-access"><label><input type="checkbox" data-task="it-access"> Access request from IT</label><span class="tag">Waiting on others</span></li>
-    </ul>
+    <!-- Tabs -->
+    <div class="tabs" role="tablist">
+      <button type="button" class="tab active" id="tab-list" role="tab" aria-selected="true">List</button>
+      <button type="button" class="tab" id="tab-calendar" role="tab" aria-selected="false">Calendar</button>
+    </div>
+
+    <!-- List tab -->
+    <div id="list-panel" role="tabpanel">
+      <ul class="task-list">
+        <li data-task="review-draft"><label><input type="checkbox" data-task="review-draft"> Review draft proposal</label><span class="tag">Today</span></li>
+        <li data-task="vendor-quote"><label><input type="checkbox" data-task="vendor-quote"> Reply to vendor quote</label><span class="tag">Today</span></li>
+        <li data-task="standup"><label><input type="checkbox" data-task="standup"> Prep Thursday standup</label><span class="tag">Today</span></li>
+        <li data-task="onboarding"><label><input type="checkbox" data-task="onboarding"> Update onboarding guide</label><span class="tag">This week</span></li>
+        <li data-task="q4-budget"><label><input type="checkbox" data-task="q4-budget"> Approve Q4 budget lines</label><span class="tag">This week</span></li>
+        <li data-task="offsite"><label><input type="checkbox" data-task="offsite"> Book team offsite venue</label><span class="tag">This week</span></li>
+        <li data-task="legal"><label><input type="checkbox" data-task="legal"> Legal sign-off on contract</label><span class="tag">Waiting on others</span></li>
+        <li data-task="design-review"><label><input type="checkbox" data-task="design-review"> Design review comments</label><span class="tag">Waiting on others</span></li>
+        <li data-task="it-access"><label><input type="checkbox" data-task="it-access"> Access request from IT</label><span class="tag">Waiting on others</span></li>
+      </ul>
+    </div>
+
+    <!-- Calendar tab (filled in by the script below) -->
+    <div id="calendar-panel" role="tabpanel" hidden>
+      <div class="cal-header">
+        <h2 id="cal-title">Month</h2>
+        <div class="cal-nav">
+          <button type="button" id="cal-prev" aria-label="Previous month">&larr;</button>
+          <button type="button" id="cal-next" aria-label="Next month">&rarr;</button>
+        </div>
+      </div>
+      <div class="cal-grid" id="cal-grid"></div>
+    </div>
   </section>
 
   <script>
@@ -228,11 +336,39 @@
     document.body.classList.toggle("radiation-high", radiationTooHigh);
 
 
-    // ---- Switching between the dashboard and the task list ----
+    // ---- Due dates for the calendar ----
+    // PLACEHOLDER DUE DATES: how many days from today each task is due.
+    // 0 = today, 1 = tomorrow, and so on. Change these when real dates are known.
+    const DUE_IN_DAYS = {
+      "review-draft": 0,
+      "vendor-quote": 0,
+      "standup": 0,
+      "onboarding": 1,
+      "q4-budget": 2,
+      "offsite": 3,
+      "legal": 4,
+      "design-review": 6,
+      "it-access": 8
+    };
 
-    // Show the list and highlight the task that was clicked
+    // Build the calendar's task info from the list, so names match
+    const today = new Date();
+    const tasks = Array.from(document.querySelectorAll(".task-list li")).map(function (item) {
+      const id = item.dataset.task;
+      return {
+        id: id,
+        name: item.querySelector("label").textContent.trim(),
+        due: new Date(today.getFullYear(), today.getMonth(), today.getDate() + (DUE_IN_DAYS[id] || 0))
+      };
+    });
+
+
+    // ---- Switching between the dashboard and the task view ----
+
+    // Show the task view (List tab) and highlight the task that was clicked
     function showTaskList(taskId) {
       document.body.classList.add("show-tasks");
+      showTab("list");
       window.scrollTo(0, 0);
 
       document.querySelectorAll(".task-list li").forEach(function (item) {
@@ -250,7 +386,7 @@
       window.scrollTo(0, 0);
     }
 
-    // Clicking a task's text on the dashboard opens the list
+    // Clicking a task's text on the dashboard opens the task view
     document.querySelectorAll(".task-link").forEach(function (link) {
       link.addEventListener("click", function (event) {
         event.preventDefault();  // stop the "#" link from jumping the page
@@ -262,13 +398,113 @@
     document.getElementById("back-btn").addEventListener("click", showDashboard);
 
 
-    // ---- Keep checkboxes matched in both views ----
-    // Checking a task in one view checks the same task in the other view.
-    document.querySelectorAll('input[type="checkbox"][data-task]').forEach(function (box) {
-      box.addEventListener("change", function () {
-        document.querySelectorAll('input[data-task="' + box.dataset.task + '"]').forEach(function (other) {
-          other.checked = box.checked;
+    // ---- Tabs: List or Calendar ----
+    function showTab(name) {
+      const isList = name === "list";
+      document.getElementById("list-panel").hidden = !isList;
+      document.getElementById("calendar-panel").hidden = isList;
+
+      const listTab = document.getElementById("tab-list");
+      const calTab = document.getElementById("tab-calendar");
+      listTab.classList.toggle("active", isList);
+      calTab.classList.toggle("active", !isList);
+      listTab.setAttribute("aria-selected", isList);
+      calTab.setAttribute("aria-selected", !isList);
+
+      if (!isList) renderCalendar();
+    }
+
+    document.getElementById("tab-list").addEventListener("click", function () { showTab("list"); });
+    document.getElementById("tab-calendar").addEventListener("click", function () { showTab("calendar"); });
+
+
+    // ---- Calendar ----
+    // The month being shown (starts on the current month)
+    const shownMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+
+    // Is this task checked off? (the list's checkbox is the record)
+    function isDone(taskId) {
+      return document.querySelector('.task-list input[data-task="' + taskId + '"]').checked;
+    }
+
+    function renderCalendar() {
+      const year = shownMonth.getFullYear();
+      const month = shownMonth.getMonth();
+      document.getElementById("cal-title").textContent =
+        shownMonth.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+
+      const grid = document.getElementById("cal-grid");
+      grid.innerHTML = "";
+
+      // Day names across the top
+      ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].forEach(function (dayName) {
+        const el = document.createElement("div");
+        el.className = "cal-weekday";
+        el.textContent = dayName;
+        grid.appendChild(el);
+      });
+
+      // Blank boxes before the 1st, so the 1st lands on the right weekday
+      const firstWeekday = new Date(year, month, 1).getDay();
+      for (let i = 0; i < firstWeekday; i++) {
+        const blank = document.createElement("div");
+        blank.className = "cal-day empty";
+        grid.appendChild(blank);
+      }
+
+      // One box per day of the month
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      for (let day = 1; day <= daysInMonth; day++) {
+        const cell = document.createElement("div");
+        cell.className = "cal-day";
+        if (year === today.getFullYear() && month === today.getMonth() && day === today.getDate()) {
+          cell.classList.add("today");
+        }
+
+        const dateNum = document.createElement("div");
+        dateNum.className = "cal-date";
+        dateNum.textContent = day;
+        cell.appendChild(dateNum);
+
+        // Tasks due on this day, each with a checkbox to cross it off
+        tasks.forEach(function (task) {
+          if (task.due.getFullYear() === year && task.due.getMonth() === month && task.due.getDate() === day) {
+            const label = document.createElement("label");
+            label.className = "cal-task";
+
+            const box = document.createElement("input");
+            box.type = "checkbox";
+            box.dataset.task = task.id;
+            box.checked = isDone(task.id);
+
+            label.appendChild(box);
+            label.appendChild(document.createTextNode(task.name));
+            cell.appendChild(label);
+          }
         });
+
+        grid.appendChild(cell);
+      }
+    }
+
+    // Arrows to move between months
+    document.getElementById("cal-prev").addEventListener("click", function () {
+      shownMonth.setMonth(shownMonth.getMonth() - 1);
+      renderCalendar();
+    });
+    document.getElementById("cal-next").addEventListener("click", function () {
+      shownMonth.setMonth(shownMonth.getMonth() + 1);
+      renderCalendar();
+    });
+
+
+    // ---- Keep checkboxes matched in every view ----
+    // Checking a task anywhere (dashboard, list or calendar) checks it everywhere.
+    document.addEventListener("change", function (event) {
+      const box = event.target;
+      if (!box.matches('input[type="checkbox"][data-task]')) return;
+      document.querySelectorAll('input[data-task="' + box.dataset.task + '"]').forEach(function (other) {
+        other.checked = box.checked;
       });
     });
   </script>
