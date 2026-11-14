@@ -1,15 +1,20 @@
 
 :root {
-  --paper: #e8edf1;
-  --panel: #f7f9fb;
-  --ink: #1c2b3a;
-  --muted: #5d6e7e;
+  --paper: #000000;
+  --panel: #000000;
+  --ink: #78ff0a;
+  --muted: #78ff0a;
   --line: #b9c5d0;
   --teal: #0f7c7a;
-  --teal-soft: rgba(15, 124, 122, 0.14);
+  --chartlines: #04ea00f2;
+  --teal-soft: rgba(12, 255, 251, 0.781);
+  --chartfill: rgba(67, 179, 113, 0.45);
+  --boxshadow: rgba(13, 255, 0, 0.591);
+  --bodyshadow: rgba(241, 241, 241, 0.781);
   --amber: #e0a030;
   --radius: 10px;
   --gap: 24px;
+  --body: #93a784f1;
 }
  
 @media (prefers-color-scheme: dark) {
@@ -31,7 +36,7 @@ body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font-family: "Schibsted Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: "Courier New", system-ui, -apple-system, "Segoe UI", monospace;
   line-height: 1.5;
 }
  
@@ -70,6 +75,7 @@ h3 { font-size: 1rem; }
   border: 1.5px solid var(--ink);
   border-radius: var(--radius);
   padding: 18px 20px;
+  filter: drop-shadow(0 0 7px var(--boxshadow));
 }
  
 .checklist {
@@ -108,10 +114,10 @@ h3 { font-size: 1rem; }
   width: min(100%, 340px);
   height: auto;
   overflow: visible;
-  filter: drop-shadow(0 0 28px var(--teal-soft));
+  filter: drop-shadow(0 0 7px var(--bodyshadow));
 }
  
-.figure .body { fill: var(--panel); stroke: var(--ink); stroke-width: 3; stroke-linejoin: round; }
+.figure .body { fill: var(--panel); stroke: var(--body); stroke-width: 3; stroke-linejoin: round; }
 .figure .seam { fill: none; stroke: var(--ink); stroke-width: 2.5; stroke-linecap: round; }
 .figure .rays { fill: none; stroke: var(--amber); stroke-width: 4; stroke-linecap: round; }
  
@@ -140,15 +146,16 @@ h3 { font-size: 1rem; }
   background: var(--panel);
   border: 1.5px solid var(--ink);
   border-radius: var(--radius);
+  filter: drop-shadow(0 0 7px var(--boxshadow));
 }
  
 .chart { flex: 1; margin: 0; display: flex; flex-direction: column; gap: 4px; min-height: 90px; }
 .chart svg { flex: 1; width: 100%; min-height: 0; border-bottom: 1.5px solid var(--ink); border-left: 1.5px solid var(--ink); }
 .chart figcaption { font-size: 0.8125rem; color: var(--muted); }
  
-.chart .line { fill: none; stroke: var(--teal); stroke-width: 2.5; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
-.chart .fill { fill: var(--teal-soft); }
-.chart .bars rect { fill: var(--teal); }
+.chart .line { fill: none; stroke: var(--chartlines); stroke-width: 2.5; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.chart .fill { fill: var(--chartfill); }
+.chart .bars rect { fill: var(--chartlines); }
  
 /* ---------- Quick links ---------- */
 .quick-links {
