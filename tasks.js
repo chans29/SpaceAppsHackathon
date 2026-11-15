@@ -216,12 +216,12 @@ const TASKS = [
   },
 
   {
-    id: "sensorimotor",
+    id: "cardiac",
     name: "Balance & blood pressure test",
     short: "Balance test",
     frequencyDays: 14,
     startDate: "2026-11-18",
-    file: "sensorimotor",
+    file: "cardiac",
     isRecord: function () { return true; },
     steps: [
       {

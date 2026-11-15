@@ -34,7 +34,7 @@ or `startDate` there to adjust the schedule.
 | Evening team check-in | Daily | `sleep_team_questionnaire.json` (`type: "bedtime"`) |
 | Cognition test battery (with built-in reaction-time test) | Weekly | `cognition.json` |
 | Saliva sample | Every other week | `cellular_profile.json` |
-| Balance & blood pressure test | Every other week | `sensorimotor.json` |
+| Balance & blood pressure test | Every other week | `cardiac.json` |
 | Blood & urine collection | Monthly | `biochemical_markers.json` |
 | Microbiome swabs | Monthly | `microbiome.json` |
 | Carotid artery ultrasound | Every 3 months | `carotid_intima_media_thickness.json` |

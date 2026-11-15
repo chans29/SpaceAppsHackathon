@@ -21,7 +21,7 @@ DATA_DIR = os.path.join(ROOT, "data")
 # Only these files can be written to
 ALLOWED = {
     "microbiome", "cellular_profile", "cognition", "personality_questionnaire",
-    "actigraphy", "sleep_team_questionnaire", "sensorimotor",
+    "actigraphy", "sleep_team_questionnaire", "cardiac",
     "biochemical_markers", "carotid_intima_media_thickness",
 }
 MAX_BODY = 1_000_000  # 1 MB is far more than any questionnaire needs
