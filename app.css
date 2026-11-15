@@ -3,31 +3,13 @@
   --paper: #000000;
   --panel: #000000;
   --ink: #78ff0a;
-  --muted: #78ff0a;
-  --line: #b9c5d0;
   --teal: #0f7c7a;
-  --chartlines: #04ea00f2;
-  --teal-soft: rgba(12, 255, 251, 0.781);
-  --chartfill: rgba(67, 179, 113, 0.45);
   --boxshadow: rgba(13, 255, 0, 0.591);
   --bodyshadow: rgba(241, 241, 241, 0.781);
   --amber: #e0a030;
   --radius: 10px;
   --gap: 24px;
   --body: #93a784f1;
-}
- 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --paper: #14202b;
-    --panel: #1c2c3a;
-    --ink: #e6edf3;
-    --muted: #94a6b6;
-    --line: #34485a;
-    --teal: #3cc2bd;
-    --teal-soft: rgba(60, 194, 189, 0.16);
-    --amber: #f0b84a;
-  }
 }
  
 *, *::before, *::after { box-sizing: border-box; }
@@ -61,8 +43,6 @@ h3 { font-size: 1rem; }
 .hero    { grid-area: hero; }
 .reports { grid-area: reports; }
 .reports { max-height: calc(100vh - 64px); min-height: 0; }
-.rail { overflow-y: auto; min-height: 0; }
-.report-card { position: relative; height: 190px; flex: 0 0 190px; }
 .quick-links { grid-area: links; }
  
 .tasks, .reports {
@@ -89,22 +69,6 @@ h3 { font-size: 1rem; }
   gap: 8px;
 }
  
-.checklist label {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-}
- 
-.checklist input {
-  width: 18px;
-  height: 18px;
-  accent-color: var(--teal);
-}
- 
-.checklist input:checked { opacity: 0.6; }
-.checklist input:checked + * { text-decoration: line-through; }
- 
 /* ---------- Center figure ---------- */
 .hero {
   position: relative;
@@ -112,18 +76,7 @@ h3 { font-size: 1rem; }
   place-items: center;
   min-height: 460px;
 }
- 
-.figure {
-  width: min(100%, 340px);
-  height: auto;
-  overflow: visible;
-  filter: drop-shadow(0 0 7px var(--bodyshadow));
-}
- 
-.figure .body { fill: var(--panel); stroke: var(--body); stroke-width: 3; stroke-linejoin: round; }
-.figure .seam { fill: none; stroke: var(--ink); stroke-width: 2.5; stroke-linecap: round; }
-.figure .rays { fill: none; stroke: var(--amber); stroke-width: 4; stroke-linecap: round; }
- 
+
 .badge {
   position: absolute;
   top: 6%;
@@ -137,28 +90,9 @@ h3 { font-size: 1rem; }
   background: var(--panel);
 }
  
-.badge svg { width: 30px; height: 30px; fill: var(--teal); }
- 
-/* ---------- Reports ---------- */
-.rail {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  padding: 16px;
-  background: var(--panel);
-  border: 1.5px solid var(--ink);
-  border-radius: var(--radius);
-  filter: drop-shadow(0 0 7px var(--boxshadow));
-}
- 
-.chart { flex: 1; margin: 0; display: flex; flex-direction: column; gap: 4px; min-height: 90px; }
-.chart svg { flex: 1; width: 100%; min-height: 0; border-bottom: 1.5px solid var(--ink); border-left: 1.5px solid var(--ink); }
-.chart figcaption { font-size: 0.8125rem; color: var(--muted); }
- 
-.chart .line { fill: none; stroke: var(--chartlines); stroke-width: 2.5; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
-.chart .fill { fill: var(--chartfill); }
-.chart .bars rect { fill: var(--chartlines); }
+.badge svg { width: 30px; height: 30px; }
+
+.figure .rays { fill: none; stroke: var(--amber); stroke-width: 4; stroke-linecap: round; }
  
 /* ---------- Quick links ---------- */
 .quick-links {
@@ -190,8 +124,6 @@ h3 { font-size: 1rem; }
   text-underline-offset: 4px;
 }
  
-.quick-links a:hover { color: var(--teal); }
- 
 a:focus-visible, input:focus-visible {
   outline: 3px solid var(--amber);
   outline-offset: 3px;
@@ -208,7 +140,5 @@ a:focus-visible, input:focus-visible {
       "links";
   }
   .hero { min-height: 320px; }
-  .figure { width: min(70%, 260px); }
-  .chart { min-height: 110px; }
 }
  
