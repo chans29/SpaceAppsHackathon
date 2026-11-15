@@ -1,6 +1,11 @@
 # Astronaut Health Dashboard (NASA Space Apps)
 
 ## Run it
+Presented by: Sparks of Inspiration 
+Members: Caleb Hansen, Binh Nguyen, Hannah Kim, Diego E. Benitez-Arroyo
+Disclaimer: Our code was made with the assistance from Claude.ai 
+
+Summary: This app is a dashboard for logging health related statics and keeping track of daily, weekly, and future tasks. It displays the logged data in graph form to visualize trends. The categories of data are separated into tabs at the top of the page, and whenever a data input is within abnormal range, its category tab and its repective pages will change from green to yellow, and when the input is within dangerous levels, it goes from green to red. 
 
 ```
 python3 server.py
