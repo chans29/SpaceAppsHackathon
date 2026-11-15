@@ -13,8 +13,8 @@ const MISSION_PHASE = "in-flight";
 const TASKS = [
   {
     id: "sleep-wake",
-    name: "Morning sleep log",
-    short: "Sleep log",
+    name: "Morning Sleep Log",
+    short: "Sleep Log",
     frequencyDays: 1,
     startDate: "2026-11-01",
     file: "sleep_team_questionnaire",
@@ -22,11 +22,11 @@ const TASKS = [
     steps: [
       {
         title: "Before you start",
-        text: ["Fill this in within 30 minutes of waking up, before caffeine and before checking messages.",
-               "Answer about the sleep period you just finished. Best guesses are fine."]
+        text: ["Complete this questionnaire within 30 minutes of waking up, before consuming caffeine or starting work.",
+               "Answer to the best of your ability about your sleep last night."]
       },
       {
-        title: "Your sleep",
+        title: "Sleep Quantitative Metrics",
         fields: [
           { key: "sleep_duration_hours", label: "How many hours did you sleep?", type: "number", unit: "hours", min: 0, max: 16, step: 0.1 },
           { key: "sleep_latency_min", label: "About how long did it take to fall asleep?", type: "number", unit: "min", min: 0, max: 240, step: 1 },
@@ -34,10 +34,10 @@ const TASKS = [
         ]
       },
       {
-        title: "How you feel",
+        title: "Sleep Qualitative Metrics",
         fields: [
-          { key: "sleep_quality_1_5", label: "Overall, how well did you sleep?", type: "scale", low: "Very poorly", high: "Very well" },
-          { key: "refreshed_1_5", label: "How refreshed do you feel now?", type: "scale", low: "Not at all", high: "Fully refreshed" }
+          { key: "sleep_quality_1_5", label: "Overall, how well would you rate your sleep?", type: "scale", low: "Very poorly", high: "Very well" },
+          { key: "refreshed_1_5", label: "Did you wake up feeling refreshed?", type: "scale", low: "Not at all", high: "Fully refreshed" }
         ]
       }
     ],
@@ -52,8 +52,8 @@ const TASKS = [
 
   {
     id: "sleep-bedtime",
-    name: "Evening team check-in",
-    short: "Evening check-in",
+    name: "Evening Check-in",
+    short: "Evening Check-in",
     frequencyDays: 1,
     startDate: "2026-11-01",
     file: "sleep_team_questionnaire",
@@ -61,23 +61,23 @@ const TASKS = [
     steps: [
       {
         title: "Before you start",
-        text: ["Fill this in shortly before going to sleep. Think about today as a whole.",
+        text: ["Complete this questionnaire shortly before going to sleep. Try to remember how you felt early in the day as well as how you feel now.",
                "Your answers are confidential to the medical team."]
       },
       {
-        title: "You",
+        title: "Individually",
         fields: [
-          { key: "mood_1_5", label: "How was your mood today?", type: "scale", low: "Very low", high: "Very good" },
-          { key: "stress_1_5", label: "How stressed did you feel?", type: "scale", low: "Not at all", high: "Extremely" },
+          { key: "mood_1_5", label: "Was today enjoyable?", type: "scale", low: "Not at all", high: "Very enjoyable" },
+          { key: "stress_1_5", label: "How stressed were you?", type: "scale", low: "Not at all", high: "Extremely" },
           { key: "workload_1_5", label: "How heavy was your workload?", type: "scale", low: "Very light", high: "Overwhelming" }
         ]
       },
       {
-        title: "The team and the habitat",
+        title: "The Team",
         fields: [
           { key: "team_cohesion_1_5", label: "How well did the crew get along?", type: "scale", low: "Poorly", high: "Very well" },
           { key: "team_performance_1_5", label: "How well did the crew work together on tasks?", type: "scale", low: "Poorly", high: "Very well" },
-          { key: "livability_habitability_1_5", label: "How comfortable was the habitat to live in today?", type: "scale", low: "Very uncomfortable", high: "Very comfortable" }
+          { key: "livability_habitability_1_5", label: "Was the habitat a comfortable living space?", type: "scale", low: "Very uncomfortable", high: "Very comfortable" }
         ]
       }
     ],
@@ -93,8 +93,8 @@ const TASKS = [
 
   {
     id: "saliva",
-    name: "Saliva sample",
-    short: "Saliva",
+    name: "Saliva Sample",
+    short: "Saliva Sample",
     frequencyDays: 14,
     startDate: "2026-11-12",
     file: "cellular_profile",
@@ -102,8 +102,8 @@ const TASKS = [
     steps: [
       {
         title: "Before you start",
-        text: ["Collect the sample first thing after waking if you can, so results compare well over time."],
-        list: ["For the last 30 minutes: no food, no drinks except water, no gum, no brushing teeth.",
+        text: ["Collect the sample first thing in the morning."],
+        list: ["Ensure you have had no food, drinks (except water), gum, or have not brushed your teeth in the last 30 minutes.",
                "Wash and dry your hands.",
                "Have ready: a saliva swab tube from the kit, a sample label, and a cold-stowage bag."],
         fields: [
@@ -112,13 +112,13 @@ const TASKS = [
       },
       {
         title: "Rinse",
-        text: ["Rinse your mouth with water and swallow or spit it out. Then wait 10 minutes so the water doesn't dilute the sample."],
+        text: ["Rinse your mouth with water and swallow or spit it out. Then wait 10 minutes."],
         countdown: 600
       },
       {
         title: "Collect the sample",
         list: ["Open the tube and tip the swab into your mouth. Don't touch the swab with your fingers.",
-               "Hold it under your tongue, or chew it gently, for 2 minutes until it's soaked.",
+               "Hold it under your tongue, for 2 minutes until it's soaked.",
                "Tip the swab back into the tube without touching it and press the cap on firmly."],
         countdown: 120
       },
@@ -133,7 +133,7 @@ const TASKS = [
       },
       {
         title: "Results (optional)",
-        text: ["If the on-board analyzer has already given results, enter them here. Otherwise leave these blank; the ground team will add them."],
+        text: ["If the on-board analyzer has already given results, enter them here. Otherwise leave these blank."],
         fields: [
           { key: "cortisol_nmol_l", label: "Cortisol", type: "number", unit: "nmol/L", min: 0, max: 200, step: 0.1, required: false },
           { key: "ebv_dna_copies_per_ml", label: "EBV DNA", type: "number", unit: "copies/mL", min: 0, max: 1000000, step: 1, required: false },
@@ -156,8 +156,8 @@ const TASKS = [
 
   {
     id: "cognition",
-    name: "Cognition test battery",
-    short: "Cognition",
+    name: "Cognition Test Battery",
+    short: "Cognition Test Battery",
     frequencyDays: 7,
     startDate: "2026-11-16",
     file: "cognition",
@@ -171,7 +171,7 @@ const TASKS = [
       },
       {
         title: "Reaction-time test",
-        text: ["This is a short psychomotor vigilance test. Wait for the box to turn green, then click it (or press the space bar) as fast as you can.",
+        text: ["This is a short reaction speed test. Wait for the box to turn green, then click it (or press the space bar) as fast as you can.",
                "Don't click before it turns green. There are 5 rounds."],
         fields: [
           { key: "psychomotor_vigilance", label: "Reaction-time test", type: "pvt", trials: 5 }
@@ -179,7 +179,7 @@ const TASKS = [
       },
       {
         title: "Memory and reasoning tests",
-        text: ["Run the rest of the Cognition battery on the station laptop and copy each score here. Leave any test you skipped blank."],
+        text: ["Complete the rest of the Cognition tests on the station laptop and copy each score here. Leave any test you skipped blank."],
         fields: [
           { key: "visual_object_learning", label: "Visual object learning", type: "number", unit: "% correct", min: 0, max: 100, step: 0.1, required: false },
           { key: "fractal_2_back", label: "Fractal 2-back", type: "number", unit: "% correct", min: 0, max: 100, step: 0.1, required: false },
@@ -216,66 +216,41 @@ const TASKS = [
   },
 
   {
-    id: "sensorimotor",
-    name: "Balance & blood pressure test",
-    short: "Balance test",
-    frequencyDays: 14,
+    id: "cardiac",
+    name: "Blood Pressure, Heart Rate, and Pulse Oximetry",
+    short: "Blood Pressure, Heart Rate, and Pulse Oximetry",
+    frequencyDays: 1,
     startDate: "2026-11-18",
-    file: "sensorimotor",
+    file: "cardiac",
     isRecord: function () { return true; },
     steps: [
       {
-        title: "Before you start",
-        list: ["You need a crewmate to spot you and time the walk.",
-               "Have ready: the force plate, the blood pressure cuff, and a clear 4-meter walking line.",
-               "If you feel dizzy or faint at any point, sit or lie down right away and stop the test."]
-      },
-      {
-        title: "Tandem walk",
-        list: ["Stand at the start of the line, arms crossed, eyes closed.",
-               "Walk 10 steps heel-to-toe along the line. Your spotter times you and counts missteps (a step off the line, or a gap between heel and toe)."],
-        fields: [
-          { key: "tandem_walk_time_s", label: "Time for 10 steps", type: "number", unit: "seconds", min: 0, max: 120, step: 0.1 },
-          { key: "tandem_walk_missteps", label: "Missteps", type: "number", min: 0, max: 10, step: 1 }
-        ]
-      },
-      {
-        title: "Lying down",
-        text: ["Put on the blood pressure cuff and lie flat on your back. Rest for 5 minutes, then take a reading."],
+        title: "Blood Pressure, Heart Rate, and Pulse Oximetry",
+        text: ["Place the blood pressure cuff on your upper arm and the pulse oximeter on your finger. Raise your arm to heart level, then record the readings here."],
         countdown: 300,
         fields: [
-          { key: "heart_rate_supine_bpm", label: "Heart rate", type: "number", unit: "bpm", min: 25, max: 220, step: 1 },
-          { key: "bp_supine_systolic_mmhg", label: "Blood pressure, top number (systolic)", type: "number", unit: "mmHg", min: 50, max: 250, step: 1 },
-          { key: "bp_supine_diastolic_mmhg", label: "Blood pressure, bottom number (diastolic)", type: "number", unit: "mmHg", min: 30, max: 150, step: 1 }
-        ]
-      },
-      {
-        title: "Standing",
-        text: ["Stand up in one smooth motion and stay standing still for 3 minutes, then take a reading. Sit down straight away if you feel lightheaded."],
-        countdown: 180,
-        fields: [
-          { key: "heart_rate_standing_bpm", label: "Heart rate", type: "number", unit: "bpm", min: 25, max: 220, step: 1 },
-          { key: "bp_standing_systolic_mmhg", label: "Blood pressure, top number (systolic)", type: "number", unit: "mmHg", min: 50, max: 250, step: 1 },
-          { key: "bp_standing_diastolic_mmhg", label: "Blood pressure, bottom number (diastolic)", type: "number", unit: "mmHg", min: 30, max: 150, step: 1 }
+          { key: "heart_rate", label: "Heart rate", type: "number", unit: "bpm", min: 25, max: 220, step: 1 },
+          { key: "bp_systolic", label: "Blood pressure, top number (systolic)", type: "number", unit: "mmHg", min: 50, max: 250, step: 1 },
+          { key: "bp_diastolic", label: "Blood pressure, bottom number (diastolic)", type: "number", unit: "mmHg", min: 30, max: 150, step: 1 },
+          { key: "pulse_oximetry", label: "Pulse oximetry", type: "number", unit: "%", min: 50, max: 100, step: 1 }
         ]
       }
     ],
     build: function (v, ctx) {
       return {
         crew_id: CREW_ID, phase: MISSION_PHASE, timestamp: ctx.timestamp,
-        tandem_walk_time_s: v.tandem_walk_time_s,
-        tandem_walk_missteps: v.tandem_walk_missteps,
-        heart_rate_supine_bpm: v.heart_rate_supine_bpm, heart_rate_standing_bpm: v.heart_rate_standing_bpm,
-        bp_supine_systolic_mmhg: v.bp_supine_systolic_mmhg, bp_supine_diastolic_mmhg: v.bp_supine_diastolic_mmhg,
-        bp_standing_systolic_mmhg: v.bp_standing_systolic_mmhg, bp_standing_diastolic_mmhg: v.bp_standing_diastolic_mmhg
+        heart_rate: v.heart_rate,
+        bp_systolic: v.bp_systolic,
+        bp_diastolic: v.bp_diastolic,
+        pulse_oximetry: v.pulse_oximetry
       };
     }
   },
 
   {
     id: "blood-urine",
-    name: "Blood & urine collection",
-    short: "Blood & urine",
+    name: "Blood & Urine Collection",
+    short: "Blood & Urine",
     frequencyDays: 30,
     startDate: "2026-11-21",
     file: "biochemical_markers",
@@ -283,25 +258,18 @@ const TASKS = [
     steps: [
       {
         title: "Before you start",
-        text: ["This test has two parts: a 24-hour urine collection that ends this morning, and a fasting blood draw done by the crew medical officer."],
+        text: ["This test has two parts: a 24-hour urine collection, which you should have just completed, and a fasting blood draw done by the crew medical officer."],
         list: ["No food for 8 hours before the blood draw. Water is fine.",
                "Have ready: the blood collection kit, the 24-hour urine container, labels, and the centrifuge."],
         fields: [
-          { key: "fasted", label: "Have you fasted for at least 8 hours?", type: "yesno" }
-        ]
-      },
-      {
-        title: "Finish the urine collection",
-        list: ["Add your first urine of the morning to the 24-hour container. That completes the collection.",
-               "Close the container, label it with your crew ID, date and time, and put it in cold stowage."],
-        fields: [
+          { key: "fasted", label: "Have you fasted for at least 8 hours?", type: "yesno" },
           { key: "urine_complete", label: "Was every urination in the last 24 hours collected?", type: "yesno" }
         ]
       },
       {
         title: "Blood draw",
-        list: ["The crew medical officer draws the blood tubes listed in the kit.",
-               "Gently turn each tube upside down 8 to 10 times, then spin them in the centrifuge as the kit card says.",
+        list: ["The crew medical officer will draw blood according to the kit instructions.",
+               "Gently turn each tube upside down 8 to 10 times, then spin them in the centrifuge as per the kit instructions.",
                "Label each tube and put them in cold stowage."],
         fields: [
           { key: "blood_stowed", label: "Are all tubes labeled and in cold stowage?", type: "yesno", mustBe: true,
@@ -310,7 +278,7 @@ const TASKS = [
       },
       {
         title: "Blood results (optional)",
-        text: ["If the on-board analyzer has results, enter them. Otherwise leave these blank for the ground team."],
+        text: ["If the on-board analyzer has results, enter them. Otherwise leave these blank."],
         fields: [
           { key: "glucose_mg_dl", label: "Glucose", type: "number", unit: "mg/dL", min: 0, max: 600, step: 0.1, required: false },
           { key: "total_cholesterol_mg_dl", label: "Total cholesterol", type: "number", unit: "mg/dL", min: 0, max: 600, step: 1, required: false },
@@ -361,7 +329,7 @@ const TASKS = [
     steps: [
       {
         title: "Before you start",
-        list: ["Take the skin swab before you wash or wipe down for the day.",
+        list: ["Take the skin swab before cleaning yourself.",
                "Have ready: the microbiome kit (fecal, saliva and skin swabs), labels and a cold-stowage bag."]
       },
       {
@@ -369,7 +337,7 @@ const TASKS = [
         list: ["Fecal: after a bowel movement, swab the used wipe as the kit card shows.",
                "Saliva: rub the swab along the inside of your cheek for 30 seconds.",
                "Skin: rub the swab firmly on the inside of your forearm for 30 seconds.",
-               "Put each swab in its own tube, cap it, label it, and stow it cold."],
+               "Put each swab in its own tube, cap it, label it, and place it in cold stowage."],
         fields: [
           { key: "sites", label: "Which samples did you collect?", type: "checks",
             options: [{ value: "fecal", label: "Fecal" }, { value: "saliva", label: "Saliva" }, { value: "skin", label: "Skin" }] }
@@ -410,13 +378,13 @@ const TASKS = [
     steps: [
       {
         title: "Before you start",
-        list: ["You need a crewmate to operate the ultrasound, with the ground imaging team on the video link.",
+        list: ["You will need a crewmate to operate the ultrasound.",
                "Have ready: the ultrasound unit, linear probe, and gel.",
-               "Rest lying down for 5 minutes before scanning."]
+               "Rest for 5 minutes before scanning."]
       },
       {
         title: "Left side",
-        list: ["Lie on your back with your head turned about 45° to the right.",
+        list: ["Remain still and relaxed with your head turned about 45° to the right.",
                "The operator finds the left common carotid artery, about 1 cm below where it splits.",
                "Measure the thickness of the far wall (intima-media) and read it from the screen."],
         fields: [
@@ -434,7 +402,7 @@ const TASKS = [
       {
         title: "Plaque check",
         fields: [
-          { key: "plaque_detected", label: "Did the imaging team see any plaque on either side?", type: "yesno" }
+          { key: "plaque_detected", label: "Did you or your crewmate observe any plaque on either side?", type: "yesno" }
         ]
       }
     ],

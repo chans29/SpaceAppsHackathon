@@ -9,7 +9,7 @@
 const HealthData = (function () {
   const FILES = [
     "microbiome", "cellular_profile", "cognition", "personality_questionnaire",
-    "actigraphy", "sleep_team_questionnaire", "sensorimotor",
+    "actigraphy", "sleep_team_questionnaire", "cardiac",
     "biochemical_markers", "carotid_intima_media_thickness"
   ];
   const PENDING_KEY = "pending-records";

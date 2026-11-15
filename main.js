@@ -4,9 +4,10 @@ Chart.defaults.font.size = 12
 Chart.defaults.borderColor = 'rgba(120,255,10,0.2)'
 Chart.defaults.maintainAspectRatio = false
 
-const CREW_COLORS = { 'CM-01': '#78ff0a'}
-const crews = Object.keys(CREW_COLORS)
+const LINE_COLOR = '#78ff0a'
 const day = (ts) => ts.slice(0, 10)
+const shortDate = (iso) => new Date(iso + 'T00:00:00Z')
+  .toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })
 const container = document.getElementById('charts')
 let charts = []
 
@@ -64,34 +65,50 @@ function addChart(title, config) {
   charts.push(new Chart(canvas, config))
 }
 
-function lineByCrew(title, rows, getValue, yTitle, bands) {
+// getValue is either a function (one line) or an array of
+// { label, value, dashed } objects (several lines on one chart, e.g. BP).
+function lineChart(title, rows, getValue, yTitle, bands) {
+  const series = Array.isArray(getValue) ? getValue : [{ label: title, value: getValue }]
   const labels = [...new Set(rows.map(r => day(r.timestamp)))].sort()
-  const datasets = crews.map(id => {
+  const datasets = series.map(s => {
     const byDay = {}
-    rows.filter(r => r.crew_id === id).forEach(r => {
-      const v = getValue(r)
+    rows.forEach(r => {
+      const v = s.value(r)
       if (v != null) byDay[day(r.timestamp)] = v
     })
     return {
-      label: id,
+      label: s.label,
       data: labels.map(l => byDay[l] ?? null),
-      borderColor: CREW_COLORS[id],
-      backgroundColor: CREW_COLORS[id],
+      borderColor: LINE_COLOR,
+      backgroundColor: LINE_COLOR,
+      borderDash: s.dashed ? [5, 5] : [],
       tension: 0.25,
       pointRadius: 2,
       borderWidth: 1.5,
       spanGaps: true
     }
   })
+
   addChart(title, {
     type: 'line',
     data: { labels, datasets },
     options: {
       scales: {
         y: { title: { display: !!yTitle, text: yTitle } },
-        x: { ticks: { maxTicksLimit: 6 } }
+        x: {
+          ticks: {
+            maxTicksLimit: 5,
+            maxRotation: 0,
+            font: { size: 10 },
+            callback(value) { return shortDate(this.getLabelForValue(value)) }
+          }
+        }
       },
-      plugins: bands ? { zones: { bands } } : {}
+      plugins: {
+        ...(bands ? { zones: { bands } } : {}),
+        // show a legend only when the chart has more than one line
+        ...(series.length > 1 ? { legend: { display: true } } : {})
+      }
     }
   })
 }
@@ -102,48 +119,58 @@ function renderCharts(d) {
   charts = []
   container.innerHTML = ''
 
-  lineByCrew('Microbiome: fecal Shannon diversity index',
-  d.microbiome.filter(r => r.sample_site === 'fecal'),
-  r => r.shannon_diversity, 'index', [
-    { max: 2.5, color: RED, label: 'low diversity' },
-    { min: 2.5, max: 3.0, color: AMBER, label: 'watch' }
-  ])
+  lineChart('Heart Rate',
+    d.cardiac.filter(r => r.heart_rate != null),
+    r => r.heart_rate, 'bpm', [
+      { min: 0, max: 50, color: RED, label: 'TOO LOW' },
+      { min: 160, max: 250, color: RED, label: 'TOO HIGH' }
+    ])
 
-lineByCrew('Cellular: saliva cortisol',
-  d.cellular_profile, r => r.saliva?.cortisol_nmol_l, 'nmol/L', [
-    { max: 3, color: RED, label: 'low' },
-    { min: 20, max: 30, color: AMBER, label: 'elevated' },
-    { min: 30, color: RED, label: 'high' }
-  ])
+  lineChart('Blood Pressure',
+    d.cardiac.filter(r => r.bp_systolic != null && r.bp_diastolic != null), [
+      { label: 'Systolic', value: r => r.bp_systolic },
+      { label: 'Diastolic', value: r => r.bp_diastolic, dashed: true }
+    ], 'mmHg', [
+      { min: 0, max: 60, color: RED, label: 'TOO LOW' },
+      { min: 140, max: 250, color: RED, label: 'TOO HIGH' }
+    ])
 
-lineByCrew('Cognition: psychomotor vigilance',
-  d.cognition,
-  r => r.tests.find(t => t.test === 'psychomotor_vigilance')?.score, 'ms', [
-    { min: 300, max: 350, color: AMBER, label: 'slowed' },
-    { min: 350, color: RED, label: 'impaired' }
-  ])
+  lineChart('Pulse Oximetry',
+    d.cardiac.filter(r => r.pulse_oximetry != null),
+    r => r.pulse_oximetry, '%', [
+      { max: 90, color: RED, label: 'TOO LOW' },
+    ])
 
-lineByCrew('Sleep: duration per night',
-  d.sleep_team_questionnaire.filter(r => r.type === 'wake'),
-  r => r.sleep_duration_hours, 'hours', [
-    { max: 6, color: RED, label: 'too little' },
-    { min: 6, max: 7, color: AMBER, label: 'short' },
-    { min: 9, color: AMBER, label: 'long' }
-  ])
+  lineChart('Sleep: duration per night',
+    d.sleep_team_questionnaire.filter(r => r.type === 'wake'),
+    r => r.sleep_duration_hours, 'hours', [
+      { max: 6, color: RED},
+      { min: 6, max: 7, color: AMBER, label: 'TOO SHORT' },
+      { min: 9, color: AMBER, label: 'TOO LONG' }
+    ])
 
-lineByCrew('Biochemical: vitamin D',
-  d.biochemical_markers, r => r.blood?.vitamin_d_ng_ml, 'ng/mL', [
-    { max: 20, color: RED, label: 'deficient' },
-    { min: 20, max: 30, color: AMBER, label: 'insufficient' },
-    { min: 100, color: RED, label: 'excess' }
-  ])
+  lineChart('Biochemical: vitamin D',
+    d.biochemical_markers,
+    r => r.blood?.vitamin_d_ng_ml, 'ng/mL', [
+      { max: 20, color: RED, label: 'DEFICIENT' },
+      { min: 20, max: 30, color: AMBER, label: 'INSUFFICIENT' },
+      { min: 100, color: RED, label: 'EXCESS' }
+    ])
 
-lineByCrew('Carotid intima-media thickness',
-  d.carotid_intima_media_thickness,
-  r => (r.left_cca_imt + r.right_cca_imt) / 2, 'mm', [
-    { min: 0.8, max: 0.9, color: AMBER, label: 'borderline' },
-    { min: 0.9, color: RED, label: 'thickened' }
-  ])
+  lineChart('Microbiome: fecal Shannon diversity index',
+    d.microbiome.filter(r => r.sample_site === 'fecal'),
+    r => r.shannon_diversity, 'index', [
+      { max: 2.5, color: RED, label: 'LOW DIVERSITY' },
+      { min: 2.5, max: 3.0, color: AMBER, label: 'WATCH' }
+    ])
+
+  lineChart('Cellular: Saliva Cortisol',
+    d.cellular_profile,
+    r => r.saliva?.cortisol_nmol_l, 'nmol/L', [
+      { max: 3, color: RED, label: 'LOW' },
+      { min: 20, max: 30, color: AMBER, label: 'ELEVATED' },
+      { min: 30, color: RED, label: 'HIGH' }
+    ])
 }
 
 HealthData.ready.then(renderCharts).catch((err) => {
