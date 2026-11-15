@@ -1,0 +1,59 @@
+{
+  "measurement": "cardiac",
+  "data": [
+    {
+      "crew_id": "CM-01",
+      "phase": "pre-flight",
+      "timestamp": "2025-11-06T21:00:00Z",
+      "heart_rate": 83,
+      "bp_systolic": 115,
+      "bp_diastolic": 72,
+      "pulse_oximetry": 98
+    },
+    {
+      "crew_id": "CM-01",
+      "phase": "pre-flight",
+      "timestamp": "2025-11-07T21:00:00Z",
+      "heart_rate": 90,
+      "bp_systolic": 125,
+      "bp_diastolic": 80,
+      "pulse_oximetry": 97
+    },
+    {
+      "crew_id": "CM-01",
+      "phase": "pre-flight",
+      "timestamp": "2025-11-08T21:00:00Z",
+      "heart_rate": 90,
+      "bp_systolic": 130,
+      "bp_diastolic": 90,
+      "pulse_oximetry": 92
+    },
+    {
+      "crew_id": "CM-01",
+      "phase": "pre-flight",
+      "timestamp": "2025-11-09T21:00:00Z",
+      "heart_rate": 83,
+      "bp_systolic": 150,
+      "bp_diastolic": 100,
+      "pulse_oximetry": 98
+    },
+    {
+      "crew_id": "CM-01",
+      "phase": "pre-flight",
+      "timestamp": "2025-11-10T21:00:00Z",
+      "heart_rate": 170,
+      "bp_systolic": 125,
+      "bp_diastolic": 80,
+      "pulse_oximetry": 97
+    },
+    {
+      "crew_id": "CM-01",
+      "phase": "pre-flight",
+      "timestamp": "2025-11-11T21:00:00Z",
+      "heart_rate": 90,
+      "bp_systolic": 130,
+      "bp_diastolic": 90,
+      "pulse_oximetry": 92
+    }
+  ]
+}
