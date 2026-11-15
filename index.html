@@ -26,26 +26,12 @@
     }
     .task-link:hover { text-decoration: underline; }
 
-    /* ---- Dashboard tasks (built by tasks.js) ---- */
-    .task-panels { display: flex; flex-direction: column; gap: 16px; flex: 1; }
-    .task-item { display: flex; align-items: flex-start; gap: 10px; }
-    .task-mark {
-      flex: 0 0 18px;
-      height: 18px;
-      margin-top: 2px;
-      border: 1.5px solid #78ff0a;
-      border-radius: 50%;
-      font-size: 12px;
-      line-height: 15px;
-      text-align: center;
-      font-weight: 700;
+    /* ---- Crossing off: checked tasks get a line through them, everywhere ---- */
+    li:has(input:checked) .task-link,
+    label:has(input:checked) {
+      text-decoration: line-through;
+      color: #78ff0a;
     }
-    .task-item.done .task-mark { background: #78ff0a; color: #000000; }
-    .task-item.done .task-link { text-decoration: line-through; opacity: 0.7; }
-    .task-item.overdue .task-mark { border-color: #e0a030; color: #e0a030; }
-    .task-meta { font-size: 12px; opacity: 0.75; }
-    .task-item.overdue .task-meta { color: #e0a030; opacity: 1; }
-    .task-empty { font-size: 13px; opacity: 0.6; }
 
     /* ---- Task view (list + calendar) ---- */
     .task-view {
@@ -53,7 +39,7 @@
       max-width: 900px;
       margin: 0 auto;
       padding: 32px 16px;
-      color: #1c1917;
+      color: #78ff0a;            /* all text on these screens is green */
     }
     .back-btn,
     .cal-nav button {
@@ -63,7 +49,7 @@
       border: 1px solid #78ff0a;
       border-radius: 8px;
       background: #78ff0a;
-      color: inherit;
+      color: #000000;            /* black text on the green button so it's readable */
       cursor: pointer;
     }
     .back-btn:hover,
@@ -92,7 +78,7 @@
       margin-bottom: -1px;
     }
     .tab.active {
-      color: #ffffff;
+      color: #78ff0a;
       border-bottom-color:#78ff0a;
       font-weight: 500;
     }
@@ -118,10 +104,7 @@
       border-bottom: 1px solid #f0efee;
     }
     .task-list li:last-child { border-bottom: none; }
-    .task-list li { cursor: pointer; }
-    .task-list-text { flex: 1; }
-    .task-list-name { font-weight: 500; }
-    .task-list li.done .task-list-name { text-decoration: line-through; }
+    .task-list label { flex: 1; cursor: pointer; }
 
     /* Small tag showing which group the task came from */
     .tag {
@@ -134,14 +117,22 @@
       white-space: nowrap;
     }
 
-    /* Highlight the task under the mouse */
-    .task-list li:hover,
-    .task-list li:focus-visible {
+    /* Highlight the task you clicked */
+    .task-list li:hover {
       background: #78ff0a;
       color: #000000;
-      outline: none;
     }
-    .task-list li:hover .tag { background: #000000; }
+    /* Finished tasks are removed from the dashboard (they stay in the list and calendar) */
+    .checklist li.cleared { display: none; }
+
+    /* Finished tasks are also removed from All Tasks the next time it's opened */
+    .task-list li.cleared { display: none; }
+
+    /* Checked-off task while hovered: black text and black line-through,
+       so it shows up on the green background */
+    .task-list li:hover label:has(input:checked) {
+      color: #000000;
+    }
 
     /* ---- Calendar ---- */
     .cal-header {
@@ -182,12 +173,11 @@
       border-color: transparent;
     }
     .cal-day.today { border: 2px solid #78ff0a; }
-    .cal-date { font-weight: 500; color: #78ff0a; }
+    .cal-date { font-weight: 500; }
     .cal-task {
-      display: block;
-      width: 100%;
-      font: inherit;
-      text-align: left;
+      display: flex;
+      align-items: flex-start;
+      gap: 4px;
       background: #000000;
       color: #78ff0a;
       border-radius: 4px;
@@ -197,117 +187,7 @@
       cursor: pointer;
       overflow-wrap: anywhere;
     }
-    .cal-task:hover { background: #78ff0a; color: #000000; }
-    .cal-task.done { text-decoration: line-through; opacity: 0.6; }
-    .cal-task.overdue { border-color: #e0a030; color: #e0a030; }
-    .cal-task.missed { border-style: dashed; opacity: 0.45; }
-
-    /* ---- Questionnaire ---- */
-    .q-kicker { margin: 16px 0 0; font-size: 13px; color: #78ff0a; opacity: 0.8; }
-    .task-view .q-kicker + h1 { margin-top: 4px; }
-    .q-progress { height: 6px; border: 1px solid #78ff0a; border-radius: 999px; overflow: hidden; max-width: 640px; }
-    .q-progress-bar { height: 100%; width: 0; background: #78ff0a; transition: width 0.25s; }
-    .q-count { font-size: 13px; color: #78ff0a; margin: 6px 0 14px; }
-    .q-card {
-      max-width: 640px;
-      background: #000000;
-      border: 1px solid #78ff0a;
-      border-radius: 10px;
-      padding: 20px 22px;
-      color: #78ff0a;
-      line-height: 1.55;
-    }
-    .q-card h2 { font-size: 20px; margin: 0 0 10px; }
-    .q-card p { margin: 0 0 10px; }
-    .q-steps { margin: 0 0 12px; padding-left: 22px; }
-    .q-steps li { margin-bottom: 6px; }
-    .q-fields { display: flex; flex-direction: column; gap: 18px; margin-top: 8px; }
-    .q-label { font-weight: 500; margin-bottom: 6px; }
-    .q-number { display: flex; align-items: center; gap: 8px; }
-    .q-number input {
-      font: inherit;
-      font-size: 18px;
-      width: 160px;
-      padding: 8px 10px;
-      background: #000000;
-      color: #78ff0a;
-      border: 1px solid #78ff0a;
-      border-radius: 8px;
-    }
-    .q-unit { opacity: 0.8; }
-    .q-choices { display: flex; flex-wrap: wrap; gap: 8px; }
-    .q-choice {
-      font: inherit;
-      min-width: 56px;
-      padding: 8px 14px;
-      background: #000000;
-      color: #78ff0a;
-      border: 1px solid #78ff0a;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    .q-scale .q-choice { min-width: 48px; font-size: 18px; }
-    .q-choice:hover { background: rgba(120, 255, 10, 0.15); }
-    .q-choice[aria-checked="true"],
-    .q-choice[aria-pressed="true"] { background: #78ff0a; color: #000000; font-weight: 700; }
-    .q-scale-ends { display: flex; justify-content: space-between; max-width: 300px; font-size: 12px; opacity: 0.75; margin-top: 4px; }
-    .q-error { color: #ff6b6b; font-size: 13px; min-height: 0; margin-top: 4px; }
-    .q-field.invalid input,
-    .q-field.invalid .q-choice { border-color: #ff6b6b; }
-    .q-review { display: grid; grid-template-columns: 1fr auto; gap: 6px 16px; margin: 8px 0 0; }
-    .q-review dt { opacity: 0.85; }
-    .q-review dd { margin: 0; font-weight: 500; text-align: right; }
-    .q-nav { display: flex; justify-content: space-between; max-width: 640px; margin-top: 16px; }
-    .q-nav .q-btn:only-child, .q-nav #q-next { margin-left: auto; }
-    .q-btn {
-      font: inherit;
-      font-size: 15px;
-      font-weight: 500;
-      padding: 10px 22px;
-      border: 1px solid #78ff0a;
-      border-radius: 8px;
-      background: #78ff0a;
-      color: #000000;
-      cursor: pointer;
-    }
-    .q-btn:hover { background: #000000; color: #78ff0a; }
-    .q-btn:disabled { opacity: 0.5; cursor: wait; }
-    .q-btn.secondary { background: #000000; color: #78ff0a; }
-    .q-btn.secondary:hover { background: #78ff0a; color: #000000; }
-    .q-countdown {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin: 6px 0 14px;
-      padding: 12px 16px;
-      border: 1px dashed #78ff0a;
-      border-radius: 8px;
-    }
-    .q-countdown-time { font-size: 32px; font-weight: 700; font-variant-numeric: tabular-nums; min-width: 96px; }
-    .q-countdown.finished { border-style: solid; background: rgba(120, 255, 10, 0.12); }
-
-    /* Reaction-time test */
-    .pvt { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
-    .pvt-target {
-      font: inherit;
-      font-size: 22px;
-      font-weight: 700;
-      width: 100%;
-      max-width: 420px;
-      height: 150px;
-      border: 2px solid #78ff0a;
-      border-radius: 12px;
-      background: #000000;
-      color: #78ff0a;
-      cursor: pointer;
-      touch-action: manipulation;
-      user-select: none;
-      font-variant-numeric: tabular-nums;
-    }
-    .pvt-target.waiting { border-style: dashed; color: rgba(120, 255, 10, 0.6); }
-    .pvt-target.go { background: #78ff0a; color: #000000; }
-    .pvt-target.early { border-color: #ff6b6b; color: #ff6b6b; }
-    .pvt-info { font-size: 13px; opacity: 0.85; }
+    .cal-task input { margin: 1px 0 0; flex-shrink: 0; }
 
     /* ---- Exercise page ---- */
     .intro { color: #78ff0a; max-width: 640px; margin: 0 0 16px; }
@@ -341,30 +221,81 @@
     }
     .source a { color: inherit; }
 
-    /* ---- Tech support page (green phone and link) ---- */
-    .support-card {
+    /* ---- Sources list at the bottom of the CPR, First Aid and Exercise pages ---- */
+    .source h2 { font-size: 15px; margin: 0 0 6px; color: #78ff0a; }
+    .source ol { margin: 0; padding-left: 20px; line-height: 1.6; }
+    .disclaimer { font-size: 13px; margin-top: 16px; color: #78ff0a; font-style: italic; }
+
+    /* ---- Make all dashboard text green ----
+       !important is used so these win over any colors set in app.css */
+    .dashboard,
+    .dashboard h2,
+    .dashboard h3,
+    .dashboard a,
+    .dashboard li,
+    .dashboard figcaption {
+      color: #78ff0a !important;
+    }
+
+    /* ---- Top tabs on the home page ---- */
+    .top-tabs {
+      display: flex;
+      flex-wrap: wrap;               /* tabs wrap onto a second line on small screens */
+      justify-content: center;
+      gap: 4px;
+      padding: 12px 16px 0;
+      border-bottom: 1px solid #78ff0a;
+      font-family: "Schibsted Grotesk", sans-serif;
+    }
+    .top-tabs[hidden] { display: none; }   /* hide the tab bar on non-tab screens */
+    .top-tab {
+      font: inherit;
+      font-size: 15px;
+      padding: 10px 16px;
+      background: none;
+      border: 1px solid #78ff0a;
+      border-bottom: none;
+      border-radius: 8px 8px 0 0;
+      color: #78ff0a;
+      cursor: pointer;
+    }
+    .top-tab:hover { background: #78ff0a; color: #000000; }
+    .top-tab.active {
+      background: #78ff0a;
+      color: #000000;
+      font-weight: 700;
+    }
+
+    /* ---- Reading cards (Space Radiation, Wellness, Internals, Ambient) ---- */
+    .reading-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+    }
+    .reading-card {
       background: #000000;
       border: 1px solid #78ff0a;
       border-radius: 10px;
-      padding: 20px;
-      max-width: 560px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
+      padding: 16px;
     }
-    .support-phone,
-    .support-link {
-      color: #78ff0a;            /* green */
-      font-size: 18px;
-      font-weight: 500;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
+    .reading-label { font-size: 13px; margin-bottom: 6px; }
+    .reading-value {
+      font-size: 32px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
     }
-    .support-phone:hover,
-    .support-link:hover { text-decoration: underline; }
-    .support-phone svg { width: 18px; height: 18px; flex-shrink: 0; }
+    .reading-unit { font-size: 14px; font-weight: 400; margin-left: 4px; }
+    .reading-status {
+      display: inline-block;
+      margin-top: 8px;
+      font-size: 12px;
+      padding: 2px 8px;
+      border: 1px solid #78ff0a;
+      border-radius: 999px;
+    }
+    /* Warning: green pill with black text so it stands out */
+    .reading-status.alert { background: #78ff0a; color: #000000; font-weight: 700; }
+    .placeholder-note { font-size: 13px; font-style: italic; margin-top: 16px; }
 
     /* ---- Timer page ---- */
     .timer-wrap {
@@ -412,13 +343,49 @@
   </style>
 </head>
 <body>
+  <!-- ===== Tabs at the top of the home page =====
+       Shown on Home and the four tab screens; hidden on the other screens. -->
+  <div class="top-tabs" id="top-tabs" role="tablist">
+    <button type="button" class="top-tab active" data-tab="dashboard" role="tab">Home</button>
+    <button type="button" class="top-tab" data-tab="radiation" role="tab">Space Radiation</button>
+    <button type="button" class="top-tab" data-tab="wellness" role="tab">Wellness Check</button>
+    <button type="button" class="top-tab" data-tab="internals" role="tab">Internals</button>
+    <button type="button" class="top-tab" data-tab="ambient" role="tab">Ambient Conditions</button>
+  </div>
+
   <main class="dashboard view active" data-view="dashboard">
 
     <!-- Tasks (left column) -->
-    <!-- Filled in by tasks.js from the test schedule. Clicking a task opens its questionnaire. -->
+    <!-- Clicking a task's text switches to the task view; clicking the box still checks it off -->
     <section class="tasks" aria-labelledby="tasks-title">
       <h2 id="tasks-title">Tasks</h2>
-      <div id="dashboard-tasks" class="task-panels">Loading tasks…</div>
+
+      <article class="panel">
+        <h3><a class="task-link" href="#">Today</a></h3>
+        <ul class="checklist">
+          <li><input type="checkbox" data-task="review-draft" aria-label="Done"> <a class="task-link" href="#" data-task="review-draft">Review draft proposal</a></li>
+          <li><input type="checkbox" data-task="vendor-quote" aria-label="Done"> <a class="task-link" href="#" data-task="vendor-quote">Reply to vendor quote</a></li>
+          <li><input type="checkbox" data-task="standup" aria-label="Done"> <a class="task-link" href="#" data-task="standup">Prep Thursday standup</a></li>
+        </ul>
+      </article>
+
+      <article class="panel">
+        <h3><a class="task-link" href="#">This week</a></h3>
+        <ul class="checklist">
+          <li><input type="checkbox" data-task="onboarding" aria-label="Done"> <a class="task-link" href="#" data-task="onboarding">Update onboarding guide</a></li>
+          <li><input type="checkbox" data-task="q4-budget" aria-label="Done"> <a class="task-link" href="#" data-task="q4-budget">Approve Q4 budget lines</a></li>
+          <li><input type="checkbox" data-task="offsite" aria-label="Done"> <a class="task-link" href="#" data-task="offsite">Book team offsite venue</a></li>
+        </ul>
+      </article>
+
+      <article class="panel">
+        <h3><a class="task-link" href="#">Waiting on others</a></h3>
+        <ul class="checklist">
+          <li><input type="checkbox" data-task="legal" aria-label="Done"> <a class="task-link" href="#" data-task="legal">Legal sign-off on contract</a></li>
+          <li><input type="checkbox" data-task="design-review" aria-label="Done"> <a class="task-link" href="#" data-task="design-review">Design review comments</a></li>
+          <li><input type="checkbox" data-task="it-access" aria-label="Done"> <a class="task-link" href="#" data-task="it-access">Access request from IT</a></li>
+        </ul>
+      </article>
     </section>
 
     <!-- Center figure -->
@@ -436,30 +403,213 @@
           <path class="person" d="M547.2 396.83C552.3 396.83 557.4 396.83 562.5 396.83C566.02 403.13 568.12 410.03 570.79 416.71C571.64 418.83 572.34 422.92 573.96 424.46C575.63 426.04 579.33 426.88 581.41 428.03C588.9 432.17 596.29 436.51 603.73 440.75C618.13 448.94 632.38 457.44 646.64 465.88C650.45 468.13 662.66 473.97 665.03 476.48C666.23 477.75 665.78 479.37 666.77 480.7C668.34 482.83 672.25 484.43 674.38 486.07C677.75 488.67 680.88 491.65 684.16 494.37C695.91 504.14 709.47 519.84 706.91 536.47C705.23 547.41 695.36 556.31 688.68 564.5C689.88 568.09 692.01 571.59 691.96 575.5C691.89 582.87 685.55 591.12 681.21 596.73C667.27 614.74 649.38 624.83 628.47 632.86C621.53 635.52 613.97 638.49 606.5 638.95C604.56 635.87 599.73 634.43 597.08 632.31C597.08 637.7 597.08 643.1 597.08 648.5C599.23 649.12 603.05 649.45 604.84 650.74C608.47 653.37 608.28 663.67 604.32 665.95C603.06 666.67 600.93 666.65 599.5 666.95C598.72 671.54 599.66 675.89 599.98 680.5C600.38 686.26 599.83 692.82 601.02 698.46C601.59 701.19 603.1 703.83 603.77 706.6C606.44 717.58 609.3 728.54 611.79 739.58C618.71 770.26 626.22 800.84 632.76 831.6C636.72 850.23 640.46 869.01 645.09 887.47C649.17 903.7 652.18 920.18 656.13 936.45C657.48 942.02 661.88 953.82 660.46 958.96C659.47 962.59 656.38 964.94 653.87 967.5C656.08 974.07 662.7 979.2 667.62 983.9C677.67 993.5 688.55 1001.42 696.2 1013.3C701.24 1021.14 704.41 1032.67 695.47 1038.99C691.1 1042.09 686.52 1040.95 681.5 1041.13C671.53 1041.51 661.46 1041.61 651.5 1042.18C634.95 1043.13 622.8 1042.7 606.47 1040.13C601.92 1039.42 596.95 1039.81 592.68 1037.84C582.5 1033.14 576.59 1022.56 577 1011.5C577.37 1001.62 583.77 989.04 586.94 979.5C583.36 976.55 578.75 976.68 575.63 972.87C566.95 962.27 562.71 947.16 558.07 934.48C545.78 900.88 542.26 865.27 531.21 831.37C526.76 817.68 520.97 803.8 512.1 792.33C508.3 787.41 503.27 781.09 496.5 780.99C494.16 780.95 491.24 780.93 488.97 781.51C483.27 782.96 478.74 788.36 475.35 792.82C466.84 803.98 461.2 817.08 456.71 830.29C449.82 850.6 446.48 871.51 441.77 892.34C438.27 907.81 433.61 922.83 428.32 937.78C424.58 948.37 418.55 968.15 409.88 975.4C407.48 977.4 403.46 978.08 400.57 979.5C403.38 994.51 415.42 1009.79 407.87 1025.34C401.56 1038.34 391.45 1039.7 378.51 1041.21C375.16 1041.6 371.85 1042.5 368.5 1042.83C353 1044.36 337.04 1043.06 321.5 1042.8C315.52 1042.71 309.41 1041.3 303.46 1041.47C298.7 1041.61 295.38 1042.3 291.31 1039.15C282.83 1032.6 286.29 1021.46 291.24 1013.73C302.6 995.97 322.77 986.35 333.79 968.5C331.36 965.6 327.85 963.43 327.01 959.48C325.61 952.96 329.35 945.68 330.67 939.32C334.06 922.97 338.38 906.81 341.8 890.44C351.02 846.39 361.73 802.63 371.25 758.61C374.29 744.55 377.79 730.55 381.18 716.58C382.79 709.94 385.74 703.18 386.69 696.44C387.64 689.61 387.43 682.38 387.89 675.5C373.74 666.85 378.18 652.95 379.05 639.5C352.17 634.04 326.24 621.33 308.4 600.14C303.7 594.54 294.91 583.07 295.26 575.54C295.42 572.04 297.37 568.53 298.95 565.5C292.57 557.83 283.54 549.43 280.97 539.47C277.06 524.31 288.29 508.79 298.6 499.07C303.2 494.73 308.12 490.49 313.1 486.59C315.17 484.97 318.49 483.65 320.12 481.6C321.53 479.84 320.99 477.95 323.06 476.57C327.06 473.89 331.66 471.84 335.81 469.36C346.89 462.71 358.15 456.35 369.3 449.8C378.76 444.25 388.19 438.66 397.77 433.29C403.54 430.05 408.85 426.27 415.5 425.35C419.66 418.14 420.59 408.57 423.11 400.65C423.93 398.08 425.57 395.7 426.5 393.17C430.33 393.17 434.15 393.17 437.98 393.17C435.43 384.9 431.29 390.66 426.54 385.94C422.69 382.12 423.76 368.35 424.98 363.5C427.01 362.83 429.05 362.17 431.09 361.5C432 356.92 431.98 352.16 433.16 347.61C437.14 332.23 445.64 318.46 458.65 309.08C486.09 289.29 525.54 295.88 545.43 323.09C554.79 335.89 557.25 350.12 557.5 365.57C562.81 365.7 561.69 362.36 562.49 357.99C564.17 348.77 562.48 338.64 559.67 329.78C552.38 306.75 528.74 289.04 505.38 285.33C474.35 280.4 439.57 297.54 431.18 329.59C429.37 336.49 428.77 343.35 429.09 350.5C429.25 354.16 430.2 357.64 429.5 361.12C424.59 354.43 426.65 337.14 428.85 329.41C438.93 293.89 477.21 275.09 512.28 284.26C539.06 291.26 559.81 313.37 564.75 340.67C565.78 346.38 565.75 353.72 564.84 359.45C564.57 361.14 563.68 362.73 563.82 364.5C563.93 365.9 564.74 367.09 564.97 368.5C565.79 373.53 565.46 381.33 563.55 386.11C561.2 391.96 553.26 390.85 549.06 393.62C548.08 394.26 547.67 395.85 547.2 396.83ZM485.77 301.45C460.78 305.16 442.58 324.52 436.81 348.41C435.92 352.11 434.96 356.64 435.09 360.49C435.39 369.15 436.94 378.74 440.76 386.66C451.08 408.04 474.11 424.4 498.46 420.79C518.28 417.85 542.39 399.09 550.22 380.55C552.88 374.23 552.68 366.22 552.29 359.5C550.34 325.7 520.93 296.22 485.77 301.45ZM493.37 317.5C483.94 320.74 469.33 326.02 466.5 336.95C463.59 334.2 460.49 330.16 456.19 330.5C458.87 321.05 469.47 311.28 478.8 308.36C486.64 305.9 494.04 307.84 493.37 317.5ZM492.47 315.5C491.38 313.58 490.17 310.46 487.96 309.55C478.49 305.68 462.57 320.91 458.82 328.5C461.05 330.3 463.27 332.1 465.5 333.9C468.23 331.35 470.07 327.99 473.07 325.53C478.97 320.69 485.53 318.31 492.47 315.5ZM428.5 364.4C425.11 367.78 427.4 379.85 428.82 384.4C430.71 384.4 432.61 384.4 434.5 384.4C433.64 379.85 432.26 375.27 431.9 370.5C431.81 369.3 431.81 365.64 430.84 364.76C429.99 363.99 429.49 364.55 428.5 364.4ZM557.5 367.97C555.81 375.56 553.41 382.21 550.69 389.5C553.41 389.39 558.86 388.83 560.47 385.99C561.42 384.29 563.47 371.19 562.69 369.76C561.86 368.22 558.93 368.18 557.5 367.97ZM428.5 395.17C427.29 397.42 426.08 399.67 424.88 401.92C430.92 401.92 436.96 401.92 443 401.92C441.81 399.67 440.62 397.42 439.43 395.17C435.78 395.17 432.14 395.17 428.5 395.17ZM542.5 395.63C530.09 409.1 514.56 421.71 495.5 422.97C489.96 423.33 483.99 423.25 478.59 421.85C475.13 420.95 472.25 419.63 468.7 419.5C488.45 429.49 511.27 426.4 528.67 413.13C533.66 409.33 542.44 402.1 542.5 395.63ZM546.5 398.93C545.65 401.25 544.8 403.56 543.95 405.88C550.83 405.88 557.72 405.88 564.6 405.88C563.24 403.56 561.87 401.25 560.5 398.93C555.83 398.93 551.17 398.93 546.5 398.93ZM459.18 412.5C455.84 409.55 451.55 403.69 447.64 402.5C450.72 406.43 454.39 411.16 459.18 412.5ZM425.5 404.07C420.97 409.34 421.37 418.21 418.18 424.32C427.28 424.32 436.38 424.32 445.48 424.32C445.65 417.77 446.55 410.11 443.83 404.07C437.72 404.07 431.61 404.07 425.5 404.07ZM538.5 408.03C521.19 430.63 486.83 433.26 463.19 420.33C457.78 417.37 453.8 413.04 449.5 408.86C448.98 411.76 448.15 416.3 449.45 419.1C451.35 423.21 462.55 426.57 466.61 427.78C484.34 433.02 502.04 431.98 519.81 427.42C530.27 424.73 541.7 421.04 538.5 408.03ZM564.5 407.95C557.05 407.95 549.59 407.95 542.14 407.95C542.14 413.24 542.14 418.53 542.14 423.82C551.63 423.82 561.12 423.82 570.6 423.82C568.57 418.53 566.53 413.24 564.5 407.95ZM459.5 412.8C459.31 413.03 459.12 413.27 458.92 413.5C459.12 413.67 459.31 413.85 459.5 414.02C459.74 414.18 459.99 414.34 460.23 414.5C460.32 414.58 460.41 414.66 460.5 414.74C461.06 414.66 461.63 414.58 462.19 414.5C461.73 414.17 461.27 413.83 460.82 413.5C460.71 413.39 460.61 413.28 460.5 413.18C460.17 413.05 459.83 412.92 459.5 412.8ZM467.16 417.5C465.35 416.83 463.53 416.17 461.72 415.5C463.53 416.17 465.35 416.83 467.16 417.5ZM448.5 423.19C445.88 436.46 455.65 439.66 466.46 442.12C484.49 446.22 502.38 445.49 520.45 441.82C530.84 439.71 541.92 435.61 538.5 422.97C530.91 430.21 519.63 432.87 509.5 434.02C503.84 434.67 498.21 435.79 492.5 435.96C478.78 436.39 458.68 433.04 448.5 423.19ZM444.57 426.5C440.02 427.17 435.46 427.83 430.91 428.5C437.44 443.95 447.32 460.61 459.5 472.31C459.72 470.77 459.52 468.12 460.26 466.76C462.05 463.44 472.36 464.54 475.69 464.45C489.29 464.07 502.89 464.15 516.5 463.96C520 463.91 531.8 462.46 533.77 465.69C534.33 466.63 534.28 468.89 534.5 470.01C543.23 460.48 560.25 441.16 559.5 427.78C553.83 427.14 548.17 426.5 542.5 425.86C542.13 427.81 542.33 430.26 541.53 432.08C537.1 442.14 521.76 444.23 512.52 446.12C497.83 449.11 482.81 448.61 468.26 445.34C461.26 443.77 453.4 441.64 448.43 436.08C445.64 432.96 446.11 429.92 444.57 426.5ZM428.74 428.87C423.9 428.87 419.05 428.87 414.21 428.87C417.58 444.84 433.48 467.97 445.1 479.42C448.91 483.17 453.77 489.17 459.04 490.5C459.04 485.5 459.04 480.5 459.04 475.5C456.36 471.19 450.92 466.59 447.55 461.94C440.06 451.59 433.44 440.79 428.74 428.87ZM574.41 428.55C570.22 428.55 566.03 428.55 561.84 428.55C559.51 438.46 555.85 448 549.88 456.33C546.96 460.4 543.65 464.06 540.18 467.67C538.58 469.34 535.09 471.57 534.27 473.72C532.96 477.16 533.68 488.31 534.5 491.93C540.31 484.18 548.27 478.36 554.43 470.91C564.3 458.95 571.87 443.83 574.41 428.55ZM411.5 429.02C382.46 445.85 353.43 462.67 324.39 479.5C324.79 484.88 328 490.16 330.59 494.88C336.77 506.16 344.5 516.82 353.5 526C357.56 530.15 361.99 535.24 367.5 537.22C376.52 531.65 385.14 525.37 393.96 519.47C397.56 517.06 401.83 512.95 406.05 513.5C405.13 514.4 403.63 515.44 403.2 516.69C401.98 520.23 402.25 528.49 402.16 532.5C401.79 547.51 401.08 562.5 400.97 577.5C402.78 578.91 405.56 579.73 406.96 581.57C410.97 586.89 402.4 593.9 401.99 598.52C401.79 600.81 403.07 603.11 402.99 605.5C402.72 613.43 399.67 617.55 394.02 622.5C393.51 632.3 393.01 642.1 392.5 651.9C399.15 651.82 403.36 645.58 406.96 640.48C408.92 637.7 417.54 622.08 417.87 619.44C418.16 617.01 415.82 611.54 416.01 607.5C416.49 597.48 424.45 588.99 434.5 588.06C450.79 586.56 460.14 606.13 452.75 619.25C447.51 628.55 440.04 628.6 430.72 629.5C423.43 640.26 420.7 654.72 411.63 664.15C405.15 670.88 398.53 672.73 390.51 676.5C390.03 684.01 390.24 692.06 388.95 699.46C384.79 723.24 378.87 747.14 373.21 770.64C363.13 812.53 353.9 854.62 343.94 896.5C340.39 911.44 336.8 926.41 333.76 941.44C332.94 945.48 329.28 955.01 330.79 958.62C333.18 964.34 342.23 968.03 347.66 969.8C361.66 974.39 376.76 977.14 391.5 976.08C395.24 975.82 405.93 974.29 408.92 972.39C411.26 970.9 413 966.02 414.11 963.59C418.07 954.94 421.5 945.93 424.45 936.9C429.05 922.84 433.44 908.84 436.91 894.46C441.86 873.93 445.33 853.35 451.56 833.11C457.57 813.58 470.85 779.03 494.67 777.35C502.38 776.81 508.73 782.71 513.46 788.06C524.71 800.83 531.42 818.2 536.31 834.26C546.6 868.06 551.23 903.06 562.99 936.53C565.99 945.05 569.06 953.5 572.76 961.74C573.96 964.42 575.53 969.64 578.08 971.35C582.1 974.04 590.73 974.77 595.45 975.31C610.22 976.99 629.53 973.59 643.32 967.82C647.45 966.09 655.74 962.33 656.83 957.37C657.75 953.21 655 947.55 654.16 943.45C651.35 929.79 648.34 916.07 644.89 902.53C639.81 882.64 635.95 862.45 630.97 842.53C624.34 815.98 617.94 789.21 612.22 762.43C609.65 750.4 606.78 738.45 604.2 726.43C602.62 719.07 601.67 711.47 599.5 704.28C592.1 708.77 583.44 711.23 575.75 715.25C566.15 720.27 557.1 727.29 549.65 735.16C541.82 743.42 534.82 752.61 528.68 762.19C526.9 764.97 524.87 768.08 523.64 771.15C523.31 771.97 523.26 773.59 522.73 774.24C522.46 774.56 521.84 774.29 521.5 774.55C520.86 765.6 529.02 756.27 533.93 749.36C544.29 734.79 557.39 722.22 573.16 713.63C581.42 709.13 591.27 707.28 599.2 702.5C598.15 690.83 597.1 679.17 596.05 667.5C591.97 666.72 587.72 667.02 583.62 665.85C559.27 658.89 533.18 639.63 528.23 613.35C526.03 601.64 528.04 590.2 527.92 578.5C511.6 566.36 520.53 540.09 540.38 542.3C554.19 543.84 561.87 557.61 556.67 570.24C554.24 576.12 548.49 577.74 544.18 581.5C543.86 587.64 543.27 594.34 544.27 600.44C547.79 622 561.16 639.93 582.47 645.99C586.33 647.09 590.73 648.55 594.74 648.5C594.14 639.5 593.54 630.5 592.94 621.5C586.9 616.58 584.21 611.62 584.51 603.5C584.58 601.67 585.75 599.23 585.56 597.53C584.98 592.32 577.62 590.57 580.5 580.73C582.28 579.65 584.07 578.58 585.85 577.5C587.56 562.69 585.11 547.36 584.96 532.5C584.92 528.5 585.72 519.67 584.35 516.2C583.81 514.83 582.11 513.64 581.18 512.5C585.48 512.35 589.95 516.62 593.55 518.99C602.54 524.89 611.16 531.6 620.5 536.94C635.17 526.05 646.4 511.88 655.66 496.22C658.45 491.51 662.96 484.79 662.5 479.24C633.83 462.53 605.17 445.82 576.5 429.11C573.01 444.78 566.79 460.28 556.1 472.63C551.31 478.15 546.03 483.22 540.67 488.18C538.84 489.88 535.48 491.74 534.14 493.73C533.11 495.28 533.01 498.38 532.5 500.14C528.37 500.65 524.24 501.16 520.12 501.67C520.12 506.03 520.12 510.38 520.12 514.73C523.88 514.73 527.64 514.73 531.4 514.73C531.4 510.45 531.4 506.16 531.4 501.88C531.78 502.26 532.52 502.2 532.81 502.64C534.45 505.13 534.15 513.99 533.5 516.75C529.82 517.18 525.03 516.03 521.53 517.04C519.77 517.55 519.48 519.02 517.5 519.42C512.01 520.51 505.12 519.47 499.5 519.5C485.73 519.56 471.64 519.31 458.1 519.5C458.1 510.5 458.1 501.5 458.1 492.5C437.46 482.39 423.86 459.69 415.14 439.32C413.69 435.93 413.12 432.31 411.5 429.02ZM531.08 466.13C507.95 466.13 484.83 466.13 461.7 466.13C461.17 483.08 460.65 500.04 460.12 516.99C479.28 516.99 498.45 516.99 517.62 516.99C517.62 511.33 517.62 505.68 517.62 500.02C521.35 497.99 526.71 498.59 531.08 498.32C531.08 487.59 531.08 476.86 531.08 466.13ZM665.5 483.09C657.67 503.44 644.99 522.32 628.27 536.5C631.23 537.11 634.27 536.92 637.27 537.38C652.18 539.63 669.29 545.57 680.93 555.56C683.49 557.76 685.34 560.55 687.5 563.11C693.15 557.09 702.61 544.65 703.83 536.45C706.48 518.58 690.62 504.28 678.88 493.6C674.79 489.88 670.44 485.61 665.5 483.09ZM321.5 483.67C305.21 494.79 279.11 517.19 284.07 539.45C285.75 546.94 294.57 557.57 299.5 563.48C302.26 561.13 304.2 557.91 307.11 555.6C314.45 549.78 323.9 545.29 332.71 542.26C341.04 539.4 350.06 539.24 358.25 536.5C346.66 526.06 337.03 513.76 329.27 500.25C326.22 494.93 324.52 488.9 321.5 483.67ZM587.5 517.95C588.17 537.25 588.83 556.55 589.5 575.85C593.5 576.44 597.5 577.03 601.5 577.62C612.16 569.85 623.64 551.3 616.6 538.81C615.28 536.48 611.3 534.85 609.16 533.34C601.93 528.27 594.53 523.29 587.5 517.95ZM399.5 518.98C389.83 525.73 380.17 532.48 370.5 539.23C370.5 543.1 367.48 543.08 368.17 548.47C369.27 557.01 373.86 565.6 379.46 572.06C380.96 573.78 383.26 577.3 385.6 577.81C388.08 578.35 395.27 576.85 398.04 576.5C399.01 565.54 398.12 554.43 399.12 543.5C399.83 535.82 401.51 526.41 399.5 518.98ZM463.75 537.37C489.46 533.2 490.79 575.73 464.5 576.05C440.74 576.33 441.76 540.94 463.75 537.37ZM366.43 542.5C360.95 538.63 352.43 541.16 346.36 542.77C332.57 546.41 315.5 552.14 305.97 563.44C302.92 567.05 299.03 572.59 299.03 577.5C299.03 586.67 307.65 595.81 313.43 602.08C330.65 620.77 353.65 630.39 377.5 637.77C382.29 634.68 387.07 631.59 391.86 628.5C392.09 626.09 391.53 622.94 392.21 620.66C392.85 618.5 395.95 616.57 397.32 614.79C401.07 609.87 401.3 602.45 398.17 597.5C400.42 592.45 404.29 589.23 405 583.5C396.6 575.75 391.75 581.78 384.54 579C372.42 574.34 364.85 554.25 366.43 542.5ZM461.78 540.37C442.4 544.94 445.88 578.28 467.47 573.98C488.52 569.78 485.64 534.76 461.78 540.37ZM609.5 637.24C633.63 629.96 656.4 620.05 673.99 601.5C679.4 595.78 685.93 588.27 687.76 580.37C689.28 573.81 685.22 567.23 681.07 562.42C671.86 551.75 652.93 544.83 639.53 541.91C633.77 540.65 627.16 538.71 621.5 541.09C621.18 543.44 621.75 545.69 621.52 548.13C620.66 557.43 615.93 566.34 609.56 573.04C607.57 575.13 605.17 577.94 602.26 578.73C598.27 579.8 594.48 577.57 590.56 578.21C587.79 578.66 584.79 580.91 582.59 582.5C582.5 588.25 586.6 591.72 589.08 596.5C588.61 597.72 587.73 598.6 587.29 599.72C585.78 603.6 587.41 610.47 589.73 613.76C591.24 615.9 594.35 617.73 595.33 620.15C596.34 622.65 593.98 625.7 596.11 628.35C599.21 632.17 605.66 634.05 609.5 637.24ZM545.26 577.5C550.91 577.57 554.96 570.45 556 565.5C557.8 556.92 552.42 547.12 543.38 545.31C523.96 541.43 513.14 567.39 528.5 575.96C528.97 572.82 527.05 573.02 526.39 570.26C524.47 562.31 529.69 551.99 538.5 552.1C549.65 552.24 552.8 562 549.86 571.38C548.95 574.28 546.34 574.86 545.26 577.5ZM546.5 572.97C549.3 569.34 550.27 562.21 547.32 558.22C544.43 554.3 535.68 553.22 532.14 556.62C530.19 558.49 529.67 560.99 529 563.49C528.3 566.1 528.1 567.79 528.5 570.48C534.27 572.51 540.43 572.69 546.5 572.97ZM530.5 574.51C527.88 588.24 527.84 609.23 533.22 622.28C543.45 647.09 576.72 668.91 603.59 664.5C606.12 659.98 605.73 656.49 603.5 651.96C594.6 650.55 585.5 649.38 576.89 646.57C556.91 640.03 543.97 618.69 542.12 598.5C541.35 590.08 543.04 582.64 544.25 574.51C539.67 574.51 535.08 574.51 530.5 574.51ZM432.74 626.5C450.44 632.68 461.47 605.02 446.01 593.48C434.6 584.97 418.61 595.32 418.19 608.5C418.11 610.83 418.94 613.08 419.5 615.31C424.19 611.57 428.85 597.37 436.34 599.15C440.46 600.12 443.45 605.35 446.93 607.5C446.92 612.63 445.59 618.5 440.57 621.1C439.13 621.84 437.42 621.79 436.08 622.62C434.83 623.38 433.71 625.4 432.74 626.5ZM434.5 601.15C429.7 604.16 427.37 609.23 424.43 613.9C418.11 623.91 414.29 635.16 407.19 644.7C403.16 650.13 396.83 657.98 389.5 653.86C388.39 647.05 387.97 641.38 388.78 634.5C386.23 635.83 383.68 637.17 381.13 638.5C381 644.19 379.72 649.82 380 655.5C380.12 658 380.55 660.87 381.25 663.28C385.77 679.04 399.33 671.24 407.88 664.36C417.37 656.73 422.64 637.54 429.47 626.91C435.6 617.35 442.24 621.08 444.5 608.4C441.17 605.98 437.83 603.56 434.5 601.15ZM467.5 773.08C461.94 768.06 458.57 760.32 454.34 754.16C447.05 743.55 439.44 733.26 430.63 723.84C423.7 716.43 415.76 709.79 407.32 704.17C403.06 701.33 397.07 699.89 393.62 696.5C402.41 696.02 411.48 704.2 418.12 709.38C433.95 721.71 446.42 737.5 457.12 754.35C460.62 759.87 466.13 766.81 467.5 773.08ZM651 969.5C646.68 970.87 642.68 973.35 638.2 974.63C622 979.25 605.84 981.57 589 979.5C592.46 992.57 577.08 1006.53 583.31 1021.23C585.6 1026.62 592.05 1033.77 597.78 1035.63C601.65 1036.89 606.41 1036.33 610.46 1037.13C627.95 1040.55 645.8 1038.28 663.5 1038.16C670.16 1038.12 676.84 1037.96 683.5 1037.96C686.8 1037.95 688.92 1039.35 691.76 1037.27C700.03 1031.22 695.24 1020.72 690.46 1014.05C678.96 998.02 659.17 987.81 651 969.5ZM336.5 970.02C327.6 988.43 308.19 998.62 296.59 1015.12C290.48 1023.8 287.48 1033.35 298.32 1039.5C299.45 1039.19 300.33 1038.42 301.54 1038.22C303.74 1037.85 306.29 1038.63 308.5 1038.76C313.15 1039.04 317.85 1038.89 322.5 1038.99C340.34 1039.37 357.78 1040.02 375.5 1038.05C380.02 1037.54 386.05 1037.48 390.29 1035.85C396.19 1033.59 403.62 1025.69 404.85 1019.45C406.89 1009.11 401.76 1000.06 399.15 990.41C398.21 986.97 398.03 983.44 397.5 979.98C376.72 982.5 355.39 979.23 336.5 970.02Z" fill-rule="evenodd" stroke-width="0.25" stroke-linejoin="round" style="fill: #78ff0a; stroke: #78ff0a;"/>
         </svg>
       </svg>
+      <!-- badge: uses the same radiationTooHigh boolean as the rays -->
+      <!-- radiation symbol (trefoil), drawn in green to match the theme.
+           viewBox is cropped to the symbol's edges and the svg is sized to 100%
+           so the symbol fills the whole badge circle -->
+      <div class="badge" aria-hidden="true">
+        <svg viewBox="60 60 492 492" style="width: 100%; height: 100%; display: block;"><path d="M296.1 61.19C386.91 56.2 473.34 106.69 518.79 184.6C537.53 216.73 547.51 252.93 550.16 289.79C551.47 308.08 551.22 327.08 547.89 345.12C537.03 403.97 507.34 458.95 459.6 496.79C445.69 507.82 430.82 516.68 415.28 525.13C385.04 541.57 349.18 549.39 314.92 550.84C283.65 552.16 251.67 546.98 222.58 536.2C128.14 501.22 63.18 412.57 61.05 311.59C60.53 287.29 63.84 262.91 70.11 239.64C80.43 201.38 101.66 165.94 128.84 136.95C147.71 116.82 170.58 99.93 195.21 87.65C226.94 71.83 260.59 63.14 296.1 61.19ZM301.07 81.87C267.44 83.07 235.68 90.39 205.56 105.28C183.08 116.4 161.63 131.89 144.46 150.32C119.57 177.06 99.9 208.87 90.18 244.09C66.87 328.55 93.35 421.03 161.41 477.68C179.28 492.55 199.07 504.17 220.31 513.3C252.13 526.98 286.82 531.53 321.65 529.96C336.28 529.31 351.56 526.48 365.41 522.25C394.44 513.36 421.58 500.92 445.62 481.72C507.84 432.05 540.61 350.39 527.88 271.59C515 191.84 465.17 131.3 391.68 98.7C363.82 86.34 331.78 80.77 301.07 81.87ZM204.28 129.77C227.89 170.82 251.49 211.86 275.1 252.9C273.7 254.78 271.15 255.75 269.26 257.25C264.43 261.1 259.71 265.31 256.28 270.52C251.71 277.46 247.78 285.1 246.11 293.21C245.25 297.36 245.65 302.01 244.52 305.98C197.18 305.98 149.84 305.98 102.5 305.98C100.57 302.1 102.08 294.56 102.65 290.32C104.12 279.3 105.36 268.7 107.85 257.92C117.4 216.7 140.96 178.39 173.49 150.89C179.94 145.44 186.58 140.49 193.57 135.78C196.59 133.74 200.63 130.15 204.28 129.77ZM408.28 129.53C419.2 134.52 429.41 143.14 438.51 150.88C471.11 178.64 494.39 216.63 504.17 257.91C506.67 268.5 507.91 278.94 509.29 289.79C509.87 294.38 511.37 301.68 509.53 305.98C462.18 305.98 414.83 305.98 367.48 305.98C366.3 301.82 366.93 297.05 365.83 292.75C363.84 284.91 360.61 277.1 355.79 270.45C352.68 266.17 348.96 261.84 344.7 258.65C342.3 256.86 338.08 254.89 336.78 252.35C360.61 211.41 384.45 170.47 408.28 129.53ZM302.25 265.18C326.55 262.19 348.26 284.4 346.94 308.24C345.82 328.56 328.91 345.32 308.79 346.91C284.79 348.8 262.18 326.62 265.18 302.25C267.59 282.62 282.63 267.59 302.25 265.18ZM336.63 359.1C360.35 400.27 384.06 441.44 407.78 482.61C403.87 484.35 400.22 486.89 396.37 488.79C384.65 494.58 372.14 499.44 359.56 502.84C320.38 513.44 277.85 512.1 239.64 498.87C227.24 494.57 215.99 488.29 204.19 482.61C227.88 441.45 251.57 400.29 275.26 359.12C277.71 359.16 280.82 361.76 283.19 362.67C288.43 364.67 293.95 366.25 299.55 366.92C308.28 367.96 317.87 366.67 326.03 363.76C329.54 362.5 333.07 359.85 336.63 359.1Z" fill-rule="evenodd" style="fill: #78ff0a; stroke: none;"/></svg>
+      </div>
     </section>
       <!-- reports should tie back to a website and be in a loop so they update -->
     <!-- Reports (right column) -->
     <section class="reports" aria-labelledby="reports-title">
-  <h2 id="reports-title">Reports</h2>
-  <div class="rail" id="charts"></div>
-</section>
+      <h2 id="reports-title">Reports</h2>
+
+      <div class="rail">
+        <figure class="chart">
+          <svg viewBox="0 0 200 80" preserveAspectRatio="none" role="img" aria-label="Revenue, trending up">
+            <path class="fill" d="M0 70 L30 58 L60 62 L90 34 L120 44 L150 22 L180 30 L200 20 L200 80 L0 80 Z"/>
+            <polyline class="line" points="0,70 30,58 60,62 90,34 120,44 150,22 180,30 200,20"/>
+          </svg>
+          <figcaption>Revenue</figcaption>
+        </figure>
+
+        <figure class="chart">
+          <svg viewBox="0 0 200 80" preserveAspectRatio="none" role="img" aria-label="Orders by region, bar chart">
+            <g class="bars">
+              <rect x="10"  y="30" width="22" height="50"/>
+              <rect x="44"  y="46" width="22" height="34"/>
+              <rect x="78"  y="18" width="22" height="62"/>
+              <rect x="112" y="40" width="22" height="40"/>
+              <rect x="146" y="10" width="22" height="70"/>
+            </g>
+          </svg>
+          <figcaption>Orders by region</figcaption>
+        </figure>
+
+        <figure class="chart">
+          <svg viewBox="0 0 200 80" preserveAspectRatio="none" role="img" aria-label="Active users, fluctuating">
+            <path class="fill" d="M0 60 L25 40 L50 50 L75 24 L100 38 L125 20 L150 46 L175 34 L200 44 L200 80 L0 80 Z"/>
+            <polyline class="line" points="0,60 25,40 50,50 75,24 100,38 125,20 150,46 175,34 200,44"/>
+          </svg>
+          <figcaption>Active users</figcaption>
+        </figure>
+
+        <figure class="chart">
+          <svg viewBox="0 0 200 80" preserveAspectRatio="none" role="img" aria-label="Support backlog, trending down">
+            <path class="fill" d="M0 14 L30 26 L60 22 L90 44 L120 40 L150 58 L180 56 L200 66 L200 80 L0 80 Z"/>
+            <polyline class="line" points="0,14 30,26 60,22 90,44 120,40 150,58 180,56 200,66"/>
+          </svg>
+          <figcaption>Support backlog</figcaption>
+        </figure>
+      </div>
+    </section>
 
     <!-- Quick links (full-width bottom bar) -->
-    <!-- Links with data-open switch screens on this page.
-         Links with a real web address open that website in a new tab. -->
+    <!-- Each link switches to a screen on this page (each has a back button) -->
     <nav class="quick-links" aria-labelledby="links-title">
       <h2 id="links-title">Quick Links</h2>
       <ul>
         <li><a href="#" data-open="calendar">Calendar</a></li>
-        <li><a href="https://mail.google.com" target="_blank" rel="noopener">Inbox</a></li>
         <li><a href="#" data-open="exercise">Exercise</a></li>
-        <li><a href="https://www.nasa.gov/news-release/" target="_blank" rel="noopener">Company news</a></li>
-        <li><a href="#" data-open="support">Tech support</a></li>
         <li><a href="#" data-open="timer">Timer</a></li>
+        <li><a href="#" data-open="cpr">CPR</a></li>
+        <li><a href="#" data-open="firstaid">First aid</a></li>
       </ul>
     </nav>
 
   </main>
+
+  <!-- ===== Tab: Space Radiation ===== -->
+  <section class="task-view view" data-view="radiation" aria-labelledby="radiation-title">
+    <h1 id="radiation-title">Space Radiation</h1>
+    <div class="reading-grid">
+      <div class="reading-card">
+        <div class="reading-label">Current radiation level</div>
+        <div class="reading-value" id="rad-level">--</div>
+        <span class="reading-status" id="rad-status">--</span>
+      </div>
+      <div class="reading-card">
+        <div class="reading-label">Warning threshold</div>
+        <div class="reading-value" id="rad-threshold">--</div>
+        <span class="reading-status">Set in the script</span>
+      </div>
+      <div class="reading-card">
+        <div class="reading-label">How far over or under the threshold</div>
+        <div class="reading-value" id="rad-diff">--</div>
+        <span class="reading-status" id="rad-diff-note">--</span>
+      </div>
+    </div>
+    <p class="placeholder-note">These use the same placeholder numbers as the rays and badge (RADIATION_THRESHOLD and radiationLevel in the script). Change them there and this tab updates too.</p>
+  </section>
+
+  <!-- ===== Tab: Wellness Check ===== -->
+  <!-- PLACEHOLDER READINGS: replace with real values when available -->
+  <section class="task-view view" data-view="wellness" aria-labelledby="wellness-title">
+    <h1 id="wellness-title">Wellness Check</h1>
+    <div class="reading-grid">
+        <div class="reading-card">
+          <div class="reading-label">Heart rate</div>
+          <div class="reading-value">72<span class="reading-unit">bpm</span></div>
+          <span class="reading-status">Normal</span>
+        </div>
+        <div class="reading-card">
+          <div class="reading-label">Blood pressure</div>
+          <div class="reading-value">118/76<span class="reading-unit">mmHg</span></div>
+          <span class="reading-status">Normal</span>
+        </div>
+        <div class="reading-card">
+          <div class="reading-label">Blood oxygen</div>
+          <div class="reading-value">98<span class="reading-unit">%</span></div>
+          <span class="reading-status">Normal</span>
+        </div>
+        <div class="reading-card">
+          <div class="reading-label">Body temperature</div>
+          <div class="reading-value">98.4<span class="reading-unit">°F</span></div>
+          <span class="reading-status">Normal</span>
+        </div>
+        <div class="reading-card">
+          <div class="reading-label">Breathing rate</div>
+          <div class="reading-value">14<span class="reading-unit">breaths/min</span></div>
+          <span class="reading-status">Normal</span>
+        </div>
+        <div class="reading-card">
+          <div class="reading-label">Sleep last night</div>
+          <div class="reading-value">7.2<span class="reading-unit">hours</span></div>
+          <span class="reading-status">Normal</span>
+        </div>
+    </div>
+    <p class="placeholder-note">Placeholder readings. Replace them with real numbers when you have them.</p>
+  </section>
+
+  <!-- ===== Tab: Internals (spacecraft systems) ===== -->
+  <!-- PLACEHOLDER READINGS: replace with real values when available -->
+  <section class="task-view view" data-view="internals" aria-labelledby="internals-title">
+    <h1 id="internals-title">Internals</h1>
+    <div class="reading-grid">
+        <div class="reading-card">
+          <div class="reading-label">Power</div>
+          <div class="reading-value">87<span class="reading-unit">%</span></div>
+          <span class="reading-status">Normal</span>
+        </div>
+        <div class="reading-card">
+          <div class="reading-label">Water supply</div>
+          <div class="reading-value">64<span class="reading-unit">%</span></div>
+          <span class="reading-status">Normal</span>
+        </div>
+        <div class="reading-card">
+          <div class="reading-label">Oxygen generator</div>
+          <div class="reading-value">On<span class="reading-unit"></span></div>
+          <span class="reading-status">Normal</span>
+        </div>
+        <div class="reading-card">
+          <div class="reading-label">CO₂ scrubber</div>
+          <div class="reading-value">On<span class="reading-unit"></span></div>
+          <span class="reading-status">Normal</span>
+        </div>
+        <div class="reading-card">
+          <div class="reading-label">Cooling system</div>
+          <div class="reading-value">On<span class="reading-unit"></span></div>
+          <span class="reading-status">Normal</span>
+        </div>
+        <div class="reading-card">
+          <div class="reading-label">Hull</div>
+          <div class="reading-value">Sealed<span class="reading-unit"></span></div>
+          <span class="reading-status">Normal</span>
+        </div>
+    </div>
+    <p class="placeholder-note">Placeholder readings. Replace them with real numbers when you have them.</p>
+  </section>
+
+  <!-- ===== Tab: Ambient Conditions (cabin environment) ===== -->
+  <!-- PLACEHOLDER READINGS: replace with real values when available -->
+  <section class="task-view view" data-view="ambient" aria-labelledby="ambient-title">
+    <h1 id="ambient-title">Ambient Conditions</h1>
+    <div class="reading-grid">
+        <div class="reading-card">
+          <div class="reading-label">Cabin temperature</div>
+          <div class="reading-value">72<span class="reading-unit">°F</span></div>
+          <span class="reading-status">Normal</span>
+        </div>
+        <div class="reading-card">
+          <div class="reading-label">Humidity</div>
+          <div class="reading-value">45<span class="reading-unit">%</span></div>
+          <span class="reading-status">Normal</span>
+        </div>
+        <div class="reading-card">
+          <div class="reading-label">Cabin pressure</div>
+          <div class="reading-value">14.7<span class="reading-unit">psi</span></div>
+          <span class="reading-status">Normal</span>
+        </div>
+        <div class="reading-card">
+          <div class="reading-label">Oxygen</div>
+          <div class="reading-value">21<span class="reading-unit">%</span></div>
+          <span class="reading-status">Normal</span>
+        </div>
+        <div class="reading-card">
+          <div class="reading-label">CO₂</div>
+          <div class="reading-value">2,000<span class="reading-unit">ppm</span></div>
+          <span class="reading-status">Normal</span>
+        </div>
+        <div class="reading-card">
+          <div class="reading-label">Noise</div>
+          <div class="reading-value">58<span class="reading-unit">dB</span></div>
+          <span class="reading-status">Normal</span>
+        </div>
+    </div>
+    <p class="placeholder-note">Placeholder readings. Replace them with real numbers when you have them.</p>
+  </section>
 
   <!-- ===== Task view (hidden until a task is clicked) ===== -->
   <section class="task-view view" data-view="tasks" aria-labelledby="all-tasks-title">
@@ -475,8 +625,17 @@
 
     <!-- List tab -->
     <div id="list-panel" role="tabpanel">
-      <!-- Filled in by tasks.js. Click a test to start it. -->
-      <ul class="task-list" id="task-list"></ul>
+      <ul class="task-list">
+        <li data-task="review-draft"><label><input type="checkbox" data-task="review-draft"> Review draft proposal</label><span class="tag">Today</span></li>
+        <li data-task="vendor-quote"><label><input type="checkbox" data-task="vendor-quote"> Reply to vendor quote</label><span class="tag">Today</span></li>
+        <li data-task="standup"><label><input type="checkbox" data-task="standup"> Prep Thursday standup</label><span class="tag">Today</span></li>
+        <li data-task="onboarding"><label><input type="checkbox" data-task="onboarding"> Update onboarding guide</label><span class="tag">This week</span></li>
+        <li data-task="q4-budget"><label><input type="checkbox" data-task="q4-budget"> Approve Q4 budget lines</label><span class="tag">This week</span></li>
+        <li data-task="offsite"><label><input type="checkbox" data-task="offsite"> Book team offsite venue</label><span class="tag">This week</span></li>
+        <li data-task="legal"><label><input type="checkbox" data-task="legal"> Legal sign-off on contract</label><span class="tag">Waiting on others</span></li>
+        <li data-task="design-review"><label><input type="checkbox" data-task="design-review"> Design review comments</label><span class="tag">Waiting on others</span></li>
+        <li data-task="it-access"><label><input type="checkbox" data-task="it-access"> Access request from IT</label><span class="tag">Waiting on others</span></li>
+      </ul>
     </div>
 
     <!-- Calendar tab (filled in by the script below) -->
@@ -492,99 +651,162 @@
     </div>
   </section>
 
-  <!-- ===== Questionnaire view: walks through one test step by step (filled in by tasks.js) ===== -->
-  <section class="task-view view" data-view="questionnaire" aria-labelledby="q-title">
-    <button type="button" class="back-btn">&larr; Back to dashboard</button>
-    <p class="q-kicker" id="q-kicker"></p>
-    <h1 id="q-title">Test</h1>
-    <div class="q-progress" aria-hidden="true"><div class="q-progress-bar" id="q-bar"></div></div>
-    <p class="q-count" id="q-count"></p>
-    <div class="q-card" id="q-body" aria-live="polite"></div>
-    <div class="q-nav">
-      <button type="button" class="q-btn secondary" id="q-prev">Back</button>
-      <button type="button" class="q-btn" id="q-next">Next</button>
-    </div>
-  </section>
-
-  <!-- ===== Exercise view: key points from Mayo Clinic's stretching guide ===== -->
+  <!-- ===== Exercise view: zero-gravity exercise (ISS) ===== -->
   <section class="task-view view" data-view="exercise" aria-labelledby="exercise-title">
     <button type="button" class="back-btn">&larr; Back to dashboard</button>
-    <h1 id="exercise-title">Basic Stretches</h1>
-    <p class="intro">Stretching can make you more flexible and help your joints move through their full range. Here are the main points from Mayo Clinic's guide.</p>
+    <h1 id="exercise-title">Zero-Gravity Exercise</h1>
+    <p class="intro">Without gravity, bones and muscles weaken. Astronauts on the International Space Station (ISS) work out about two hours a day on machines built for weightlessness. [1][2]</p>
 
     <div class="tips">
-      <h2>Stretch safely</h2>
+      <h2>How astronauts train</h2>
       <ul>
-        <li>Warm up first with 5 to 10 minutes of light activity, like walking. Stretching after a workout is usually best.</li>
-        <li>Move slowly and gently. Don't bounce, and keep breathing.</li>
-        <li>Stretch until you feel a slight pull, then hold for about 30 seconds.</li>
-        <li>Do each stretch 2 to 4 times on each side.</li>
-        <li>Aim for at least 2 to 3 days a week.</li>
-        <li>Pain means you've gone too far, so ease off.</li>
-        <li>If you have an injury or health condition, ask a doctor or physical therapist which stretches are right for you.</li>
+        <li>Plan on about two hours of exercise a day, mixing strength training and cardio. [1][2]</li>
+        <li>Strap in first. The machines use harnesses, clip-in shoes and hand grips so you don't float away mid-workout. [2]</li>
+        <li>Short, hard workouts work too. NASA found that shorter, higher-intensity sessions gave results similar to longer ones. [1]</li>
+        <li>Results vary from person to person, so routines are set by an exercise specialist. [1][2]</li>
       </ul>
     </div>
 
     <div class="stretch-grid">
       <article class="stretch-card">
-        <h3>Calf stretch</h3>
-        <p>Stand an arm's length from a wall with one foot behind the other. Bend your front knee forward, keeping your back leg straight and its heel on the floor.</p>
+        <h3>Squats (ARED machine)</h3>
+        <p>The ARED (Advanced Resistive Exercise Device) uses vacuum cylinders to create up to 272 kg (600 lb) of resistance, like lifting free weights. Set the resistance, position the bar on your shoulders and squat. [2]</p>
       </article>
       <article class="stretch-card">
-        <h3>Hamstring stretch</h3>
-        <p>Lie on the floor next to a doorway or wall. Rest one heel up on the wall with the knee slightly bent, then slowly straighten that leg.</p>
+        <h3>Deadlifts (ARED machine)</h3>
+        <p>Use the same ARED bar to lift from low to standing. This works the legs, hips and back, which helps keep bones strong. [2]</p>
       </article>
       <article class="stretch-card">
-        <h3>Quadriceps stretch</h3>
-        <p>Hold a wall for balance. Grab one ankle and gently pull your heel up behind you. Keep your knees together and your stomach tight.</p>
+        <h3>Heel raises (ARED machine)</h3>
+        <p>With the bar loaded, rise up onto your toes and lower back down. This works the calves, which barely get used when you're floating. [2]</p>
       </article>
       <article class="stretch-card">
-        <h3>Hip flexor stretch</h3>
-        <p>Kneel on one knee, with a folded towel under it, and put the other foot in front of you. Keep your back straight and lean your hips forward.</p>
+        <h3>Running (treadmill with harness)</h3>
+        <p>Put on the harness, which pulls your shoulders and hips down toward the belt. The pull starts at about 60% of your body weight and is raised to about 85% over the mission. Then run. [2]</p>
       </article>
       <article class="stretch-card">
-        <h3>Outer thigh (IT band) stretch</h3>
-        <p>Stand beside a wall for support. Cross one ankle over the other, then reach that same arm up and over toward the opposite side.</p>
-      </article>
-      <article class="stretch-card">
-        <h3>Knee-to-chest stretch</h3>
-        <p>Lie on your back and gently pull one knee toward your chest until you feel it in your lower back. Skip this one if you have osteoporosis.</p>
-      </article>
-      <article class="stretch-card">
-        <h3>Shoulder stretch</h3>
-        <p>Bring one arm across your body. Use your other arm to hold it just above or below the elbow.</p>
-      </article>
-      <article class="stretch-card">
-        <h3>Shoulder stretch with towel</h3>
-        <p>Hold a rolled towel behind your back with one hand above your head and one low. Pull up with the top hand so the lower hand slides up your back.</p>
-      </article>
-      <article class="stretch-card">
-        <h3>Neck stretch</h3>
-        <p>Tilt your head forward and a little to one side. Use the hand on that side to gently pull your head down.</p>
+        <h3>Cycling (CEVIS bike)</h3>
+        <p>The space bike has no seat. Clip your cycling shoes into the pedals, hold the hand grips to stay in place, and pedal. A computer keeps the resistance steady. [1][2]</p>
       </article>
     </div>
 
-    <p class="source">
-      Source: Mayo Clinic Staff, “A guide to basic stretches,”
-      <a href="https://www.mayoclinic.org/healthy-lifestyle/fitness/in-depth/stretching/art-20546848" target="_blank" rel="noopener">mayoclinic.org</a>.
-      Summarized here; see the full guide for pictures and complete steps.
-    </p>
+    <div class="source">
+      <h2>Sources</h2>
+      <ol>
+        <li>NASA, “Astronaut Exercise,” <a href="https://www.nasa.gov/missions/station/iss-research/astronaut-exercise/" target="_blank" rel="noopener">nasa.gov</a></li>
+        <li>Canadian Space Agency, “Physical activity in space,” <a href="https://asc-csa.gc.ca/eng/astronauts/living-in-space/physical-activity-in-space.asp" target="_blank" rel="noopener">asc-csa.gc.ca</a></li>
+      </ol>
+    </div>
   </section>
 
-  <!-- ===== Tech support view ===== -->
-  <section class="task-view view" data-view="support" aria-labelledby="support-title">
+  <!-- ===== CPR view: CPR in zero gravity ===== -->
+  <section class="task-view view" data-view="cpr" aria-labelledby="cpr-title">
     <button type="button" class="back-btn">&larr; Back to dashboard</button>
-    <h1 id="support-title">Tech Support</h1>
+    <h1 id="cpr-title">CPR in Zero Gravity</h1>
+    <p class="intro">On Earth, gravity holds the patient down and lets you use your body weight. In weightlessness, pushing on someone's chest just pushes you both apart, so the rescuer has to anchor themselves first. [1][2]</p>
 
-    <div class="support-card">
-      <!-- PROP NUMBER: 555-01xx numbers are set aside for fake/example use -->
-      <a class="support-phone" href="tel:+13125550147">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-        </svg>
-        (312) 555-0147
-      </a>
-      <a class="support-link" href="https://www.nasa.gov" target="_blank" rel="noopener">Visit NASA.gov</a>
+    <div class="tips">
+      <h2>Before you start</h2>
+      <ul>
+        <li>On Earth? Call 911 and do standard CPR.</li>
+        <li>Alert the rest of the crew and the flight surgeons (space doctors) on the ground right away. [5]</li>
+        <li>Get the defibrillator (AED), which shocks the heart back into rhythm, from the medical kit. [6]</li>
+        <li>If you can, strap the patient to the folding patient restraint table so they don't drift away. [6]</li>
+      </ul>
+    </div>
+
+    <div class="tips">
+      <h2>Compression targets</h2>
+      <ul>
+        <li>Push about 5 to 6 cm (2 to 2.4 inches) deep. [1]</li>
+        <li>Aim for 100 to 120 compressions per minute. [3]</li>
+      </ul>
+    </div>
+
+    <div class="stretch-grid">
+      <article class="stretch-card">
+        <h3>Handstand method (NASA's current method)</h3>
+        <p>Float above the patient. Brace your legs against the wall or ceiling of the spacecraft, then push down on their chest with straight arms, like doing a handstand on it. Use this when there's a surface to push your feet against. [1]</p>
+      </article>
+      <article class="stretch-card">
+        <h3>Evetts-Russomano method (open space)</h3>
+        <p>Use this when there's no wall close enough to brace against. Wrap your left leg over the patient's right shoulder and your right leg around their waist, and cross your ankles behind their back. That locks you to their body so you can do compressions. [4]</p>
+      </article>
+      <article class="stretch-card">
+        <h3>Reverse bear hug</h3>
+        <p>A third hands-only method, done from behind the patient. In testing, it and the Evetts-Russomano method did not push deep enough. [1]</p>
+      </article>
+      <article class="stretch-card">
+        <h3>Machine CPR (newer research)</h3>
+        <p>A 2025 study in simulated weightlessness found that a mechanical piston device reached the target depth. The handstand method averaged about 3.5 cm, which is too shallow. Researchers hope future space guidelines include the device. [1]</p>
+      </article>
+    </div>
+
+    <p class="disclaimer">This page is a quick reference, not training. Take a certified CPR course to learn hands-on.</p>
+
+    <div class="source">
+      <h2>Sources</h2>
+      <ol>
+        <li>European Society of Cardiology, “Cardiac arrest in space: new research shows that automatic chest compressions are more effective for CPR…” (2025), <a href="https://www.escardio.org/news/press/press-releases/cardiac-arrest-in-space-new-research-shows-that-automatic-chest-compressions-are-more-effective-for-cpr-when-both-rescuer-and-patient-are-floating-in-microgravity/" target="_blank" rel="noopener">escardio.org</a></li>
+        <li>CNN via WRAL, “What happens if astronauts get sick in space?” <a href="https://www.wral.com/what-happens-if-astronauts-get-sick-in-space-/16775540/" target="_blank" rel="noopener">wral.com</a></li>
+        <li>Discover Magazine, “CPR in Space – How Can We Save a Life Without Gravity?” <a href="https://www.discovermagazine.com/cpr-in-space-how-to-save-a-life-without-gravity-47972" target="_blank" rel="noopener">discovermagazine.com</a></li>
+        <li>InnovaSpace, on the Evetts-Russomano technique, <a href="https://www.innovaspace.org/blog/archives/06-2017" target="_blank" rel="noopener">innovaspace.org</a></li>
+        <li>NASA, “FAQ: The Real Story About Astronaut Health Care in Space,” <a href="https://www.nasa.gov/missions/station/faq-the-real-story-about-astronaut-health-care-in-space" target="_blank" rel="noopener">nasa.gov</a></li>
+        <li>Smithsonian Air &amp; Space, “Space Station ER,” <a href="https://www.smithsonianmag.com/air-space-magazine/space-station-er-180956246/" target="_blank" rel="noopener">smithsonianmag.com</a></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ===== First aid view: first aid in zero gravity ===== -->
+  <section class="task-view view" data-view="firstaid" aria-labelledby="firstaid-title">
+    <button type="button" class="back-btn">&larr; Back to dashboard</button>
+    <h1 id="firstaid-title">First Aid in Zero Gravity</h1>
+    <p class="intro">Every astronaut gets medical training and stays in touch with doctors on the ground. [1] The basics of first aid are the same as on Earth, but floating changes how you do them.</p>
+
+    <div class="tips">
+      <h2>First steps</h2>
+      <ul>
+        <li>Anchor yourself and the patient first. The station has a folding patient restraint table that also works as a stretcher. [3]</li>
+        <li>Contact the flight surgeons (space doctors) on the ground. They can talk you through treatment. [1][3]</li>
+        <li>Treat the biggest threat first: make sure the person can breathe, then stop any bleeding. [4]</li>
+      </ul>
+    </div>
+
+    <div class="stretch-grid">
+      <article class="stretch-card">
+        <h3>Bleeding</h3>
+        <p>Blood doesn't drip in weightlessness. It bubbles up into a dome over the wound, and drops can break off and float around the cabin. [3] Press firmly and keep pressing with a bandage or cloth, and pack deep wounds with gauze. [5] For life-threatening bleeding, use a tourniquet and clotting gauze early. [4]</p>
+      </article>
+      <article class="stretch-card">
+        <h3>Protect faces from floating blood</h3>
+        <p>Floating drops of blood can drift into the patient's eyes, nose and throat, so keep the wound covered while you work. [6]</p>
+      </article>
+      <article class="stretch-card">
+        <h3>What's in the medical kit</h3>
+        <p>The station has a first aid kit, a pharmacy (medicines), a defibrillator, a portable ultrasound and devices to help with breathing. [1][2][3]</p>
+      </article>
+      <article class="stretch-card">
+        <h3>Astronaut medical training</h3>
+        <p>Before flying, astronauts take about 40 hours of medical training. They learn skills like stitching a wound, pulling a tooth, giving a shot and reading an ultrasound. [2]</p>
+      </article>
+      <article class="stretch-card">
+        <h3>Serious injuries</h3>
+        <p>If someone needs urgent care the station can't give, the crew returns to Earth in the spacecraft they launched on. [1]</p>
+      </article>
+    </div>
+
+    <p class="disclaimer">This page is a quick reference, not training. On Earth, call 911 for emergencies and take a certified first aid course.</p>
+
+    <div class="source">
+      <h2>Sources</h2>
+      <ol>
+        <li>NASA, “FAQ: The Real Story About Astronaut Health Care in Space,” <a href="https://www.nasa.gov/missions/station/faq-the-real-story-about-astronaut-health-care-in-space" target="_blank" rel="noopener">nasa.gov</a></li>
+        <li>The Science Explorer, “What Happens If an Astronaut Gets Sick in Space?” <a href="https://www.thescienceexplorer.com/what-happens-if-an-astronaut-gets-sick-in-space-802" target="_blank" rel="noopener">thescienceexplorer.com</a></li>
+        <li>Smithsonian Air &amp; Space, “Space Station ER,” <a href="https://www.smithsonianmag.com/air-space-magazine/space-station-er-180956246/" target="_blank" rel="noopener">smithsonianmag.com</a></li>
+        <li>Kuypers et al., review of bleeding control in spaceflight, <i>Wilderness &amp; Environmental Medicine</i> (2023), <a href="https://pesquisa.bvsalud.org/sms/resource/pt/mdl-36906432" target="_blank" rel="noopener">abstract</a></li>
+        <li>NASA Kennedy Space Center, “Stop the Bleed,” <a href="https://www.nasa.gov/kennedy/stop-the-bleed/" target="_blank" rel="noopener">nasa.gov</a></li>
+        <li>Scientific American, “During Medical Emergencies on Deep-Space Flights Fluid-Filled Domes Could Stanch Bleeding,” <a href="https://www.scientificamerican.com/article/during-medical-emergencies-on-deep-space-flights-fluid-filled-domes-could-stanch-bleeding/" target="_blank" rel="noopener">scientificamerican.com</a></li>
+      </ol>
     </div>
   </section>
 
@@ -600,7 +822,6 @@
     </div>
   </section>
 
-  <script src="data.js"></script>
   <script>
     // ---- Radiation check ----
     // PLACEHOLDER NUMBERS: real levels haven't been decided yet.
@@ -613,20 +834,99 @@
     // Show the rays and badge only when radiationTooHigh is true
     document.body.classList.toggle("radiation-high", radiationTooHigh);
 
+    // Fill in the Space Radiation tab from the same numbers
+    document.getElementById("rad-level").textContent = radiationLevel;
+    document.getElementById("rad-threshold").textContent = RADIATION_THRESHOLD;
+    const radStatus = document.getElementById("rad-status");
+    radStatus.textContent = radiationTooHigh ? "Too high" : "Normal";
+    radStatus.classList.toggle("alert", radiationTooHigh);
+    const radDiff = radiationLevel - RADIATION_THRESHOLD;
+    document.getElementById("rad-diff").textContent = (radDiff > 0 ? "+" : "") + radDiff;
+    document.getElementById("rad-diff-note").textContent = radDiff > 0 ? "Over the threshold" : "At or under the threshold";
+
+
+    // ---- Due dates for the calendar ----
+    // PLACEHOLDER DUE DATES: how many days from today each task is due.
+    // 0 = today, 1 = tomorrow, and so on. Change these when real dates are known.
+    const DUE_IN_DAYS = {
+      "review-draft": 0,
+      "vendor-quote": 0,
+      "standup": 0,
+      "onboarding": 1,
+      "q4-budget": 2,
+      "offsite": 3,
+      "legal": 4,
+      "design-review": 6,
+      "it-access": 8
+    };
+
+    // Build the calendar's task info from the list, so names match
+    const today = new Date();
+    const tasks = Array.from(document.querySelectorAll(".task-list li")).map(function (item) {
+      const id = item.dataset.task;
+      return {
+        id: id,
+        name: item.querySelector("label").textContent.trim(),
+        due: new Date(today.getFullYear(), today.getMonth(), today.getDate() + (DUE_IN_DAYS[id] || 0))
+      };
+    });
+
 
     // ---- Switching screens ----
     // Shows the screen whose data-view matches the name, hides the rest
+    // Screens that show the tab bar at the top
+    const TAB_VIEWS = ["dashboard", "radiation", "wellness", "internals", "ambient"];
+
     function showView(name) {
       document.querySelectorAll(".view").forEach(function (view) {
         view.classList.toggle("active", view.dataset.view === name);
       });
+
+      // Tab bar: only on Home and the four tab screens; highlight the current tab
+      document.getElementById("top-tabs").hidden = !TAB_VIEWS.includes(name);
+      document.querySelectorAll(".top-tab").forEach(function (tab) {
+        const isCurrent = tab.dataset.tab === name;
+        tab.classList.toggle("active", isCurrent);
+        tab.setAttribute("aria-selected", isCurrent);
+      });
       window.scrollTo(0, 0);
     }
 
+    // Show the task view (List tab) and highlight the task that was clicked
+    function showTaskList(taskId) {
+      clearCheckedFromTaskView();   // remove tasks finished before this visit
+      showView("tasks");
+      showTab("list");
+
+      document.querySelectorAll(".task-list li").forEach(function (item) {
+        const isClicked = item.dataset.task === taskId;
+        item.classList.toggle("selected", isClicked);
+        if (isClicked) {
+          item.scrollIntoView({ block: "nearest" });  // scroll the box to it
+        }
+      });
+    }
+
+    // Clicking a task's text on the dashboard opens the task view
+    document.querySelectorAll(".task-link").forEach(function (link) {
+      link.addEventListener("click", function (event) {
+        event.preventDefault();  // stop the "#" link from jumping the page
+        showTaskList(link.dataset.task);
+      });
+    });
+
     // Quick links that open a screen on this page, and every back button
     document.addEventListener("click", function (event) {
+      const topTab = event.target.closest(".top-tab");
+      if (topTab) {
+        showView(topTab.dataset.tab);
+        if (topTab.dataset.tab === "dashboard") clearCheckedFromDashboard();
+        return;
+      }
+
       if (event.target.closest(".back-btn")) {
         showView("dashboard");
+        clearCheckedFromDashboard();   // hide anything checked off while you were away
         return;
       }
 
@@ -635,10 +935,11 @@
       event.preventDefault();
 
       if (link.dataset.open === "calendar") {
+        clearCheckedFromTaskView();   // remove tasks finished before this visit
         showView("tasks");
         showTab("calendar");
       } else {
-        showView(link.dataset.open);   // "exercise", "support" or "timer"
+        showView(link.dataset.open);   // "exercise", "timer", "cpr" or "firstaid"
       }
     });
 
@@ -656,11 +957,146 @@
       listTab.setAttribute("aria-selected", isList);
       calTab.setAttribute("aria-selected", !isList);
 
-      if (!isList) renderCalendar();   // from tasks.js
+      if (!isList) renderCalendar();
     }
 
     document.getElementById("tab-list").addEventListener("click", function () { showTab("list"); });
     document.getElementById("tab-calendar").addEventListener("click", function () { showTab("calendar"); });
+
+
+    // ---- Calendar ----
+    // The month being shown (starts on the current month)
+    const shownMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+
+    // Is this task checked off? (the list's checkbox is the record)
+    function isDone(taskId) {
+      return document.querySelector('.task-list input[data-task="' + taskId + '"]').checked;
+    }
+
+    function renderCalendar() {
+      const year = shownMonth.getFullYear();
+      const month = shownMonth.getMonth();
+      document.getElementById("cal-title").textContent =
+        shownMonth.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+
+      const grid = document.getElementById("cal-grid");
+      grid.innerHTML = "";
+
+      // Day names across the top
+      ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].forEach(function (dayName) {
+        const el = document.createElement("div");
+        el.className = "cal-weekday";
+        el.textContent = dayName;
+        grid.appendChild(el);
+      });
+
+      // Blank boxes before the 1st, so the 1st lands on the right weekday
+      const firstWeekday = new Date(year, month, 1).getDay();
+      for (let i = 0; i < firstWeekday; i++) {
+        const blank = document.createElement("div");
+        blank.className = "cal-day empty";
+        grid.appendChild(blank);
+      }
+
+      // One box per day of the month
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      for (let day = 1; day <= daysInMonth; day++) {
+        const cell = document.createElement("div");
+        cell.className = "cal-day";
+        if (year === today.getFullYear() && month === today.getMonth() && day === today.getDate()) {
+          cell.classList.add("today");
+        }
+
+        const dateNum = document.createElement("div");
+        dateNum.className = "cal-date";
+        dateNum.textContent = day;
+        cell.appendChild(dateNum);
+
+        // Tasks due on this day, each with a checkbox to cross it off
+        tasks.forEach(function (task) {
+          if (clearedTasks.has(task.id)) return;   // finished before this visit, so skip it
+          if (task.due.getFullYear() === year && task.due.getMonth() === month && task.due.getDate() === day) {
+            const label = document.createElement("label");
+            label.className = "cal-task";
+
+            const box = document.createElement("input");
+            box.type = "checkbox";
+            box.dataset.task = task.id;
+            box.checked = isDone(task.id);
+
+            label.appendChild(box);
+            label.appendChild(document.createTextNode(task.name));
+            cell.appendChild(label);
+          }
+        });
+
+        grid.appendChild(cell);
+      }
+    }
+
+    // Arrows to move between months
+    document.getElementById("cal-prev").addEventListener("click", function () {
+      shownMonth.setMonth(shownMonth.getMonth() - 1);
+      renderCalendar();
+    });
+    document.getElementById("cal-next").addEventListener("click", function () {
+      shownMonth.setMonth(shownMonth.getMonth() + 1);
+      renderCalendar();
+    });
+
+
+    // ---- Remove finished tasks from the dashboard ----
+
+    // Hide every checked task on the dashboard, and show any that were unchecked
+    function clearCheckedFromDashboard() {
+      document.querySelectorAll(".checklist li").forEach(function (item) {
+        const box = item.querySelector('input[type="checkbox"]');
+        item.classList.toggle("cleared", box.checked);
+      });
+    }
+
+    // Tasks that were already checked when the task view was last opened.
+    // These are hidden from All Tasks and the calendar. Tasks you check during a
+    // visit stay (crossed off) until you go back to the dashboard and open it again.
+    const clearedTasks = new Set();
+
+    function clearCheckedFromTaskView() {
+      document.querySelectorAll(".task-list li").forEach(function (item) {
+        const box = item.querySelector('input[type="checkbox"]');
+        if (box.checked) clearedTasks.add(item.dataset.task);
+        item.classList.toggle("cleared", clearedTasks.has(item.dataset.task));
+      });
+    }
+
+    // Checking a task on the dashboard: it disappears once the mouse moves off it
+    document.querySelectorAll(".checklist input[type='checkbox']").forEach(function (box) {
+      box.addEventListener("change", function () {
+        if (!box.checked) return;
+        const item = box.closest("li");
+
+        // Hide it only if it's still checked (in case you unchecked it first)
+        function hideIfStillChecked() {
+          if (box.checked) item.classList.add("cleared");
+        }
+
+        if (item.matches(":hover")) {
+          item.addEventListener("mouseleave", hideIfStillChecked, { once: true });
+        } else {
+          hideIfStillChecked();   // not being hovered (e.g. used the keyboard), so hide now
+        }
+      });
+    });
+
+
+    // ---- Keep checkboxes matched in every view ----
+    // Checking a task anywhere (dashboard, list or calendar) checks it everywhere.
+    document.addEventListener("change", function (event) {
+      const box = event.target;
+      if (!box.matches('input[type="checkbox"][data-task]')) return;
+      document.querySelectorAll('input[data-task="' + box.dataset.task + '"]').forEach(function (other) {
+        other.checked = box.checked;
+      });
+    });
 
 
     // ---- Timer (counts up, like a stopwatch) ----
@@ -713,8 +1149,5 @@
       updateTimer();
     });
   </script>
-<script src="tasks.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-<script src="main.js"></script>
 </body>
 </html>
