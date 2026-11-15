@@ -1,6 +1,6 @@
 # Astronaut Health Dashboard (NASA Space Apps)
 
-## Run it
+## How to run it
 Presented by: Sparks of Inspiration 
 
 Members: Caleb Hansen, Binh Nguyen, Hannah Kim, Diego E. Benitez-Arroyo
