@@ -58,6 +58,26 @@
     .task-item.overdue .task-meta { color: var(--warn); opacity: 1; }
     .task-empty { font-size: 13px; opacity: 0.6; }
 
+    /* ---- Reset today's data + Revert reset (bottom of the Tasks column) ---- */
+    .reset-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 16px; }
+    .reset-btn {
+      font: inherit;
+      font-size: 13px;
+      padding: 6px 12px;
+      background: #000000;
+      color: #78ff0a;
+      border: 1px solid #78ff0a;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .reset-btn:hover:not(:disabled) { background: #78ff0a; color: #000000; }
+    .reset-btn:disabled { opacity: 0.45; cursor: default; }
+    .reset-btn[hidden] { display: none; }
+    /* Revert is filled orange so it's easy to spot right after an accidental reset */
+    .reset-btn.undo { background: var(--warn); color: #000000; border-color: var(--warn); font-weight: 700; }
+    .reset-btn.undo:hover:not(:disabled) { background: #000000; color: var(--warn); }
+    .reset-status { flex-basis: 100%; margin: 0; font-size: 12px; min-height: 1em; }
+
     /* ---- Task view (list + calendar) ---- */
     .task-view {
       font-family: "Schibsted Grotesk", sans-serif;
@@ -690,7 +710,7 @@
     body.crt { text-shadow: 0 0 3px rgba(120, 255, 10, 0.55), 0 0 8px rgba(120, 255, 10, 0.25); }
     /* No glow on black-on-green text (buttons, active tabs), so it stays crisp */
     body.crt .back-btn, body.crt .q-btn, body.crt .top-tab.active, body.crt .chart-toggle[aria-pressed="true"],
-    body.crt .timer-btn, body.crt .task-list li:hover { text-shadow: none; }
+    body.crt .timer-btn, body.crt .task-list li:hover, body.crt .reset-btn.undo { text-shadow: none; }
 
     /* Thicker outlines: 2px instead of 1px */
     body.crt .top-tab,
@@ -713,7 +733,8 @@
     body.crt .reading-status,
     body.crt .flag-btn,
     body.crt .pers-track,
-    body.crt .support-card { border-width: 2px; }
+    body.crt .support-card,
+    body.crt .reset-btn { border-width: 2px; }
     body.crt .cal-day.today,
     body.crt .latest-box.watch,
     body.crt .latest-box.danger { border-width: 3px; }
@@ -781,6 +802,15 @@
     <section class="tasks" aria-labelledby="tasks-title">
       <h2 id="tasks-title">Tasks</h2>
       <div id="dashboard-tasks" class="task-panels">Loading tasks…</div>
+
+      <!-- Reset today's data: takes out everything entered today (midnight to midnight); earlier days stay.
+           Revert reset puts it all back. That option stays until you open a task or leave Home
+           (or close/reload the page); then the reset is final. Run by the reset script near the bottom. -->
+      <div class="reset-bar">
+        <button type="button" class="reset-btn" id="reset-data" disabled>Reset today's data</button>
+        <button type="button" class="reset-btn undo" id="revert-reset" hidden>Revert reset</button>
+        <p class="reset-status" id="reset-status" role="status" aria-live="polite"></p>
+      </div>
     </section>
 
     <!-- Center figure -->
@@ -1967,6 +1997,85 @@
     document.addEventListener("health-data-changed", function () {
       try { renderAll(); } catch (err) { console.error("Data tabs:", err); }
     });
+    })();
+  </script>
+  <script>
+    // ---- Reset today's data, with Revert reset ----
+    // Reset takes out every record from today (midnight to midnight, this computer's time), so
+    // today's tasks have to be done again. Earlier days are left alone.
+    // The removed records are kept ONLY in this page's memory. Revert reset puts them back.
+    // Opening a task or leaving Home in any other way (a tab, a quick link) makes the reset
+    // final, and so does closing or reloading the page.
+    (function () {
+      const resetBtn = document.getElementById("reset-data");
+      const revertBtn = document.getElementById("revert-reset");
+      const status = document.getElementById("reset-status");
+      const home = document.querySelector('.view[data-view="dashboard"]');
+      if (!resetBtn || !home || typeof HealthData === "undefined") return;
+
+      let backup = null;   // what the last reset removed; null = nothing to revert
+
+      function plural(n, word) { return n.toLocaleString("en-US") + " " + word + (n === 1 ? "" : "s"); }
+      function redrawTasks() { if (typeof renderAllTasks === "function") renderAllTasks(); }
+
+      function refresh() {
+        const n = HealthData.countToday();
+        resetBtn.textContent = "Reset today's data (" + n.toLocaleString("en-US") + ")";
+        resetBtn.disabled = n === 0;
+        revertBtn.hidden = !backup;
+      }
+
+      resetBtn.addEventListener("click", async function () {
+        resetBtn.disabled = true;
+        status.textContent = "Resetting…";
+        try {
+          const result = await HealthData.resetToday();
+          // A second reset before reverting keeps the first one's records too, so Revert brings back everything
+          if (backup) {
+            Object.keys(backup.server).forEach(function (f) { result.server[f] = backup.server[f].concat(result.server[f] || []); });
+            Object.keys(backup.browser).forEach(function (f) { result.browser[f] = backup.browser[f].concat(result.browser[f] || []); });
+            result.total += backup.total;
+          }
+          backup = result;
+          redrawTasks();
+          status.textContent = "Reset done: removed " + plural(result.total, "record") + " from today; earlier days were left alone. " +
+            "Pressed by accident? Click Revert reset before opening a task or leaving Home." +
+            (result.serverRan ? "" : " (server.py isn't running, so only today's answers saved in this browser were reset.)");
+        } catch (err) {
+          console.error("Reset:", err);
+          status.textContent = "Couldn't reset: " + err.message;
+        }
+        refresh();
+      });
+
+      revertBtn.addEventListener("click", async function () {
+        if (!backup) return;
+        revertBtn.disabled = true;
+        status.textContent = "Putting today's data back…";
+        try {
+          const n = await HealthData.revertReset(backup);
+          backup = null;
+          redrawTasks();
+          status.textContent = "Reverted: put back " + plural(n, "record") + ".";
+        } catch (err) {
+          console.error("Revert reset:", err);
+          status.textContent = "Couldn't revert: " + err.message;
+        }
+        revertBtn.disabled = false;
+        refresh();
+      });
+
+      // Opening a task or leaving Home makes the reset final: drop the only copy of the removed records
+      new MutationObserver(function () {
+        if (!home.classList.contains("active") && backup) {
+          backup = null;
+          status.textContent = "";
+          refresh();
+        }
+      }).observe(home, { attributes: true, attributeFilter: ["class"] });
+
+      HealthData.ready.then(refresh).catch(function () { /* the tabs already show the load error */ });
+      document.addEventListener("health-data-changed", refresh);   // a task was saved, or a reset/revert ran
     })();
   </script>
 </body>

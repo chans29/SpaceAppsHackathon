@@ -5,6 +5,10 @@
 // straight into the JSON files in data/. If that server isn't running (for example
 // a plain static host), records are kept in this browser instead and sent to the
 // files automatically the next time the page is opened with server.py running.
+//
+// resetToday() takes out every record from today (midnight to midnight, this computer's time).
+// It hands back what it removed, so the page can offer "Revert reset"; nothing else keeps
+// a copy, so once the page lets go of it the reset is final.
 
 const HealthData = (function () {
   const FILES = [
@@ -81,6 +85,82 @@ const HealthData = (function () {
     api.data[file] = (api.data[file] || []).concat(records);
     document.dispatchEvent(new CustomEvent("health-data-changed", { detail: { file: file } }));
     return where;
+  };
+
+  // Reload every file, then tell the page (tabs, Home graphs, task list) to redraw
+  async function reloadAndAnnounce() {
+    await loadAll();
+    document.dispatchEvent(new CustomEvent("health-data-changed", { detail: { file: null } }));
+  }
+
+  // Today runs from midnight to the next midnight, in this computer's time zone
+  function todayRange() {
+    const start = new Date(); start.setHours(0, 0, 0, 0);
+    const end = new Date(start); end.setDate(end.getDate() + 1);
+    return { start: start, end: end };
+  }
+  function isToday(record, range) {
+    const t = new Date(record && record.timestamp).getTime();
+    return t >= range.start.getTime() && t < range.end.getTime();
+  }
+
+  // ---- Reset today's data: take out every record timestamped today ----
+  // Resolves a backup { server: {file: [records]}, browser: {file: [records]}, total, serverRan }.
+  // Keep it to revert; throw it away to make the reset final.
+  api.resetToday = async function () {
+    const range = todayRange();
+    let server = {}, serverRan = false;
+    try {
+      const res = await fetch("api/reset-day", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ start: range.start.toISOString(), end: range.end.toISOString() })
+      });
+      if (res.ok) { server = (await res.json()).removed; serverRan = true; }
+    } catch (e) { /* server.py not running: only this browser's records can be reset */ }
+
+    // Today's records still waiting in this browser
+    const pending = readPending(), browser = {};
+    Object.keys(pending).forEach(function (file) {
+      const todays = pending[file].filter(function (r) { return isToday(r, range); });
+      if (!todays.length) return;
+      browser[file] = todays;
+      pending[file] = pending[file].filter(function (r) { return !isToday(r, range); });
+    });
+    writePending(pending);
+    await reloadAndAnnounce();
+
+    const count = function (byFile) {
+      return Object.keys(byFile).reduce(function (sum, f) { return sum + byFile[f].length; }, 0);
+    };
+    return { server: server, browser: browser, total: count(server) + count(browser), serverRan: serverRan };
+  };
+
+  // ---- Revert reset: put back everything a resetToday() removed ----
+  api.revertReset = async function (backup) {
+    if (Object.keys(backup.server).length) {
+      const res = await fetch("api/restore", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(backup.server)
+      });
+      if (!res.ok) throw new Error("the server couldn't put the data back (" + res.status + ")");
+    }
+    const pending = readPending();
+    Object.keys(backup.browser).forEach(function (file) {
+      pending[file] = backup.browser[file].concat(pending[file] || []);
+    });
+    writePending(pending);
+    await reloadAndAnnounce();
+    return backup.total;
+  };
+
+  // How many records are from today (what Reset would take out)
+  api.countToday = function () {
+    const range = todayRange();
+    return Object.keys(api.data).reduce(function (sum, f) {
+      return sum + api.data[f].filter(function (r) { return isToday(r, range); }).length;
+    }, 0);
   };
 
   api.ready = loadAll();
