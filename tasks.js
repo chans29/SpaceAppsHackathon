@@ -1,11 +1,5 @@
-// ---- Astronaut test tasks ----
-// Each task is a recurring test. Its schedule comes from `frequencyDays` and
-// `startDate`; whether it's done comes from the records in the data/*.json files.
-// Clicking a task opens a step-by-step questionnaire that walks through the test
-// and saves the answers to the task's data file (see data.js and server.py).
-
 const CREW_ID = "CM-01";
-const MISSION_PHASE = "in-flight";   // written into each new record: pre-flight, in-flight or post-flight
+const MISSION_PHASE = "in-flight";
 
 // ---- The tasks ----
 // To add a test: copy one of these, give it a new id, and set:
@@ -15,6 +9,7 @@ const MISSION_PHASE = "in-flight";   // written into each new record: pre-flight
 //   isRecord(r)    which records in that file count as this task being done
 //   steps          the screens of the questionnaire (see "Questionnaire" below for field types)
 //   build(v, ctx)  turns the answers into the record(s) to save
+
 const TASKS = [
   {
     id: "sleep-wake",
@@ -236,16 +231,6 @@ const TASKS = [
                "If you feel dizzy or faint at any point, sit or lie down right away and stop the test."]
       },
       {
-        title: "Balance",
-        list: ["Stand on the force plate with your feet together and arms crossed over your chest.",
-               "Close your eyes and stand as still as you can for 30 seconds.",
-               "Read the sway path from the force plate display."],
-        countdown: 30,
-        fields: [
-          { key: "balance_sway_path_cm", label: "Sway path", type: "number", unit: "cm", min: 0, max: 500, step: 0.1 }
-        ]
-      },
-      {
         title: "Tandem walk",
         list: ["Stand at the start of the line, arms crossed, eyes closed.",
                "Walk 10 steps heel-to-toe along the line. Your spotter times you and counts missteps (a step off the line, or a gap between heel and toe)."],
@@ -278,7 +263,7 @@ const TASKS = [
     build: function (v, ctx) {
       return {
         crew_id: CREW_ID, phase: MISSION_PHASE, timestamp: ctx.timestamp,
-        balance_sway_path_cm: v.balance_sway_path_cm, tandem_walk_time_s: v.tandem_walk_time_s,
+        tandem_walk_time_s: v.tandem_walk_time_s,
         tandem_walk_missteps: v.tandem_walk_missteps,
         heart_rate_supine_bpm: v.heart_rate_supine_bpm, heart_rate_standing_bpm: v.heart_rate_standing_bpm,
         bp_supine_systolic_mmhg: v.bp_supine_systolic_mmhg, bp_supine_diastolic_mmhg: v.bp_supine_diastolic_mmhg,
@@ -476,13 +461,14 @@ function parseDay(text) {
   const parts = text.split("-").map(Number);
   return new Date(parts[0], parts[1] - 1, parts[2]);
 }
-// Whole days from a to b (works across daylight-saving changes)
+
 function daysBetween(a, b) { return Math.round((startOfDay(b) - startOfDay(a)) / DAY_MS); }
 function sameDay(a, b) { return daysBetween(a, b) === 0; }
 
 function formatShortDate(date) {
   return date.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
 }
+
 function formatFrequency(days) {
   if (days === 1) return "Daily";
   if (days === 7) return "Weekly";
@@ -492,7 +478,7 @@ function formatFrequency(days) {
   if (days % 7 === 0) return "Every " + (days / 7) + " weeks";
   return "Every " + days + " days";
 }
-// "Today", "Tomorrow", "In 5 days", or a date for anything further out
+
 function formatDue(date) {
   const diff = daysBetween(todayDate(), date);
   if (diff === 0) return "Due today";
@@ -500,13 +486,6 @@ function formatDue(date) {
   if (diff > 1 && diff < 7) return "Due " + date.toLocaleDateString("en-US", { weekday: "long" });
   return "Due " + formatShortDate(date);
 }
-
-
-// ---- Schedule ----
-// A task is due on startDate, then every frequencyDays after that.
-// Each due date has a window: it opens a few days early (so a test can be done
-// ahead of time) and lasts until the next window opens. The task counts as done
-// for that due date if a matching record was saved any time inside the window.
 
 // How many days ahead a test can be done and still count (none for daily tasks)
 function earlyDays(task) { return Math.min(3, Math.floor(task.frequencyDays / 2)); }
@@ -551,6 +530,7 @@ function lastDone(task) {
 //   done     already done for that due date
 //   overdue  that date has passed and it still isn't done
 //   bucket   which dashboard panel it goes in: "today", "week" or "later"
+
 function taskStatus(task) {
   const today = todayDate();
   // The due date whose window today falls in
@@ -611,7 +591,6 @@ function renderDashboardTasks() {
     list.className = "checklist";
 
     const inPanel = items.filter(function (item) { return item.status.bucket === panel.bucket; })
-      // not-done first, then by date
       .sort(function (a, b) { return (a.status.done - b.status.done) || sortByDue(a, b); });
 
     inPanel.forEach(function (item) {
