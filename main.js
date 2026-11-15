@@ -1,6 +1,6 @@
 Chart.defaults.color = '#78ff0a'
 Chart.defaults.font.family = '"Courier New", monospace'
-Chart.defaults.font.size = 10
+Chart.defaults.font.size = 12
 Chart.defaults.borderColor = 'rgba(120,255,10,0.2)'
 Chart.defaults.maintainAspectRatio = false
 
@@ -42,7 +42,6 @@ const zonePlugin = {
 }
 Chart.register(zonePlugin)
 
-// Expand the y-axis so the bands are visible even when the data stays in the safe range
 function rangeFor(bands) {
   const edges = bands.flatMap(b => [b.min, b.max]).filter(v => v != null)
   const lo = Math.min(...edges), hi = Math.max(...edges)
@@ -103,7 +102,7 @@ function renderCharts(d) {
   charts = []
   container.innerHTML = ''
 
-  lineByCrew('Microbiome: fecal Shannon diversity',
+  lineByCrew('Microbiome: fecal Shannon diversity index',
   d.microbiome.filter(r => r.sample_site === 'fecal'),
   r => r.shannon_diversity, 'index', [
     { max: 2.5, color: RED, label: 'low diversity' },
@@ -130,15 +129,6 @@ lineByCrew('Sleep: duration per night',
     { max: 6, color: RED, label: 'too little' },
     { min: 6, max: 7, color: AMBER, label: 'short' },
     { min: 9, color: AMBER, label: 'long' }
-  ])
-
-// Sway has no absolute limit, so compare against this person's pre-flight average
-const preSway = d.sensorimotor.filter(r => r.phase === 'pre-flight').map(r => r.balance_sway_path_cm)
-const swayBase = preSway.reduce((a, b) => a + b, 0) / preSway.length
-lineByCrew('Sensorimotor: balance sway path',
-  d.sensorimotor, r => r.balance_sway_path_cm, 'cm', [
-    { min: swayBase * 1.25, max: swayBase * 1.5, color: AMBER, label: '+25% vs baseline' },
-    { min: swayBase * 1.5, color: RED, label: '+50% vs baseline' }
   ])
 
 lineByCrew('Biochemical: vitamin D',

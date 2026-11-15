@@ -12,22 +12,22 @@ const HealthData = (function () {
     "actigraphy", "sleep_team_questionnaire", "sensorimotor",
     "biochemical_markers", "carotid_intima_media_thickness"
   ];
-  const PENDING_KEY = "pending-records";   // where unsent records wait in this browser
+  const PENDING_KEY = "pending-records";
 
   const api = {
     FILES: FILES,
-    data: {},          // file name -> array of records (filled by loadAll)
-    ready: null        // promise that resolves once everything has loaded
+    data: {},
+    ready: null
   };
 
-  // ---- Records waiting in this browser ----
+  // ---- Records waiting in the browser ----
   function readPending() {
     try { return JSON.parse(localStorage.getItem(PENDING_KEY)) || {}; }
     catch (e) { return {}; }
   }
   function writePending(pending) {
     try { localStorage.setItem(PENDING_KEY, JSON.stringify(pending)); }
-    catch (e) { /* storage unavailable: records stay in memory for this visit */ }
+    catch (e) { /* storage unavailable */ }
   }
 
   // Send records to server.py. Resolves true if they were written to the file.
@@ -69,7 +69,6 @@ const HealthData = (function () {
   }
 
   // Save one record or a list of records to a file.
-  // Resolves "file" if written to data/<file>.json, or "browser" if kept locally.
   api.save = async function (file, records) {
     if (!Array.isArray(records)) records = [records];
     let where = "file";

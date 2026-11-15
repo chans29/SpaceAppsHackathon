@@ -6,8 +6,6 @@ questionnaires save their answers into the JSON files in data/.
 Run:   python3 server.py          (then open http://localhost:8000)
        python3 server.py 9000     (use a different port)
 
-Saving: the page sends POST /api/records/<name> with a JSON record (or a
-list of records). They are added to the "data" list in data/<name>.json.
 """
 
 import json
@@ -72,7 +70,6 @@ class Handler(SimpleHTTPRequestHandler):
             with open(path, encoding="utf-8") as f:
                 doc = json.load(f)
             doc.setdefault("data", []).extend(records)
-            # Write to a temp file first, then swap it in, so a crash can't leave a half-written file
             fd, tmp = tempfile.mkstemp(dir=DATA_DIR, suffix=".tmp")
             with os.fdopen(fd, "w", encoding="utf-8") as f:
                 json.dump(doc, f, indent=2)
