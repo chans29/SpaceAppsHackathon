@@ -8,8 +8,20 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide">
+  <!-- VT323: a chunky, old-terminal pixel font used by the retro look -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=VT323&display=swap">
   <link rel="stylesheet" href="app.css">
   <style>
+    /* ---- Warning orange: one color for every warning on the page ----
+       Overdue tasks, calendar chips, "Watch" boxes/tabs/graphs, and the radiation rays all use this.
+       --amber is the name app.css uses for the rays and focus outline, so it is set to the same orange
+       here (this also stops dark mode from switching to a lighter orange). */
+    :root {
+      --warn: #e0a030;
+      --warn-soft: rgba(224, 160, 48, 0.12);   /* faint orange fill while blinking */
+      --warn-glow: rgba(224, 160, 48, 0.6);    /* orange glow while blinking */
+      --amber: #e0a030;
+    }
     /* Rays and badge stay hidden unless the radiation check turns them on */
     body:not(.radiation-high) .rays,
     body:not(.radiation-high) .badge {
@@ -43,9 +55,9 @@
     }
     .task-item.done .task-mark { background: #78ff0a; color: #000000; }
     .task-item.done .task-link { text-decoration: line-through; opacity: 0.7; }
-    .task-item.overdue .task-mark { border-color: #e0a030; color: #e0a030; }
+    .task-item.overdue .task-mark { border-color: var(--warn); color: var(--warn); }
     .task-meta { font-size: 12px; opacity: 0.75; }
-    .task-item.overdue .task-meta { color: #e0a030; opacity: 1; }
+    .task-item.overdue .task-meta { color: var(--warn); opacity: 1; }
     .task-empty { font-size: 13px; opacity: 0.6; }
 
     /* ---- Task view (list + calendar) ---- */
@@ -200,7 +212,7 @@
     }
     .cal-task:hover { background: #78ff0a; color: #000000; }
     .cal-task.done { text-decoration: line-through; opacity: 0.6; }
-    .cal-task.overdue { border-color: #e0a030; color: #e0a030; }
+    .cal-task.overdue { border-color: var(--warn); color: var(--warn); }
     .cal-task.missed { border-style: dashed; opacity: 0.45; }
 
     /* ---- Questionnaire ---- */
@@ -360,8 +372,9 @@
     /* ---- Top tabs on the home page ---- */
     .top-tabs {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
+      flex-wrap: nowrap;             /* keep every tab on one line */
+      overflow-x: auto;              /* on a very narrow screen, scroll sideways instead of wrapping */
+      justify-content: flex-start;
       gap: 4px;
       padding: 12px 12px 0;
       border-bottom: 1px solid #78ff0a;
@@ -416,6 +429,44 @@
     /* Warning: green pill with black text so it stands out */
     .reading-status.alert { background: #78ff0a; color: #000000; font-weight: 700; }
     .placeholder-note { font-size: 13px; font-style: italic; margin-top: 16px; }
+
+    /* ---- Red blinking (danger) ----
+       Used by the latest-reading boxes and tabs on the chart tabs below. */
+    @keyframes alarm-blink {
+      0%, 49.9% {
+        border-color: #ff2a2a;
+        color: #ff2a2a;
+        background: rgba(255, 42, 42, 0.15);
+        box-shadow: 0 0 14px rgba(255, 42, 42, 0.7);
+      }
+      50%, 100% {
+        border-color: #78ff0a;
+        color: #78ff0a;
+        background: #000000;
+        box-shadow: none;
+      }
+    }
+    .reading-card.abnormal {
+      border-width: 2px;
+    }
+    /* Status pill follows the blinking color too */
+    .reading-card.abnormal .reading-status {
+      border-color: currentColor;
+      background: transparent;
+      color: inherit;
+      font-weight: 700;
+    }
+
+    /* People who turn off animations in their device settings get solid red instead of blinking */
+    @media (prefers-reduced-motion: reduce) {
+      .reading-card.abnormal {
+        animation: none;
+        border-color: #ff2a2a;
+        color: #ff2a2a;
+        background: rgba(255, 42, 42, 0.15);
+      }
+      .top-tab.has-alarm { animation: none; background: #ff2a2a; color: #000000; border-color: #ff2a2a; }
+    }
 
     /* ---- Tech support page (green phone and link) ---- */
     .support-card {
@@ -484,17 +535,337 @@
       text-decoration: underline;
       cursor: pointer;
     }
+
+    /* ---- Trend tabs (Microbiome, Wellness Check, Internals, Ambient Conditions) ---- */
+    .task-view.wide { max-width: 1000px; }
+    .chart-sub { margin: -4px 0 14px; font-size: 14px; }
+    .chart-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 270px;
+      gap: 16px;
+      align-items: start;
+    }
+    @media (max-width: 760px) {
+      .chart-layout { grid-template-columns: 1fr; }   /* box goes under the chart on small screens */
+    }
+    .chart-card {
+      position: relative;
+      background: #000000;
+      border: 1px solid #78ff0a;
+      border-radius: 10px;
+      padding: 14px 14px 8px;
+    }
+    .chart-controls { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+    .chart-toggle {
+      font: inherit;
+      font-size: 13px;
+      padding: 5px 12px;
+      background: #000000;
+      color: #78ff0a;
+      border: 1px solid #78ff0a;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+    .chart-toggle[aria-pressed="true"] { background: #78ff0a; color: #000000; font-weight: 700; }
+    /* !important so a general svg rule in app.css can't shrink the charts to nothing */
+    .trend-svg {
+      width: 100% !important;
+      height: auto !important;
+      aspect-ratio: 640 / 300;
+      display: block !important;
+      touch-action: pan-y;
+    }
+    .trend-svg text { fill: #78ff0a; font-family: "Schibsted Grotesk", sans-serif; font-size: 12px; }
+    .trend-svg .grid { stroke: rgba(120, 255, 10, 0.18); stroke-width: 1; }
+    .trend-svg .data-line { fill: none; stroke: #78ff0a; stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+    .trend-svg .data-fill { fill: rgba(120, 255, 10, 0.12); stroke: none; }
+    .trend-svg .trend-line { fill: none; stroke: #78ff0a; stroke-width: 2; stroke-dasharray: 7 6; opacity: 0.75; }
+    .trend-svg .pred-bar { stroke-dasharray: none; opacity: 0.6; }
+    .trend-svg .limit-line { stroke: #ff2a2a; stroke-width: 1.5; stroke-dasharray: 3 4; }
+    .trend-svg .limit-label { fill: #ff2a2a; font-size: 11px; }
+    .trend-svg .point { fill: #000000; stroke: #78ff0a; stroke-width: 2; }
+    .trend-svg .point.latest.normal { fill: #78ff0a; }
+    .trend-svg .point.latest.watch { fill: var(--warn); stroke: var(--warn); }
+    .trend-svg .point.latest.danger { fill: #ff2a2a; stroke: #ff2a2a; }
+    .trend-svg .point.hot { stroke-width: 4; }
+    .trend-svg .value-label { font-size: 11px; }
+    .trend-svg .guide { stroke: rgba(120, 255, 10, 0.5); stroke-width: 1; }
+    .trend-svg .hit { fill: transparent; cursor: crosshair; }
+    .trend-svg.hide-trend .trend-line,
+    .trend-svg.hide-limits .limit-line,
+    .trend-svg.hide-limits .limit-label,
+    .trend-svg:not(.show-values) .value-label { display: none; }
+    .chart-legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; margin: 4px 2px 6px; }
+    .chart-legend span::before { content: ""; display: inline-block; width: 18px; margin-right: 6px; vertical-align: middle; border-top: 2.5px solid #78ff0a; }
+    .chart-legend .lg-trend::before { border-top-style: dashed; border-top-width: 2px; }
+    .chart-legend .lg-limit::before { border-top: 1.5px dashed #ff2a2a; }
+    .chart-tip {
+      position: absolute;
+      pointer-events: none;
+      background: #000000;
+      color: #78ff0a;
+      border: 1px solid #78ff0a;
+      border-radius: 6px;
+      padding: 6px 9px;
+      font-size: 13px;
+      line-height: 1.4;
+      white-space: nowrap;
+      transform: translate(-50%, -110%);
+      z-index: 2;
+    }
+    .chart-tip[hidden] { display: none; }
+
+    /* Latest-reading box */
+    .latest-box {
+      background: #000000;
+      border: 1px solid #78ff0a;
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .latest-label { font-size: 13px; margin-bottom: 4px; }
+    .latest-value { font-size: 40px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.1; }
+    .latest-facts { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; margin: 12px 0 8px; font-size: 13px; }
+    .latest-facts dd { margin: 0; text-align: right; font-weight: 500; font-variant-numeric: tabular-nums; }
+    .latest-reason { font-size: 14px; font-weight: 500; margin: 8px 0; }
+    .latest-rows { font-size: 12px; opacity: 0.85; margin: 0; }
+    .latest-box .reading-status { border-color: currentColor; }
+
+    /* Tab buttons show their latest reading under the name */
+    .top-tab .tab-reading {
+      display: block;
+      font-family: "Schibsted Grotesk", sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      margin-top: 2px;
+      font-variant-numeric: tabular-nums;
+    }
+    .top-tab.has-warning { background: #000000; color: var(--warn); border-color: var(--warn); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .latest-box.watch  { animation: none; border-color: var(--warn); color: var(--warn); }
+      .latest-box.danger { animation: none; border-color: #ff2a2a; color: #ff2a2a; }
+      .top-tab.has-warning { animation: none; background: #000000; color: var(--warn); border-color: var(--warn); }
+    }
+
+    /* ---- Data tabs: measure picker, attention list, personality bars ---- */
+    .series-picker { margin: 0 0 10px; font-size: 14px; }
+    .series-picker select {
+      font: inherit;
+      font-size: 15px;
+      max-width: 100%;
+      padding: 6px 10px;
+      background: #000000;
+      color: #78ff0a;
+      border: 1px solid #78ff0a;
+      border-radius: 8px;
+    }
+    .flag-list { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0 0 12px; font-size: 13px; }
+    .flag-btn {
+      font: inherit;
+      font-size: 12px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: #000000;
+      cursor: pointer;
+    }
+    .flag-btn.watch  { color: var(--warn); border: 1px solid var(--warn); }
+    .flag-btn.danger { color: #ff2a2a; border: 1px solid #ff2a2a; }
+    .flag-btn:hover { background: rgba(255, 255, 255, 0.08); }
+    /* Tabs shrink with the window so all 10 fit on one line */
+    .top-tab {
+      flex: 0 0 auto;
+      white-space: nowrap;
+      font-size: clamp(11px, 1.05vw, 15px);
+      padding: 9px clamp(6px, 0.85vw, 16px);
+    }
+    /* Centers the row when it fits, but still lets it scroll fully when it doesn't */
+    .top-tab:first-child { margin-left: auto; }
+    .top-tab:last-child { margin-right: auto; }
+
+    /* Tabs sit on the bottom line, so a taller tab grows upward instead of stretching every tab */
+    .top-tabs { align-items: flex-end; }
+
+    /* Orange (Watch) tabs: bold text and a little taller so they stand out */
+    .top-tab.has-warning {
+      font-weight: 700;
+      padding-top: 14px;          /* normal tabs use 9px */
+      border-width: 2px;          /* normal tabs use 1px */
+    }
+    /* Retro look already draws every tab at 2px, so orange tabs go to 3px there */
+    body.crt .top-tab.has-warning { border-width: 3px; }
+    /* Red (Danger) tabs: same idea, outlined in red */
+    .top-tab.has-alarm {
+      background: #000000;
+      color: #ff2a2a;
+      border-color: #ff2a2a;
+      font-weight: 700;
+      padding-top: 14px;
+    }
+
+    /* The selected tab is always filled in with its own color, black text on top */
+    .top-tab.active.has-warning { background: var(--warn); color: #000000; border-color: var(--warn); }
+    .top-tab.active.has-alarm   { background: #ff2a2a;     color: #000000; border-color: #ff2a2a; }
+    .pers-bars { display: flex; flex-direction: column; gap: 14px; padding: 10px 4px; }
+    .pers-row { display: grid; grid-template-columns: 150px 1fr 40px; align-items: center; gap: 10px; font-size: 14px; }
+    .pers-track { height: 16px; border: 1px solid #78ff0a; border-radius: 999px; overflow: hidden; }
+    .pers-fill { display: block; height: 100%; background: #78ff0a; }
+    .pers-val { text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+    /* ---- Home: 9 small graphs in the Reports column ---- */
+    .home-charts {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 520px;        /* about 6 graphs tall; scroll to see the rest */
+      overflow-y: auto;          /* adds the scroll bar */
+      padding-right: 6px;        /* room so the scroll bar doesn't cover the cards */
+    }
+    .home-chart {
+      display: block;
+      width: 100%;
+      text-align: left;
+      font: inherit;
+      color: #78ff0a;
+      background: #000000;
+      border: 1px solid #78ff0a;
+      border-radius: 8px;
+      padding: 6px 10px 4px;
+      cursor: pointer;
+    }
+    .home-chart:hover, .home-chart:focus-visible { background: rgba(120, 255, 10, 0.1); outline: none; }
+    .home-chart-top { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; font-weight: 700; }
+    .home-chart-val { font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .home-chart-measure { display: block; font-size: 11px; opacity: 0.85; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .mini-svg { display: block !important; width: 100% !important; height: 34px !important; margin-top: 2px; }
+    .mini-line { fill: none; stroke: #78ff0a; stroke-width: 2; vector-effect: non-scaling-stroke; }
+    .mini-fill { fill: rgba(120, 255, 10, 0.12); stroke: none; }
+    .mini-dot { fill: #78ff0a; }
+    .mini-dot.watch { fill: var(--warn); }
+    .mini-dot.danger { fill: #ff2a2a; }
+    .home-chart.watch  { background: #000000; color: var(--warn); border-color: var(--warn); }
+    .home-chart.danger { background: #000000; color: #ff2a2a; border-color: #ff2a2a; }
+    .mini-bars { display: flex; align-items: flex-end; gap: 6px; height: 34px; margin-top: 4px; }
+    .mini-bar { flex: 1; height: 100%; display: flex; align-items: flex-end; border-bottom: 1px solid rgba(120, 255, 10, 0.4); }
+    .mini-bar span { display: block; width: 100%; background: #78ff0a; border-radius: 2px 2px 0 0; }
+    @media (prefers-reduced-motion: reduce) {
+      .home-chart.watch  { animation: none; border-color: var(--warn); color: var(--warn); }
+      .home-chart.danger { animation: none; border-color: #ff2a2a; color: #ff2a2a; }
+    }
+
+    /* ---- Every scroll bar on the page is green (#78ff0a) ----
+       scrollbar-color works in Chrome, Edge and Firefox; the ::-webkit-scrollbar rules cover Safari. */
+    html, * {
+      scrollbar-color: #78ff0a #000000;   /* thumb (the part you drag), then track */
+      scrollbar-width: thin;
+    }
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-track { background: #000000; }
+    ::-webkit-scrollbar-thumb { background: #78ff0a; border-radius: 999px; border: 2px solid #000000; }
+    ::-webkit-scrollbar-corner { background: #000000; }
+
+    /* =====================================================================
+       Retro monitor look (only when <body> has class="crt")
+       ===================================================================== */
+
+    /* Chunky pixel font. font-size-adjust keeps it about as readable as before. */
+    body.crt,
+    body.crt .task-view,
+    body.crt .dashboard,
+    body.crt .trend-svg text {
+      font-family: "VT323", "Courier New", monospace;
+      font-size-adjust: 0.5;
+    }
+
+    /* Soft green glow on text, like an old phosphor screen */
+    body.crt { text-shadow: 0 0 3px rgba(120, 255, 10, 0.55), 0 0 8px rgba(120, 255, 10, 0.25); }
+    /* No glow on black-on-green text (buttons, active tabs), so it stays crisp */
+    body.crt .back-btn, body.crt .q-btn, body.crt .top-tab.active, body.crt .chart-toggle[aria-pressed="true"],
+    body.crt .timer-btn, body.crt .task-list li:hover { text-shadow: none; }
+
+    /* Thicker outlines: 2px instead of 1px */
+    body.crt .top-tab,
+    body.crt .reading-card,
+    body.crt .chart-card,
+    body.crt .latest-box,
+    body.crt .home-chart,
+    body.crt .task-list,
+    body.crt .tag,
+    body.crt .cal-day,
+    body.crt .cal-task,
+    body.crt .tips,
+    body.crt .stretch-card,
+    body.crt .q-card,
+    body.crt .q-choice,
+    body.crt .q-btn,
+    body.crt .back-btn,
+    body.crt .cal-nav button,
+    body.crt .chart-toggle,
+    body.crt .series-picker select,
+    body.crt .reading-status,
+    body.crt .flag-btn,
+    body.crt .pers-track,
+    body.crt .support-card { border-width: 2px; }
+    body.crt .cal-day.today,
+    body.crt .latest-box.watch,
+    body.crt .latest-box.danger { border-width: 3px; }
+    body.crt .top-tabs,
+    body.crt .tabs { border-bottom-width: 2px; }
+    body.crt .task-list li { border-bottom: 2px solid rgba(120, 255, 10, 0.35); }
+
+    /* Thicker, glowing chart lines */
+    body.crt .trend-svg .data-line { stroke-width: 3.5; }
+    body.crt .trend-svg .trend-line { stroke-width: 2.5; }
+    body.crt .trend-svg .limit-line { stroke-width: 2; }
+    body.crt .trend-svg .grid { stroke-width: 1.5; }
+    body.crt .trend-svg .point { stroke-width: 2.5; }
+    body.crt .mini-line { stroke-width: 3; }
+    body.crt .trend-svg,
+    body.crt .mini-svg { filter: drop-shadow(0 0 3px rgba(120, 255, 10, 0.6)); }
+
+    /* Thicker, glowing outline on the astronaut and radiation badge */
+    body.crt .figure .person { stroke-width: 3.5px; }
+    body.crt .figure,
+    body.crt .badge svg { filter: drop-shadow(0 0 4px rgba(120, 255, 10, 0.7)); }
+
+    /* Scan lines + dark corners laid over the whole screen.
+       pointer-events: none means clicks pass straight through to the page. */
+    body.crt::before,
+    body.crt::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+    }
+    body.crt::before {
+      /* thin dark line every 3 pixels = visible scan lines */
+      background: repeating-linear-gradient(to bottom,
+                  rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0) 2px,
+                  rgba(0, 0, 0, 0.32) 2px, rgba(0, 0, 0, 0.32) 3px);
+    }
+    body.crt::after {
+      /* darker edges, like a curved tube screen */
+      background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.55) 100%);
+    }
   </style>
 </head>
-<body>
+<!-- class="crt" turns on the retro monitor look (scan lines, glow, pixel font, thicker outlines).
+     Delete crt from this tag to go back to the clean look. -->
+<body class="crt">
   <!-- ===== Tabs at the top of the home page =====
-       Shown on Home and the four tab screens; hidden on the other screens. -->
+       Shown on Home and the four tab screens; hidden on the other screens.
+       Each data tab matches one JSON file. -->
   <div class="top-tabs" id="top-tabs" role="tablist">
     <button type="button" class="top-tab active" data-tab="dashboard" role="tab">Home</button>
-    <button type="button" class="top-tab" data-tab="radiation" role="tab">Space Radiation</button>
-    <button type="button" class="top-tab" data-tab="wellness" role="tab">Wellness Check</button>
-    <button type="button" class="top-tab" data-tab="internals" role="tab">Internals</button>
-    <button type="button" class="top-tab" data-tab="ambient" role="tab">Ambient Conditions</button>
+    <button type="button" class="top-tab" data-tab="cardiac" role="tab">Cardiac</button>
+    <button type="button" class="top-tab" data-tab="biochem" role="tab">Biochemistry</button>
+    <button type="button" class="top-tab" data-tab="cimt" role="tab">Carotid IMT</button>
+    <button type="button" class="top-tab" data-tab="cellular" role="tab">Cellular</button>
+    <button type="button" class="top-tab" data-tab="microbiome" role="tab">Microbiome</button>
+    <button type="button" class="top-tab" data-tab="personality" role="tab">Personality</button>
+    <button type="button" class="top-tab" data-tab="actigraphy" role="tab">Actigraphy</button>
+    <button type="button" class="top-tab" data-tab="sleepteam" role="tab">Sleep & Team</button>
+    <button type="button" class="top-tab" data-tab="cognition" role="tab">Cognition</button>
   </div>
 
   <main class="dashboard view active" data-view="dashboard">
@@ -525,7 +896,11 @@
     <!-- Reports (right column) -->
     <section class="reports" aria-labelledby="reports-title">
   <h2 id="reports-title">Reports</h2>
-  <div class="rail" id="charts"></div>
+  <!-- 9 small graphs, one per data tab, in tab order (drawn by the data-tab script).
+       Click one to open its tab. -->
+  <div class="home-charts" id="tab-charts"></div>
+  <!-- main.js still draws into this, but it's hidden so only the 9 tab graphs show -->
+  <div class="rail" id="charts" hidden style="display: none;"></div>
 </section>
 
     <!-- Quick links (full-width bottom bar) -->
@@ -543,144 +918,58 @@
 
   </main>
 
-  <!-- ===== Tab: Space Radiation ===== -->
-  <section class="task-view view" data-view="radiation" aria-labelledby="radiation-title">
-    <h1 id="radiation-title">Space Radiation</h1>
-    <div class="reading-grid">
-      <div class="reading-card">
-        <div class="reading-label">Current radiation level</div>
-        <div class="reading-value" id="rad-level">--</div>
-        <span class="reading-status" id="rad-status">--</span>
-      </div>
-      <div class="reading-card">
-        <div class="reading-label">Warning threshold</div>
-        <div class="reading-value" id="rad-threshold">--</div>
-        <span class="reading-status">Set in the script</span>
-      </div>
-      <div class="reading-card">
-        <div class="reading-label">How far over or under the threshold</div>
-        <div class="reading-value" id="rad-diff">--</div>
-        <span class="reading-status" id="rad-diff-note">--</span>
-      </div>
-    </div>
-    <p class="placeholder-note">These use the same placeholder numbers as the rays and badge (RADIATION_THRESHOLD and radiationLevel in the script). Change them there and this tab updates too.</p>
+  <!-- ===== Tab: Cardiac: blood pressure, heart rate, pulse oximetry (built by the data-tab script) ===== -->
+  <section class="task-view view wide" data-view="cardiac" aria-labelledby="cardiac-title">
+    <h1 id="cardiac-title">Blood Pressure, Heart Rate &amp; Oxygen</h1>
+    <div class="trend-tab" data-metric="cardiac"></div>
   </section>
 
-  <!-- ===== Tab: Wellness Check ===== -->
-  <!-- PLACEHOLDER READINGS: replace with real values when available -->
-  <section class="task-view view" data-view="wellness" aria-labelledby="wellness-title">
-    <h1 id="wellness-title">Wellness Check</h1>
-    <div class="reading-grid">
-        <div class="reading-card">
-          <div class="reading-label">Heart rate</div>
-          <div class="reading-value">72<span class="reading-unit">bpm</span></div>
-          <span class="reading-status">Normal</span>
-        </div>
-        <div class="reading-card">
-          <div class="reading-label">Blood pressure</div>
-          <div class="reading-value">118/76<span class="reading-unit">mmHg</span></div>
-          <span class="reading-status">Normal</span>
-        </div>
-        <div class="reading-card">
-          <div class="reading-label">Blood oxygen</div>
-          <div class="reading-value">98<span class="reading-unit">%</span></div>
-          <span class="reading-status">Normal</span>
-        </div>
-        <div class="reading-card">
-          <div class="reading-label">Body temperature</div>
-          <div class="reading-value">98.4<span class="reading-unit">°F</span></div>
-          <span class="reading-status">Normal</span>
-        </div>
-        <div class="reading-card">
-          <div class="reading-label">Breathing rate</div>
-          <div class="reading-value">14<span class="reading-unit">breaths/min</span></div>
-          <span class="reading-status">Normal</span>
-        </div>
-        <div class="reading-card">
-          <div class="reading-label">Sleep last night</div>
-          <div class="reading-value">7.2<span class="reading-unit">hours</span></div>
-          <span class="reading-status">Normal</span>
-        </div>
-    </div>
-    <p class="placeholder-note">Placeholder readings. Replace them with real numbers when we have them.</p>
+  <!-- ===== Tab: Biochemical Markers (built by the data-tab script) ===== -->
+  <section class="task-view view wide" data-view="biochem" aria-labelledby="biochem-title">
+    <h1 id="biochem-title">Biochemical Markers</h1>
+    <div class="trend-tab" data-metric="biochem"></div>
   </section>
 
-  <!-- ===== Tab: Internals (spacecraft systems) ===== -->
-  <!-- PLACEHOLDER READINGS: replace with real values when available -->
-  <section class="task-view view" data-view="internals" aria-labelledby="internals-title">
-    <h1 id="internals-title">Internals</h1>
-    <div class="reading-grid">
-        <div class="reading-card">
-          <div class="reading-label">Power</div>
-          <div class="reading-value">87<span class="reading-unit">%</span></div>
-          <span class="reading-status">Normal</span>
-        </div>
-        <div class="reading-card">
-          <div class="reading-label">Water supply</div>
-          <div class="reading-value">64<span class="reading-unit">%</span></div>
-          <span class="reading-status">Normal</span>
-        </div>
-        <div class="reading-card">
-          <div class="reading-label">Oxygen generator</div>
-          <div class="reading-value">On<span class="reading-unit"></span></div>
-          <span class="reading-status">Normal</span>
-        </div>
-        <div class="reading-card">
-          <div class="reading-label">CO₂ scrubber</div>
-          <div class="reading-value">On<span class="reading-unit"></span></div>
-          <span class="reading-status">Normal</span>
-        </div>
-        <div class="reading-card">
-          <div class="reading-label">Cooling system</div>
-          <div class="reading-value">On<span class="reading-unit"></span></div>
-          <span class="reading-status">Normal</span>
-        </div>
-        <div class="reading-card">
-          <div class="reading-label">Hull</div>
-          <div class="reading-value">Sealed<span class="reading-unit"></span></div>
-          <span class="reading-status">Normal</span>
-        </div>
-    </div>
-    <p class="placeholder-note">Placeholder readings. Replace them with real numbers when we have them.</p>
+  <!-- ===== Tab: Carotid Artery Wall Thickness (built by the data-tab script) ===== -->
+  <section class="task-view view wide" data-view="cimt" aria-labelledby="cimt-title">
+    <h1 id="cimt-title">Carotid Artery Wall Thickness</h1>
+    <div class="trend-tab" data-metric="cimt"></div>
   </section>
 
-  <!-- ===== Tab: Ambient Conditions (cabin environment) ===== -->
-  <!-- PLACEHOLDER READINGS: replace with real values when available -->
-  <section class="task-view view" data-view="ambient" aria-labelledby="ambient-title">
-    <h1 id="ambient-title">Ambient Conditions</h1>
-    <div class="reading-grid">
-        <div class="reading-card">
-          <div class="reading-label">Cabin temperature</div>
-          <div class="reading-value">72<span class="reading-unit">°F</span></div>
-          <span class="reading-status">Normal</span>
-        </div>
-        <div class="reading-card">
-          <div class="reading-label">Humidity</div>
-          <div class="reading-value">45<span class="reading-unit">%</span></div>
-          <span class="reading-status">Normal</span>
-        </div>
-        <div class="reading-card">
-          <div class="reading-label">Cabin pressure</div>
-          <div class="reading-value">14.7<span class="reading-unit">psi</span></div>
-          <span class="reading-status">Normal</span>
-        </div>
-        <div class="reading-card">
-          <div class="reading-label">Oxygen</div>
-          <div class="reading-value">21<span class="reading-unit">%</span></div>
-          <span class="reading-status">Normal</span>
-        </div>
-        <div class="reading-card">
-          <div class="reading-label">CO₂</div>
-          <div class="reading-value">2,000<span class="reading-unit">ppm</span></div>
-          <span class="reading-status">Normal</span>
-        </div>
-        <div class="reading-card">
-          <div class="reading-label">Noise</div>
-          <div class="reading-value">58<span class="reading-unit">dB</span></div>
-          <span class="reading-status">Normal</span>
-        </div>
-    </div>
-    <p class="placeholder-note">Placeholder readings. Replace them with real numbers</p>
+  <!-- ===== Tab: Cellular Profile (built by the data-tab script) ===== -->
+  <section class="task-view view wide" data-view="cellular" aria-labelledby="cellular-title">
+    <h1 id="cellular-title">Cellular Profile</h1>
+    <div class="trend-tab" data-metric="cellular"></div>
+  </section>
+
+  <!-- ===== Tab: Microbiome (built by the data-tab script) ===== -->
+  <section class="task-view view wide" data-view="microbiome" aria-labelledby="microbiome-title">
+    <h1 id="microbiome-title">Microbiome</h1>
+    <div class="trend-tab" data-metric="microbiome"></div>
+  </section>
+
+  <!-- ===== Tab: Personality (IPIP-NEO) (built by the data-tab script) ===== -->
+  <section class="task-view view wide" data-view="personality" aria-labelledby="personality-title">
+    <h1 id="personality-title">Personality (IPIP-NEO)</h1>
+    <div class="trend-tab" data-metric="personality"></div>
+  </section>
+
+  <!-- ===== Tab: Actigraphy (wrist activity monitor) (built by the data-tab script) ===== -->
+  <section class="task-view view wide" data-view="actigraphy" aria-labelledby="actigraphy-title">
+    <h1 id="actigraphy-title">Actigraphy (wrist activity monitor)</h1>
+    <div class="trend-tab" data-metric="actigraphy"></div>
+  </section>
+
+  <!-- ===== Tab: Sleep & Team Questionnaire (built by the data-tab script) ===== -->
+  <section class="task-view view wide" data-view="sleepteam" aria-labelledby="sleepteam-title">
+    <h1 id="sleepteam-title">Sleep & Team Questionnaire</h1>
+    <div class="trend-tab" data-metric="sleepteam"></div>
+  </section>
+
+  <!-- ===== Tab: Cognition (built by the data-tab script) ===== -->
+  <section class="task-view view wide" data-view="cognition" aria-labelledby="cognition-title">
+    <h1 id="cognition-title">Cognition</h1>
+    <div class="trend-tab" data-metric="cognition"></div>
   </section>
 
   <!-- ===== Task view (hidden until a task is clicked) ===== -->
@@ -930,21 +1219,12 @@
     // Show the rays and badge only when radiationTooHigh is true
     document.body.classList.toggle("radiation-high", radiationTooHigh);
 
-    // Fill in the Space Radiation tab from the same numbers
-    document.getElementById("rad-level").textContent = radiationLevel;
-    document.getElementById("rad-threshold").textContent = RADIATION_THRESHOLD;
-    const radStatus = document.getElementById("rad-status");
-    radStatus.textContent = radiationTooHigh ? "Too high" : "Normal";
-    radStatus.classList.toggle("alert", radiationTooHigh);
-    const radDiff = radiationLevel - RADIATION_THRESHOLD;
-    document.getElementById("rad-diff").textContent = (radDiff > 0 ? "+" : "") + radDiff;
-    document.getElementById("rad-diff-note").textContent = radDiff > 0 ? "Over the threshold" : "At or under the threshold";
 
 
     // ---- Switching screens ----
     // Shows the screen whose data-view matches the name, hides the rest
     // Screens that show the tab bar at the top
-    const TAB_VIEWS = ["dashboard", "radiation", "wellness", "internals", "ambient"];
+    const TAB_VIEWS = ["dashboard", "cardiac", "biochem", "cimt", "cellular", "microbiome", "personality", "actigraphy", "sleepteam", "cognition"];
 
     function showView(name) {
       document.querySelectorAll(".view").forEach(function (view) {
@@ -1058,6 +1338,756 @@
   </script>
 <script src="tasks.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script>
+    // ---- Data tabs: what each tab shows, read live from data/*.json ----
+    // These are the same files tasks.js saves questionnaire answers into (through data.js / HealthData),
+    // so a finished task shows up in its tab and Home graph right away.
+    //
+    // Each tab:   file    which data/<file>.json it reads
+    //             filter  (optional) which records in that file count
+    //             series  one entry per measure; get(record) pulls the number out of one record
+    //                     (return null/undefined to skip a record that doesn't have that measure)
+    // dangerLow / dangerHigh are the safe limits. They are PLACEHOLDERS, not medical advice.
+    (function () {
+      function m(key, label, unit, decimals, dangerLow, dangerHigh, get, extra) {
+        const s = { key: key, label: label, unit: unit, decimals: decimals,
+                    dangerLow: dangerLow, dangerHigh: dangerHigh, about: "", get: get };
+        for (const k in extra) s[k] = extra[k];
+        return s;
+      }
+      function test(name) {
+        return function (r) {
+          const t = (r.tests || []).find(function (x) { return x.test === name; });
+          return t ? t.score : null;
+        };
+      }
+      function pct(v) { return v == null ? null : Math.round(v * 10000) / 100; }   // 0.125 -> 12.5 (out of 100)
+
+      const SHANNON = "Shannon diversity index. Higher means more kinds of bacteria.";
+      const SHARE = "Share of the sample, out of 100.";
+      const GENERA = {
+        fecal: ["Bacteroides", "Faecalibacterium", "Prevotella", "Bifidobacterium", "Ruminococcus", "Akkermansia", "Lachnospiraceae", "Other"],
+        saliva: ["Streptococcus", "Veillonella", "Prevotella", "Neisseria", "Haemophilus", "Actinomyces", "Rothia", "Other"],
+        skin: ["Staphylococcus", "Cutibacterium", "Corynebacterium", "Micrococcus", "Streptococcus", "Malassezia", "Other", "Other2"]
+      };
+      const SITE_NAME = { fecal: "Gut", saliva: "Mouth", skin: "Skin" };
+      const SITE_LONG = { fecal: "Gut (fecal)", saliva: "Mouth (saliva)", skin: "Skin" };
+      function microbe(site, genus) {
+        const label = SITE_NAME[site] + ": " + (genus === "Other2" ? "Other (group 2)" : genus);
+        return m(site + "_" + genus, label, "%", 1, null, null, function (r) {
+          return r.sample_site === site && r.relative_abundance ? pct(r.relative_abundance[genus]) : null;
+        }, { about: SHARE });
+      }
+
+      window.DASHBOARD_TAB_DEFS = [
+        {
+          key: "cardiac", tab: "Cardiac", title: "Blood Pressure, Heart Rate & Oxygen",
+          about: "Readings from the daily Blood Pressure, Heart Rate, and Pulse Oximetry task.",
+          file: "cardiac",
+          series: [
+            m("heart_rate", "Heart rate", "bpm", 0, 40, 100, function (r) { return r.heart_rate; }),
+            m("bp_systolic", "Blood pressure, top number (systolic)", "mmHg", 0, 90, 140, function (r) { return r.bp_systolic; }),
+            m("bp_diastolic", "Blood pressure, bottom number (diastolic)", "mmHg", 0, 60, 90, function (r) { return r.bp_diastolic; }),
+            m("pulse_oximetry", "Pulse oximetry (blood oxygen)", "%", 0, 90, null, function (r) { return r.pulse_oximetry; })
+          ]
+        },
+        {
+          key: "biochem", tab: "Biochemistry", title: "Biochemical Markers",
+          about: "Blood and 24-hour urine chemistry.",
+          file: "biochemical_markers",
+          series: [
+            m("glucose", "Blood glucose", "mg/dL", 1, 70, 125, function (r) { return r.blood && r.blood.glucose_mg_dl; }),
+            m("total_chol", "Total cholesterol", "mg/dL", 0, null, 240, function (r) { return r.blood && r.blood.total_cholesterol_mg_dl; }),
+            m("hdl", "HDL cholesterol (“good”)", "mg/dL", 0, 40, null, function (r) { return r.blood && r.blood.hdl_mg_dl; }),
+            m("ldl", "LDL cholesterol (“bad”)", "mg/dL", 0, null, 160, function (r) { return r.blood && r.blood.ldl_mg_dl; }),
+            m("vitd", "Vitamin D", "ng/mL", 1, 20, null, function (r) { return r.blood && r.blood.vitamin_d_ng_ml; }),
+            m("ferritin", "Ferritin (iron stores)", "ng/mL", 0, 15, 300, function (r) { return r.blood && r.blood.ferritin_ng_ml; }),
+            m("crp", "CRP (inflammation)", "mg/L", 2, null, 10, function (r) { return r.blood && r.blood.crp_mg_l; }),
+            m("serum_ca", "Serum calcium", "mg/dL", 2, 8.5, 10.5, function (r) { return r.blood && r.blood.serum_calcium_mg_dl; }),
+            m("ntx", "Urine NTX (bone breakdown)", "nmol BCE/mmol creat", 1, null, null, function (r) { return r.urine && r.urine.ntx_nmol_bce_mmol_creat; }),
+            m("u_cortisol", "Urine cortisol (stress hormone)", "µg/24h", 1, null, null, function (r) { return r.urine && r.urine.cortisol_ug_24h; }),
+            m("u_sodium", "Urine sodium", "mmol/24h", 0, null, null, function (r) { return r.urine && r.urine.sodium_mmol_24h; }),
+            m("u_ca", "Urine calcium", "mg/24h", 0, null, 300, function (r) { return r.urine && r.urine.calcium_mg_24h; })
+          ]
+        },
+        {
+          key: "cimt", tab: "Carotid IMT", title: "Carotid Artery Wall Thickness",
+          about: "Ultrasound of the carotid (neck) artery wall. Thicker walls can be an early sign of artery disease.",
+          file: "carotid_intima_media_thickness",
+          series: [
+            m("left", "Left carotid wall thickness", "mm", 3, null, 0.9, function (r) { return r.left_cca_imt; }),
+            m("right", "Right carotid wall thickness", "mm", 3, null, 0.9, function (r) { return r.right_cca_imt; }),
+            m("plaque", "Plaque detected", "", 0, null, 0.5,
+              function (r) { return r.plaque_detected == null ? null : (r.plaque_detected ? 1 : 0); },
+              { about: "1 = yes, 0 = no.", fmt: "yesno" })
+          ]
+        },
+        {
+          key: "cellular", tab: "Cellular", title: "Cellular Profile",
+          about: "Blood cell counts, immune signals, and viruses that can reawaken under stress.",
+          file: "cellular_profile",
+          series: [
+            m("wbc", "White blood cells", "K/µL", 2, 4.0, 11.0, function (r) { return r.blood && r.blood.wbc_k_ul; }),
+            m("neut", "Neutrophils", "%", 1, 40, 75, function (r) { return r.blood && r.blood.neutrophils_pct; }),
+            m("lymph", "Lymphocytes", "%", 1, 20, 45, function (r) { return r.blood && r.blood.lymphocytes_pct; }),
+            m("mono", "Monocytes", "%", 1, 2, 10, function (r) { return r.blood && r.blood.monocytes_pct; }),
+            m("eos", "Eosinophils", "%", 1, null, 6, function (r) { return r.blood && r.blood.eosinophils_pct; }),
+            m("baso", "Basophils", "%", 1, null, 2, function (r) { return r.blood && r.blood.basophils_pct; }),
+            m("rbc", "Red blood cells", "M/µL", 2, 4.2, 5.9, function (r) { return r.blood && r.blood.rbc_m_ul; }),
+            m("hgb", "Hemoglobin", "g/dL", 1, 12, 17.5, function (r) { return r.blood && r.blood.hemoglobin_g_dl; }),
+            m("plt", "Platelets", "K/µL", 0, 150, 450, function (r) { return r.blood && r.blood.platelets_k_ul; }),
+            m("il6", "IL-6 (inflammation signal)", "pg/mL", 2, null, 7, function (r) { return r.blood && r.blood.il6_pg_ml; }),
+            m("tnf", "TNF-alpha (inflammation signal)", "pg/mL", 2, null, null, function (r) { return r.blood && r.blood.tnf_alpha_pg_ml; }),
+            m("s_cortisol", "Saliva cortisol", "nmol/L", 1, null, null, function (r) { return r.saliva && r.saliva.cortisol_nmol_l; }),
+            m("ebv", "EBV virus in saliva", "copies/mL", 0, null, null, function (r) { return r.saliva && r.saliva.ebv_dna_copies_per_ml; }),
+            m("cmv", "CMV virus in saliva", "copies/mL", 0, null, null, function (r) { return r.saliva && r.saliva.cmv_dna_copies_per_ml; })
+          ]
+        },
+        {
+          key: "microbiome", tab: "Microbiome", title: "Microbiome",
+          about: "Bacteria living in the gut, mouth and on the skin.",
+          file: "microbiome",
+          series: ["fecal", "saliva", "skin"].map(function (site) {
+            return m(site + "_shannon", SITE_LONG[site] + ": diversity", "", 2, null, null, function (r) {
+              return r.sample_site === site ? r.shannon_diversity : null;
+            }, { about: SHANNON });
+          }).concat(
+            GENERA.fecal.map(function (g) { return microbe("fecal", g); }),
+            GENERA.saliva.map(function (g) { return microbe("saliva", g); }),
+            GENERA.skin.map(function (g) { return microbe("skin", g); })
+          )
+        },
+        {
+          key: "personality", tab: "Personality", title: "Personality (IPIP-NEO)",
+          about: "Big Five personality traits, as percentiles (out of 100) compared with other people.",
+          file: "personality_questionnaire", single: true,
+          series: ["openness", "conscientiousness", "extraversion", "agreeableness", "neuroticism"].map(function (trait) {
+            return m(trait, trait.charAt(0).toUpperCase() + trait.slice(1), "percentile", 0, null, null, function (r) {
+              return r.scores_percentile ? r.scores_percentile[trait] : null;
+            });
+          })
+        },
+        {
+          key: "actigraphy", tab: "Actigraphy", title: "Actigraphy (wrist activity monitor)",
+          about: "Readings every 30 minutes, added up into days that run noon to noon so each day holds one night of sleep.",
+          file: "actigraphy", daily: true,
+          // get() here receives one noon-to-noon day: { epochs: [...30-min records...], minutes: 30 }
+          series: [
+            m("sleep_h", "Sleep per night", "hours", 1, 5, null, function (day) {
+              return day.epochs.filter(function (e) { return e.sleep_state !== "awake"; }).length * day.minutes / 60;
+            }),
+            m("activity", "Total activity", "counts", 0, null, null, function (day) {
+              return day.epochs.reduce(function (sum, e) { return sum + (e.activity_counts || 0); }, 0);
+            }),
+            m("light", "Average light while awake", "lux", 0, null, null, function (day) {
+              const awake = day.epochs.filter(function (e) { return e.sleep_state === "awake" && e.light_exposure_lux != null; });
+              if (!awake.length) return null;
+              const avg = awake.reduce(function (sum, e) { return sum + e.light_exposure_lux; }, 0) / awake.length;
+              return Math.round(avg * 10) / 10;
+            })
+          ]
+        },
+        {
+          key: "sleepteam", tab: "Sleep & Team", title: "Sleep & Team Questionnaire",
+          about: "Wake-up questions about last night's sleep, and bedtime questions about mood and the team. Ratings are 1 (low) to 5 (high).",
+          file: "sleep_team_questionnaire",
+          series: [
+            m("sleep_duration", "Sleep duration", "hours", 1, 5, null, function (r) { return r.type === "wake" ? r.sleep_duration_hours : null; }),
+            m("latency", "Time to fall asleep", "min", 0, null, 45, function (r) { return r.type === "wake" ? r.sleep_latency_min : null; }),
+            m("awakenings", "Awakenings", "", 0, null, 5, function (r) { return r.type === "wake" ? r.awakenings : null; }),
+            m("quality", "Sleep quality", "/5", 0, 1.5, null, function (r) { return r.type === "wake" ? r.sleep_quality_1_5 : null; }),
+            m("refreshed", "Feeling refreshed", "/5", 0, 1.5, null, function (r) { return r.type === "wake" ? r.refreshed_1_5 : null; }),
+            m("mood", "Mood", "/5", 0, 1.5, null, function (r) { return r.type === "bedtime" ? r.mood_1_5 : null; }),
+            m("stress", "Stress", "/5", 0, null, 4.5, function (r) { return r.type === "bedtime" ? r.stress_1_5 : null; }),
+            m("cohesion", "Team cohesion", "/5", 0, 1.5, null, function (r) { return r.type === "bedtime" ? r.team_cohesion_1_5 : null; }),
+            m("performance", "Team performance", "/5", 0, 1.5, null, function (r) { return r.type === "bedtime" ? r.team_performance_1_5 : null; }),
+            m("workload", "Workload", "/5", 0, null, 4.5, function (r) { return r.type === "bedtime" ? r.workload_1_5 : null; }),
+            m("livability", "Livability of habitat", "/5", 0, 1.5, null, function (r) { return r.type === "bedtime" ? r.livability_habitability_1_5 : null; })
+          ]
+        },
+        {
+          key: "cognition", tab: "Cognition", title: "Cognition",
+          about: "Scores from a battery of 10 computer-based tests. For tests measured in ms, lower (faster) is better.",
+          file: "cognition",
+          series: [
+            m("psychomotor_vigilance", "Psychomotor vigilance (reaction time)", "ms", 1, null, null, test("psychomotor_vigilance")),
+            m("motor_praxis", "Motor praxis (speed)", "ms", 1, null, null, test("motor_praxis")),
+            m("visual_object_learning", "Visual object learning", "% correct", 1, null, null, test("visual_object_learning")),
+            m("fractal_2_back", "Fractal 2-back (working memory)", "% correct", 1, null, null, test("fractal_2_back")),
+            m("abstract_matching", "Abstract matching", "% correct", 1, null, null, test("abstract_matching")),
+            m("line_orientation", "Line orientation", "% correct", 1, null, null, test("line_orientation")),
+            m("emotion_recognition", "Emotion recognition", "% correct", 1, null, null, test("emotion_recognition")),
+            m("matrix_reasoning", "Matrix reasoning", "% correct", 1, null, null, test("matrix_reasoning")),
+            m("digit_symbol_substitution", "Digit symbol substitution", "correct", 1, null, null, test("digit_symbol_substitution")),
+            m("balloon_analog_risk", "Balloon risk-taking", "avg pumps", 1, null, null, test("balloon_analog_risk"))
+          ]
+        }
+      ];
+    })();
+  </script>
+  <script>
+    // Everything below runs inside its own private scope, so none of its names
+    // (fmt, DAY_MS, evaluate, ...) can clash with tasks.js, data.js or main.js.
+    (function () {
+    "use strict";
+    const TAB_DEFS = window.DASHBOARD_TAB_DEFS;
+    let DATA_TABS = [];
+
+    // =====================================================================
+    // Data tabs: one tab per JSON file, read live from HealthData (data.js),
+    // the same place tasks.js saves questionnaire answers
+    // =====================================================================
+    //
+    // For every measure in a tab:
+    //   - the chart shows every reading in time order
+    //   - the trendline is a line of best fit through all readings EXCEPT the latest
+    //   - the latest reading is then checked against what the trendline predicted
+    //
+    // Status of the latest reading:
+    //   DANGER (blinks red)    outside the safe limits (dangerLow / dangerHigh in the data)
+    //   WATCH  (blinks orange) outside the trendline's 95% prediction interval: the range where the
+    //                          trend expects the next reading to land 95 times out of 100. With few
+    //                          readings the range is wider, so a small dataset doesn't cause false alarms.
+    //   NORMAL                 neither
+    //
+    // SAFE LIMITS ARE PLACEHOLDERS based on common adult reference ranges. They are not medical advice;
+    // replace them with the limits your team decides on.
+    // t critical values for a 95% interval (two-sided), by degrees of freedom (readings used minus 2)
+    const T95 = [null, 12.706, 4.303, 3.182, 2.776, 2.571, 2.447, 2.365, 2.306, 2.262, 2.228,
+                 2.201, 2.179, 2.160, 2.145, 2.131, 2.120, 2.110, 2.101, 2.093, 2.086,
+                 2.080, 2.074, 2.069, 2.064, 2.060, 2.056, 2.052, 2.048, 2.045, 2.042];
+    function t95(df) { return df < T95.length ? T95[df] : 1.96; }
+    const MIN_TREND_POINTS = 3;   // earlier readings needed before a trend check is possible
+
+    const DAY_MS = 86400000;
+    function fmt(s, n) {
+      if (s.fmt === "yesno") return n >= 0.5 ? "Yes" : "No";
+      return Number(n).toLocaleString("en-US", { minimumFractionDigits: s.decimals, maximumFractionDigits: s.decimals });
+    }
+    function withUnit(s, n) { return fmt(s, n) + (s.unit && s.fmt !== "yesno" ? " " + s.unit : ""); }
+    function signed(s, n) {
+      if (s.fmt === "yesno") return n === 0 ? "0" : (n > 0 ? "+" : "−") + Math.abs(n).toFixed(2);
+      return (n > 0 ? "+" : n < 0 ? "−" : "") + Number(Math.abs(n)).toLocaleString("en-US", { minimumFractionDigits: s.decimals, maximumFractionDigits: s.decimals + 1 });
+    }
+    function dateText(p, long) {
+      if (p.label) return p.label;
+      return new Date(p.t).toLocaleDateString("en-US", long ? { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" }
+                                                           : { month: "short", day: "numeric", timeZone: "UTC" });
+    }
+    function phaseText(p) { return p.phase ? p.phase.replace("-", " ") : ""; }
+
+    // Line of best fit (least squares) through points with x in days
+    function fitLine(xs, ys) {
+      const n = xs.length;
+      const mx = xs.reduce(function (a, b) { return a + b; }, 0) / n;
+      const my = ys.reduce(function (a, b) { return a + b; }, 0) / n;
+      let top = 0, bottom = 0;
+      xs.forEach(function (x, i) { top += (x - mx) * (ys[i] - my); bottom += (x - mx) * (x - mx); });
+      const slope = bottom === 0 ? 0 : top / bottom;
+      const intercept = my - slope * mx;
+      // Residual standard deviation: typical distance of the points from the line
+      let sq = 0;
+      xs.forEach(function (x, i) { const r = ys[i] - (intercept + slope * x); sq += r * r; });
+      const sd = n > 2 ? Math.sqrt(sq / (n - 2)) : 0;
+      return { slope: slope, intercept: intercept, sd: sd, mean: my, n: n, meanX: mx, sxx: bottom };
+    }
+
+    // Work out the status of one measure's latest reading
+    function evaluate(s) {
+      const pts = s.points;
+      const t0 = new Date(pts[0].t).getTime();
+      const xs = pts.map(function (p) { return (new Date(p.t).getTime() - t0) / DAY_MS; });
+      const ys = pts.map(function (p) { return p.v; });
+      const last = pts.length - 1;
+      const latest = ys[last];
+      const res = { latest: latest, latestPoint: pts[last], xs: xs, used: last, fit: null, expected: null, diff: null,
+                    status: "normal", label: "Normal", reason: "" };
+
+      const tooLow = s.dangerLow !== null && latest < s.dangerLow;
+      const tooHigh = s.dangerHigh !== null && latest > s.dangerHigh;
+
+      if (last >= MIN_TREND_POINTS) {
+        res.fit = fitLine(xs.slice(0, last), ys.slice(0, last));
+        res.expected = res.fit.intercept + res.fit.slope * xs[last];
+        res.diff = latest - res.expected;
+        // 95% prediction interval half-width: t × sd × sqrt(1 + 1/n + (x − mean x)² / Sxx)
+        const f = res.fit, x0 = xs[last];
+        const spread = Math.sqrt(1 + 1 / f.n + (f.sxx ? Math.pow(x0 - f.meanX, 2) / f.sxx : 0));
+        // Never let the allowed gap shrink to almost nothing when the earlier points sit exactly on a line
+        res.allowed = Math.max(t95(f.n - 2) * f.sd * spread, Math.abs(f.mean) * 0.02, Math.pow(10, -s.decimals));
+      }
+
+      if (tooLow || tooHigh) {
+        res.status = "danger"; res.label = "Danger";
+        res.reason = "Outside the safe limit (" + (tooLow ? "below " + withUnit(s, s.dangerLow) : "above " + withUnit(s, s.dangerHigh)) + ").";
+      } else if (res.fit && Math.abs(res.diff) > res.allowed) {
+        res.status = "watch"; res.label = "Watch";
+        res.reason = "Off the trendline: " + signed(s, res.diff) + (s.unit && s.fmt !== "yesno" ? " " + s.unit : "") +
+                     (res.diff > 0 ? " higher" : " lower") + " than the trend predicted, outside its 95% prediction range.";
+      } else if (res.fit) {
+        res.reason = "In line with the trend.";
+      } else {
+        res.reason = "Within safe limits. Not enough earlier readings for a trend check (need " + MIN_TREND_POINTS + ").";
+      }
+      return res;
+    }
+
+    const RANK = { normal: 0, watch: 1, danger: 2 };
+
+    // ---- Turn the raw records in HealthData into each tab's measures ----
+    // Every measure gets its points (time, value, phase) sorted by time. Measures with no readings
+    // yet are left out, and each tab remembers how many records it read and how many it skipped.
+    function recordTime(r) { return new Date(r.timestamp).getTime(); }
+
+    // Actigraphy: 30-minute epochs grouped into noon-to-noon days (each day holds one night)
+    function actigraphyDays(records) {
+      const minutes = 30;   // epoch_minutes in actigraphy.json
+      const days = {};
+      records.forEach(function (r) {
+        const shifted = new Date(recordTime(r) - 12 * 3600000);   // move back 12 h so noon-to-noon is one calendar day
+        const key = shifted.toISOString().slice(0, 10);
+        (days[key] = days[key] || []).push(r);
+      });
+      return Object.keys(days).sort().map(function (key) {
+        const label = new Date(key + "T00:00:00Z").toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "UTC" });
+        return { timestamp: key + "T12:00:00Z", phase: days[key][0].phase || "", label: "Night of " + label,
+                 epochs: days[key], minutes: minutes };
+      });
+    }
+
+    function buildDataTabs() {
+      return TAB_DEFS.map(function (def) {
+        let records = (HealthData.data[def.file] || []).slice();
+        const total = records.length;
+        if (def.filter) records = records.filter(def.filter);
+        records = records.filter(function (r) { return r && !isNaN(recordTime(r)); })
+                         .sort(function (a, b) { return recordTime(a) - recordTime(b); });
+        const rows = def.daily ? actigraphyDays(records) : records;
+
+        const series = def.series.map(function (s) {
+          const points = [];
+          rows.forEach(function (r) {
+            const v = s.get(r);
+            if (v == null || isNaN(v)) return;
+            const p = { t: r.timestamp, v: Number(v), phase: r.phase || "" };
+            if (r.label) p.label = r.label;
+            points.push(p);
+          });
+          const out = {};
+          for (const k in s) if (k !== "get") out[k] = s[k];
+          out.points = def.single ? points.slice(-1) : points;   // Personality: latest assessment only
+          return out;
+        }).filter(function (s) { return s.points.length > 0; });
+
+        const tab = {};
+        for (const k in def) if (k !== "series" && k !== "filter") tab[k] = def[k];
+        tab.series = series;
+        tab.recordsTotal = total;
+        tab.recordsUsed = records.length;
+        return tab;
+      });
+    }
+
+    // Shown in a tab that has no readings yet (for example a brand-new file)
+    function buildEmpty(tab, holder, tabBtn) {
+      holder.innerHTML = '<p class="chart-sub">' + tab.about + "</p>" +
+        '<p class="latest-reason">No readings yet. Finish the matching task on the Home screen and it will show up here.</p>' +
+        '<p class="latest-rows">' + tab.recordsTotal + " records in data/" + tab.file + ".json; " +
+        (tab.recordsTotal - tab.recordsUsed) + " left out.</p>";
+      tabBtn.textContent = tab.tab;
+      tabBtn.classList.remove("has-warning", "has-alarm");
+    }
+
+    // ---- Build one tab ----
+    function buildTab(tab) {
+      const holder = document.querySelector('.trend-tab[data-metric="' + tab.key + '"]');
+      const tabBtn = document.querySelector('.top-tab[data-tab="' + tab.key + '"]');
+      if (!holder || !tabBtn) return;
+      if (!tab.series.length) { buildEmpty(tab, holder, tabBtn); return; }
+      const results = tab.series.map(evaluate);
+
+      if (tab.single) { buildSingle(tab, holder, tabBtn); return; }
+
+      // Worst status in the tab decides the tab's blinking
+      let worst = "normal";
+      results.forEach(function (r) { if (RANK[r.status] > RANK[worst]) worst = r.status; });
+      const flagged = tab.series.map(function (s, i) { return { s: s, r: results[i], i: i }; })
+                                .filter(function (f) { return f.r.status !== "normal"; })
+                                .sort(function (a, b) { return RANK[b.r.status] - RANK[a.r.status]; });
+
+      holder.innerHTML =
+        '<p class="chart-sub">' + tab.about + "</p>" +
+        '<div class="series-picker"><label for="pick-' + tab.key + '">Measure:</label> <select id="pick-' + tab.key + '">' +
+          tab.series.map(function (s, i) {
+            const r = results[i];
+            return '<option value="' + i + '">' + (r.status === "danger" ? "🔴 " : r.status === "watch" ? "🟠 " : "") + s.label + "</option>";
+          }).join("") +
+        "</select></div>" +
+        (flagged.length
+          ? '<div class="flag-list"><span>Needs attention:</span> ' + flagged.map(function (f) {
+              return '<button type="button" class="flag-btn ' + f.r.status + '" data-index="' + f.i + '">' + f.s.label + " · " + f.r.label + "</button>";
+            }).join(" ") + "</div>"
+          : '<div class="flag-list"><span>All measures in this tab are normal.</span></div>') +
+        '<div class="chart-layout">' +
+          '<div class="chart-card">' +
+            '<div class="chart-controls">' +
+              '<button type="button" class="chart-toggle" data-toggle="hide-trend" aria-pressed="true">Trendline</button>' +
+              '<button type="button" class="chart-toggle" data-toggle="hide-limits" aria-pressed="true">Safe limits</button>' +
+              '<button type="button" class="chart-toggle" data-toggle="show-values" aria-pressed="false">Show values</button>' +
+            "</div>" +
+            '<div class="chart-legend"><span class="lg-data">Reading</span><span class="lg-trend">Trendline (bracket = 95% prediction range)</span><span class="lg-limit">Safe limit</span></div>' +
+            '<div class="chart-area"></div>' +
+            '<div class="chart-tip" hidden></div>' +
+          "</div>" +
+          '<aside class="latest-box" aria-live="polite"></aside>' +
+        "</div>" +
+        '<p class="placeholder-note">Safe limits are placeholders based on common reference ranges, not medical advice.</p>';
+
+      const select = holder.querySelector("select");
+      function showSeries(i) {
+        select.value = i;
+        drawSeries(holder, tab.series[i], results[i]);
+      }
+      select.addEventListener("change", function () { showSeries(Number(select.value)); });
+      holder.querySelectorAll(".flag-btn").forEach(function (b) {
+        b.addEventListener("click", function () { showSeries(Number(b.dataset.index)); });
+      });
+      holder.querySelectorAll(".chart-toggle").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          const on = btn.getAttribute("aria-pressed") !== "true";
+          btn.setAttribute("aria-pressed", on);
+          holder.dataset[btn.dataset.toggle.replace("-", "")] = on;   // remembered when switching measures
+          applyToggles(holder);
+        });
+      });
+      // Start on the most urgent measure if there is one, otherwise the first
+      showSeries(flagged.length ? flagged[0].i : 0);
+
+      // Tab button blinks by the worst status in the tab
+      tabBtn.textContent = tab.tab;
+      tabBtn.classList.toggle("has-warning", worst === "watch");
+      tabBtn.classList.toggle("has-alarm", worst === "danger");
+    }
+
+    function applyToggles(holder) {
+      const svg = holder.querySelector(".trend-svg");
+      if (!svg) return;
+      holder.querySelectorAll(".chart-toggle").forEach(function (btn) {
+        const on = btn.getAttribute("aria-pressed") === "true";
+        const cls = btn.dataset.toggle;
+        svg.classList.toggle(cls, cls === "show-values" ? on : !on);
+      });
+    }
+
+    // ---- Latest-reading box + chart for one measure ----
+    function drawSeries(holder, s, r) {
+      const box = holder.querySelector(".latest-box");
+      box.className = "latest-box " + r.status;
+      const safe = s.dangerLow !== null && s.dangerHigh !== null ? fmt(s, s.dangerLow) + " to " + fmt(s, s.dangerHigh)
+                 : s.dangerLow !== null ? "At least " + fmt(s, s.dangerLow)
+                 : s.dangerHigh !== null ? "Up to " + fmt(s, s.dangerHigh) : "None set";
+      const n = s.points.length;
+      box.innerHTML =
+        '<div class="latest-label">' + s.label + "<br>Latest reading · " + dateText(r.latestPoint, true) +
+          (r.latestPoint.phase ? " · " + phaseText(r.latestPoint) : "") + "</div>" +
+        '<div class="latest-value">' + fmt(s, r.latest) + (s.unit && s.fmt !== "yesno" ? '<span class="reading-unit">' + s.unit + "</span>" : "") + "</div>" +
+        '<span class="reading-status">' + r.label + "</span>" +
+        '<p class="latest-reason">' + r.reason + "</p>" +
+        '<dl class="latest-facts">' +
+          (r.fit ? "<dt>Trend predicted</dt><dd>" + fmt(s, r.expected) + "</dd>" +
+                   "<dt>Difference</dt><dd>" + signed(s, r.diff) + "</dd>" +
+                   "<dt>95% prediction range</dt><dd>" + fmt(s, r.expected - r.allowed) + " to " + fmt(s, r.expected + r.allowed) + "</dd>" +
+                   "<dt>Trend per 30 days</dt><dd>" + signed(s, r.fit.slope * 30) + "</dd>" : "") +
+          "<dt>Safe range</dt><dd>" + safe + "</dd>" +
+        "</dl>" +
+        (s.about ? '<p class="latest-rows">' + s.about + "</p>" : "") +
+        '<p class="latest-rows">' + n + " readings in this measure. " +
+          (r.fit ? "Trendline uses " + (n - 1) + "; the latest (1) is left out so it can be checked against the trend."
+                 : "Too few for a trendline, so 0 are used for it.") + "</p>";
+
+      const area = holder.querySelector(".chart-area");
+      area.innerHTML = "";
+      drawChart(holder, area, s, r);
+      applyToggles(holder);
+    }
+
+    // ---- Spline: a smooth curve through every point ----
+    // Uses a "monotone" cubic spline: smooth like the Home graphs, but it never bulges
+    // above or below the readings, so the curve doesn't suggest values that weren't measured.
+    function splinePath(P) {
+      const n = P.length;
+      if (n === 1) return "M" + P[0][0] + "," + P[0][1];
+      const dx = [], m = [], t = [];
+      for (let i = 0; i < n - 1; i++) {
+        dx[i] = P[i + 1][0] - P[i][0];
+        m[i] = dx[i] === 0 ? 0 : (P[i + 1][1] - P[i][1]) / dx[i];   // slope between neighbors
+      }
+      t[0] = m[0]; t[n - 1] = m[n - 2];
+      for (let i = 1; i < n - 1; i++) t[i] = m[i - 1] * m[i] <= 0 ? 0 : (m[i - 1] + m[i]) / 2;
+      for (let i = 0; i < n - 1; i++) {
+        if (m[i] === 0) { t[i] = 0; t[i + 1] = 0; continue; }
+        const a = t[i] / m[i], b = t[i + 1] / m[i], h = a * a + b * b;
+        if (h > 9) { const k = 3 / Math.sqrt(h); t[i] = k * a * m[i]; t[i + 1] = k * b * m[i]; }
+      }
+      let d = "M" + P[0][0] + "," + P[0][1];
+      for (let i = 0; i < n - 1; i++) {
+        const third = dx[i] / 3;
+        d += " C" + (P[i][0] + third) + "," + (P[i][1] + t[i] * third) + " " +
+                    (P[i + 1][0] - third) + "," + (P[i + 1][1] - t[i + 1] * third) + " " +
+                    P[i + 1][0] + "," + P[i + 1][1];
+      }
+      return d;
+    }
+
+    // ---- Draw the chart as SVG ----
+    function drawChart(holder, area, s, r) {
+      const W = 640, H = 300, padL = 60, padR = 18, padT = 18, padB = 38;
+      const pts = s.points, n = pts.length, xs = r.xs;
+      const xMax = xs[n - 1] || 1;
+      const trendAt = function (x) { return r.fit.intercept + r.fit.slope * x; };
+
+      let vals = pts.map(function (p) { return p.v; });
+      if (r.fit) vals = vals.concat([trendAt(0), trendAt(xMax)]);
+      let lo = Math.min.apply(null, vals), hi = Math.max.apply(null, vals);
+      const span = (hi - lo) || Math.abs(hi) || 1;
+      [s.dangerLow, s.dangerHigh].forEach(function (lim) {
+        if (lim !== null && lim > lo - span && lim < hi + span) { lo = Math.min(lo, lim); hi = Math.max(hi, lim); }
+      });
+      const pad = (hi - lo) * 0.15 || 1;
+      lo -= pad; hi += pad;
+      if (s.fmt === "yesno") { lo = -0.25; hi = 1.25; }
+
+      const x = function (d) { return padL + (d / xMax) * (W - padL - padR); };
+      const y = function (v) { return padT + ((hi - v) * (H - padT - padB)) / (hi - lo); };
+      const NS = "http://www.w3.org/2000/svg";
+      const svg = document.createElementNS(NS, "svg");
+      svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+      svg.setAttribute("class", "trend-svg");
+      svg.setAttribute("role", "img");
+      svg.setAttribute("aria-label", s.label + ", " + n + " readings. Latest " + withUnit(s, r.latest) + ", status " + r.label + ".");
+      function el(tag, attrs, text) {
+        const e = document.createElementNS(NS, tag);
+        for (const k in attrs) e.setAttribute(k, attrs[k]);
+        if (text !== undefined) e.textContent = text;
+        svg.appendChild(e);
+        return e;
+      }
+
+      // Grid + y-axis numbers
+      const steps = s.fmt === "yesno" ? [0, 1] : [0, 1, 2, 3, 4].map(function (k) { return lo + ((hi - lo) * k) / 4; });
+      steps.forEach(function (v) {
+        el("line", { x1: padL, x2: W - padR, y1: y(v), y2: y(v), class: "grid" });
+        el("text", { x: padL - 8, y: y(v) + 4, "text-anchor": "end" }, fmt(s, v));
+      });
+      // Date labels: up to 6, spread across the readings
+      const labelCount = Math.min(n, 6);
+      const shown = {};
+      for (let k = 0; k < labelCount; k++) {
+        const i = labelCount === 1 ? 0 : Math.round((k * (n - 1)) / (labelCount - 1));
+        if (shown[i]) continue; shown[i] = true;
+        const anchor = i === 0 ? "start" : i === n - 1 ? "end" : "middle";
+        el("text", { x: x(xs[i]), y: H - 12, "text-anchor": anchor }, dateText(pts[i]).replace("Night of ", ""));
+      }
+      // Safe limits
+      [["dangerLow", "Low limit"], ["dangerHigh", "High limit"]].forEach(function (pair) {
+        const lim = s[pair[0]];
+        if (lim !== null && lim >= lo && lim <= hi && s.fmt !== "yesno") {
+          el("line", { x1: padL, x2: W - padR, y1: y(lim), y2: y(lim), class: "limit-line" });
+          el("text", { x: W - padR - 4, y: y(lim) - 5, "text-anchor": "end", class: "limit-label" }, pair[1] + " " + fmt(s, lim));
+        }
+      });
+      // Trendline (fit to every reading except the latest, drawn up to the latest)
+      if (r.fit) {
+        el("line", { x1: x(0), y1: y(trendAt(0)), x2: x(xMax), y2: y(trendAt(xMax)), class: "trend-line" });
+        // Bracket showing the 95% prediction range at the latest reading
+        const top = Math.max(y(r.expected + r.allowed), padT), bot = Math.min(y(r.expected - r.allowed), H - padB);
+        el("line", { x1: x(xMax) - 10, x2: x(xMax) - 10, y1: top, y2: bot, class: "trend-line pred-bar" });
+        el("line", { x1: x(xMax) - 15, x2: x(xMax) - 5, y1: top, y2: top, class: "trend-line pred-bar" });
+        el("line", { x1: x(xMax) - 15, x2: x(xMax) - 5, y1: bot, y2: bot, class: "trend-line pred-bar" });
+      }
+      // Readings
+      // Smooth curve through the readings (a spline), with a soft fill underneath like the Home graphs
+      const screen = pts.map(function (p, i) { return [x(xs[i]), y(p.v)]; });
+      const curve = splinePath(screen);
+      el("path", { d: curve + " L" + screen[n - 1][0] + "," + (H - padB) + " L" + screen[0][0] + "," + (H - padB) + " Z", class: "data-fill" });
+      el("path", { d: curve, class: "data-line" });
+      const guide = el("line", { x1: 0, x2: 0, y1: padT, y2: H - padB, class: "guide", visibility: "hidden" });
+      const dots = pts.map(function (p, i) {
+        el("text", { x: x(xs[i]), y: y(p.v) - 12, "text-anchor": "middle", class: "value-label" }, fmt(s, p.v));
+        const isLatest = i === n - 1;
+        return el("circle", { cx: x(xs[i]), cy: y(p.v), r: isLatest ? 7 : n > 20 ? 3.5 : 5,
+                              class: "point" + (isLatest ? " latest " + r.status : ""), tabindex: 0,
+                              "aria-label": dateText(p, true) + ": " + withUnit(s, p.v) });
+      });
+      const hit = el("rect", { x: padL, y: padT, width: W - padL - padR, height: H - padT - padB, class: "hit" });
+      area.appendChild(svg);
+
+      const tip = holder.querySelector(".chart-tip"), card = holder.querySelector(".chart-card");
+      function show(i) {
+        dots.forEach(function (d, j) { d.classList.toggle("hot", j === i); });
+        guide.setAttribute("x1", x(xs[i])); guide.setAttribute("x2", x(xs[i])); guide.setAttribute("visibility", "visible");
+        const p = pts[i];
+        tip.innerHTML = "<strong>" + dateText(p, true) + "</strong>" + (p.phase ? " · " + phaseText(p) : "") +
+                        "<br>Reading: " + withUnit(s, p.v) +
+                        (r.fit ? "<br>Trendline: " + fmt(s, trendAt(xs[i])) + "<br>Difference: " + signed(s, p.v - trendAt(xs[i])) : "");
+        const b = svg.getBoundingClientRect(), cb = card.getBoundingClientRect();
+        tip.style.left = Math.min(Math.max(b.left - cb.left + (x(xs[i]) / W) * b.width, 90), cb.width - 90) + "px";
+        tip.style.top = (b.top - cb.top + (y(p.v) / H) * b.height - 6) + "px";
+        tip.hidden = false;
+      }
+      function hide() { dots.forEach(function (d) { d.classList.remove("hot"); }); guide.setAttribute("visibility", "hidden"); tip.hidden = true; }
+      function nearest(e) {
+        const b = svg.getBoundingClientRect();
+        const day = ((((e.clientX - b.left) / b.width) * W - padL) / (W - padL - padR)) * xMax;
+        let best = 0;
+        xs.forEach(function (d, i) { if (Math.abs(d - day) < Math.abs(xs[best] - day)) best = i; });
+        return best;
+      }
+      hit.addEventListener("pointermove", function (e) { show(nearest(e)); });
+      hit.addEventListener("pointerdown", function (e) { show(nearest(e)); });
+      hit.addEventListener("pointerleave", hide);
+      dots.forEach(function (d, i) {
+        d.addEventListener("focus", function () { show(i); });
+        d.addEventListener("blur", hide);
+        d.addEventListener("pointerenter", function () { show(i); });
+      });
+    }
+
+    // ---- Single-assessment tab (Personality): bar chart, no trend ----
+    function buildSingle(tab, holder, tabBtn) {
+      const p0 = tab.series[0].points[0];
+      holder.innerHTML =
+        '<p class="chart-sub">' + tab.about + "</p>" +
+        '<div class="chart-layout">' +
+          '<div class="chart-card"><div class="pers-bars">' +
+            tab.series.map(function (s) {
+              const v = s.points[0].v;
+              return '<div class="pers-row"><span class="pers-name">' + s.label + "</span>" +
+                     '<span class="pers-track"><span class="pers-fill" style="width:' + v + '%"></span></span>' +
+                     '<span class="pers-val">' + v + "</span></div>";
+            }).join("") +
+          "</div></div>" +
+          '<aside class="latest-box normal">' +
+            '<div class="latest-label">Latest assessment · ' + dateText(p0, true) + (p0.phase ? " · " + phaseText(p0) : "") + "</div>" +
+            '<span class="reading-status">Baseline</span>' +
+            '<p class="latest-reason">Only one assessment so far, so there is no trend to compare against. Personality scores are not flagged as normal or abnormal.</p>' +
+            '<p class="latest-rows">A percentile of 60 means a higher score than 60 out of 100 people. 5 traits, 1 reading each; 0 left out.</p>' +
+          "</aside>" +
+        "</div>";
+      const top = tab.series.reduce(function (a, b) { return b.points[0].v > a.points[0].v ? b : a; });
+      tabBtn.textContent = tab.tab;
+    }
+
+    // Build each tab on its own, so a problem in one tab can't stop the others.
+    // If something goes wrong, the tab shows the error instead of staying blank.
+    function buildAllTabs() {
+      DATA_TABS.forEach(function (tab) {
+        try {
+          buildTab(tab);
+        } catch (err) {
+          const holder = document.querySelector('.trend-tab[data-metric="' + tab.key + '"]');
+          if (holder) holder.innerHTML = '<p class="latest-reason">This chart could not be drawn: ' + err.message +
+                                         '. Open the browser console (F12) for details.</p>';
+          console.error("Dashboard tab " + tab.key + ":", err);
+        }
+      });
+    }
+
+    // ---- Home: one small graph per tab, same order as the tabs ----
+    function buildHomeCharts() {
+      const box = document.getElementById("tab-charts");
+      if (!box) return;
+      box.innerHTML = "";
+      DATA_TABS.forEach(function (tab) {
+        if (!tab.series.length) return;   // nothing to draw yet
+        const fig = document.createElement("button");
+        fig.type = "button";
+        fig.className = "home-chart";
+        fig.setAttribute("aria-label", "Open the " + tab.tab + " tab");
+
+        if (tab.single) {
+          // Personality: tiny bars instead of a line (only one assessment)
+          const bars = tab.series.map(function (s) {
+            return '<span class="mini-bar" title="' + s.label + ": " + s.points[0].v + '"><span style="height:' + s.points[0].v + '%"></span></span>';
+          }).join("");
+          fig.innerHTML = '<span class="home-chart-top"><span class="home-chart-name">' + tab.tab + "</span>" +
+                          '<span class="home-chart-val">Big Five</span></span><span class="mini-bars">' + bars + "</span>";
+        } else {
+          const results = tab.series.map(evaluate);
+          let worst = "normal";
+          results.forEach(function (r) { if (RANK[r.status] > RANK[worst]) worst = r.status; });
+          const s = tab.series[0], r = results[0];
+          fig.classList.add(worst);
+
+          // Sparkline: same smooth spline + soft fill as the tab charts
+          const W = 200, H = 44, pad = 4;
+          const vals = s.points.map(function (p) { return p.v; });
+          let lo = Math.min.apply(null, vals), hi = Math.max.apply(null, vals);
+          if (hi === lo) { hi += 1; lo -= 1; }
+          const xMax = r.xs[r.xs.length - 1] || 1;
+          const P = s.points.map(function (p, i) {
+            return [pad + (r.xs[i] / xMax) * (W - 2 * pad), pad + ((hi - p.v) / (hi - lo)) * (H - 2 * pad)];
+          });
+          const curve = splinePath(P);
+          const last = P[P.length - 1];
+          fig.innerHTML =
+            '<span class="home-chart-top"><span class="home-chart-name">' + tab.tab + "</span>" +
+            '<span class="home-chart-val">' + withUnit(s, r.latest) + "</span></span>" +
+            '<span class="home-chart-measure">' + s.label + (worst !== "normal" ? " · " + (worst === "danger" ? "Danger" : "Watch") + " in this tab" : "") + "</span>" +
+            '<svg class="mini-svg" viewBox="0 0 ' + W + " " + H + '" preserveAspectRatio="none" aria-hidden="true">' +
+              '<path class="mini-fill" d="' + curve + " L" + last[0] + "," + H + " L" + P[0][0] + "," + H + ' Z"></path>' +
+              '<path class="mini-line" d="' + curve + '"></path>' +
+              '<circle class="mini-dot ' + r.status + '" cx="' + last[0] + '" cy="' + last[1] + '" r="3"></circle>' +
+            "</svg>";
+        }
+        // Clicking a graph opens its tab
+        fig.addEventListener("click", function () {
+          const btn = document.querySelector('.top-tab[data-tab="' + tab.key + '"]');
+          if (btn) btn.click();
+        });
+        box.appendChild(fig);
+      });
+    }
+    // Read the data files, then draw every tab and Home graph
+    function renderAll() {
+      DATA_TABS = buildDataTabs();
+      buildAllTabs();
+      try { buildHomeCharts(); } catch (err) { console.error("Home graphs:", err); }
+    }
+
+    document.querySelectorAll(".trend-tab").forEach(function (holder) {
+      holder.innerHTML = '<p class="latest-reason">Loading data…</p>';
+    });
+    HealthData.ready.then(renderAll).catch(function (err) {
+      console.error("Data tabs:", err);
+      const msg = '<p class="latest-reason">Could not load the data files: ' + err.message +
+                  '. Start the site with <code>python3 server.py</code> and open http://localhost:8000.</p>';
+      document.querySelectorAll(".trend-tab").forEach(function (holder) { holder.innerHTML = msg; });
+    });
+
+    // A questionnaire in tasks.js just saved a record: redraw so it shows up right away
+    document.addEventListener("health-data-changed", function () {
+      try { renderAll(); } catch (err) { console.error("Data tabs:", err); }
+    });
+    })();
+
+    // ---- Keep every blinking warning in step ----
+    // Each blinking box, tab and graph normally starts its own 1-second clock when it appears,
+    // so they drift out of step. Pinning every blink to the same start time (0) makes them all
+    // flash on and off together, red and orange alike.
+    (function () {
+      function syncBlinks() {
+        if (!document.getAnimations) return;   // very old browsers: blinks still work, just not in step
+        document.getAnimations().forEach(function (a) {
+          if (a.animationName && a.animationName.indexOf("blink") !== -1) a.startTime = 0;
+        });
+      }
+      document.addEventListener("animationstart", function (e) {
+        if (e.animationName.indexOf("blink") !== -1) syncBlinks();
+      });
+      syncBlinks();
+    })();
+  </script>
 <script src="main.js"></script>
 </body>
 </html>
