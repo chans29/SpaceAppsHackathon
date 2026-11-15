@@ -18,8 +18,6 @@
        here (this also stops dark mode from switching to a lighter orange). */
     :root {
       --warn: #e0a030;
-      --warn-soft: rgba(224, 160, 48, 0.12);   /* faint orange fill while blinking */
-      --warn-glow: rgba(224, 160, 48, 0.6);    /* orange glow while blinking */
       --amber: #e0a030;
     }
     /* Rays and badge stay hidden unless the radiation check turns them on */
@@ -393,81 +391,7 @@
       cursor: pointer;
     }
     .top-tab:hover { background: #78ff0a; color: #000000; }
-    .top-tab.active {
-      background: #78ff0a;
-      color: #000000;
-      font-weight: 700;
-    }
-
-    /* ---- Reading cards (Space Radiation, Wellness, Internals, Ambient) ---- */
-    .reading-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 12px;
-    }
-    .reading-card {
-      background: #000000;
-      border: 1px solid #78ff0a;
-      border-radius: 10px;
-      padding: 16px;
-    }
-    .reading-label { font-size: 13px; margin-bottom: 6px; }
-    .reading-value {
-      font-size: 32px;
-      font-weight: 700;
-      font-variant-numeric: tabular-nums;
-    }
-    .reading-unit { font-size: 14px; font-weight: 400; margin-left: 4px; }
-    .reading-status {
-      display: inline-block;
-      margin-top: 8px;
-      font-size: 12px;
-      padding: 2px 8px;
-      border: 1px solid #78ff0a;
-      border-radius: 999px;
-    }
-    /* Warning: green pill with black text so it stands out */
-    .reading-status.alert { background: #78ff0a; color: #000000; font-weight: 700; }
-    .placeholder-note { font-size: 13px; font-style: italic; margin-top: 16px; }
-
-    /* ---- Red blinking (danger) ----
-       Used by the latest-reading boxes and tabs on the chart tabs below. */
-    @keyframes alarm-blink {
-      0%, 49.9% {
-        border-color: #ff2a2a;
-        color: #ff2a2a;
-        background: rgba(255, 42, 42, 0.15);
-        box-shadow: 0 0 14px rgba(255, 42, 42, 0.7);
-      }
-      50%, 100% {
-        border-color: #78ff0a;
-        color: #78ff0a;
-        background: #000000;
-        box-shadow: none;
-      }
-    }
-    .reading-card.abnormal {
-      border-width: 2px;
-    }
-    /* Status pill follows the blinking color too */
-    .reading-card.abnormal .reading-status {
-      border-color: currentColor;
-      background: transparent;
-      color: inherit;
-      font-weight: 700;
-    }
-
-    /* People who turn off animations in their device settings get solid red instead of blinking */
-    @media (prefers-reduced-motion: reduce) {
-      .reading-card.abnormal {
-        animation: none;
-        border-color: #ff2a2a;
-        color: #ff2a2a;
-        background: rgba(255, 42, 42, 0.15);
-      }
-      .top-tab.has-alarm { animation: none; background: #ff2a2a; color: #000000; border-color: #ff2a2a; }
-    }
-
+    .top-tab.active { background: #78ff0a; color: #000000; font-weight: 700; }
     /* ---- Tech support page (green phone and link) ---- */
     .support-card {
       background: #000000;
@@ -536,7 +460,6 @@
       cursor: pointer;
     }
 
-    /* ---- Trend tabs (Microbiome, Wellness Check, Internals, Ambient Conditions) ---- */
     .task-view.wide { max-width: 1000px; }
     .chart-sub { margin: -4px 0 14px; font-size: 14px; }
     .chart-layout {
@@ -629,23 +552,8 @@
     .latest-reason { font-size: 14px; font-weight: 500; margin: 8px 0; }
     .latest-rows { font-size: 12px; opacity: 0.85; margin: 0; }
     .latest-box .reading-status { border-color: currentColor; }
-
-    /* Tab buttons show their latest reading under the name */
-    .top-tab .tab-reading {
-      display: block;
-      font-family: "Schibsted Grotesk", sans-serif;
-      font-size: 12px;
-      font-weight: 500;
-      margin-top: 2px;
-      font-variant-numeric: tabular-nums;
-    }
-    .top-tab.has-warning { background: #000000; color: var(--warn); border-color: var(--warn); }
-
-    @media (prefers-reduced-motion: reduce) {
-      .latest-box.watch  { animation: none; border-color: var(--warn); color: var(--warn); }
-      .latest-box.danger { animation: none; border-color: #ff2a2a; color: #ff2a2a; }
-      .top-tab.has-warning { animation: none; background: #000000; color: var(--warn); border-color: var(--warn); }
-    }
+    .latest-box.watch  { border-color: var(--warn); color: var(--warn); }
+    .latest-box.danger { border-color: #ff2a2a; color: #ff2a2a; }
 
     /* ---- Data tabs: measure picker, attention list, personality bars ---- */
     .series-picker { margin: 0 0 10px; font-size: 14px; }
@@ -685,14 +593,11 @@
     /* Tabs sit on the bottom line, so a taller tab grows upward instead of stretching every tab */
     .top-tabs { align-items: flex-end; }
 
-    /* Orange (Watch) tabs: bold text and a little taller so they stand out */
-    .top-tab.has-warning {
-      font-weight: 700;
-      padding-top: 14px;          /* normal tabs use 9px */
-      border-width: 2px;          /* normal tabs use 1px */
-    }
     /* Retro look already draws every tab at 2px, so orange tabs go to 3px there */
     body.crt .top-tab.has-warning { border-width: 3px; }
+    /* Selected tab: same height and outline as the orange (Watch) tabs */
+    .top-tab.active { padding-top: 14px; border-width: 2px; }
+    body.crt .top-tab.active { border-width: 3px; }
     /* Red (Danger) tabs: same idea, outlined in red */
     .top-tab.has-alarm {
       background: #000000;
@@ -703,6 +608,15 @@
     }
 
     /* The selected tab is always filled in with its own color, black text on top */
+    /* Orange (Watch) tabs: orange outline and text, bold, a little taller so they stand out */
+    .top-tab.has-warning {
+      background: #000000;
+      color: var(--warn);
+      border-color: var(--warn);
+      font-weight: 700;
+      padding-top: 14px;          /* normal tabs use 9px */
+      border-width: 2px;          /* normal tabs use 1px */
+    }
     .top-tab.active.has-warning { background: var(--warn); color: #000000; border-color: var(--warn); }
     .top-tab.active.has-alarm   { background: #ff2a2a;     color: #000000; border-color: #ff2a2a; }
     .pers-bars { display: flex; flex-direction: column; gap: 14px; padding: 10px 4px; }
@@ -716,7 +630,6 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
-      max-height: 520px;        /* about 6 graphs tall; scroll to see the rest */
       overflow-y: auto;          /* adds the scroll bar */
       padding-right: 6px;        /* room so the scroll bar doesn't cover the cards */
     }
@@ -747,10 +660,7 @@
     .mini-bars { display: flex; align-items: flex-end; gap: 6px; height: 34px; margin-top: 4px; }
     .mini-bar { flex: 1; height: 100%; display: flex; align-items: flex-end; border-bottom: 1px solid rgba(120, 255, 10, 0.4); }
     .mini-bar span { display: block; width: 100%; background: #78ff0a; border-radius: 2px 2px 0 0; }
-    @media (prefers-reduced-motion: reduce) {
-      .home-chart.watch  { animation: none; border-color: var(--warn); color: var(--warn); }
-      .home-chart.danger { animation: none; border-color: #ff2a2a; color: #ff2a2a; }
-    }
+    
 
     /* ---- Every scroll bar on the page is green (#78ff0a) ----
        scrollbar-color works in Chrome, Edge and Firefox; the ::-webkit-scrollbar rules cover Safari. */
@@ -784,7 +694,6 @@
 
     /* Thicker outlines: 2px instead of 1px */
     body.crt .top-tab,
-    body.crt .reading-card,
     body.crt .chart-card,
     body.crt .latest-box,
     body.crt .home-chart,
@@ -852,9 +761,6 @@
 <!-- class="crt" turns on the retro monitor look (scan lines, glow, pixel font, thicker outlines).
      Delete crt from this tag to go back to the clean look. -->
 <body class="crt">
-  <!-- ===== Tabs at the top of the home page =====
-       Shown on Home and the four tab screens; hidden on the other screens.
-       Each data tab matches one JSON file. -->
   <div class="top-tabs" id="top-tabs" role="tablist">
     <button type="button" class="top-tab active" data-tab="dashboard" role="tab">Home</button>
     <button type="button" class="top-tab" data-tab="cardiac" role="tab">Cardiac</button>
@@ -899,8 +805,6 @@
   <!-- 9 small graphs, one per data tab, in tab order (drawn by the data-tab script).
        Click one to open its tab. -->
   <div class="home-charts" id="tab-charts"></div>
-  <!-- main.js still draws into this, but it's hidden so only the 9 tab graphs show -->
-  <div class="rail" id="charts" hidden style="display: none;"></div>
 </section>
 
     <!-- Quick links (full-width bottom bar) -->
@@ -1231,7 +1135,6 @@
         view.classList.toggle("active", view.dataset.view === name);
       });
 
-      // Tab bar: only on Home and the four tab screens; highlight the current tab
       document.getElementById("top-tabs").hidden = !TAB_VIEWS.includes(name);
       document.querySelectorAll(".top-tab").forEach(function (tab) {
         const isCurrent = tab.dataset.tab === name;
@@ -1337,7 +1240,6 @@
     });
   </script>
 <script src="tasks.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
   <script>
     // ---- Data tabs: what each tab shows, read live from data/*.json ----
     // These are the same files tasks.js saves questionnaire answers into (through data.js / HealthData),
@@ -1526,8 +1428,6 @@
     })();
   </script>
   <script>
-    // Everything below runs inside its own private scope, so none of its names
-    // (fmt, DAY_MS, evaluate, ...) can clash with tasks.js, data.js or main.js.
     (function () {
     "use strict";
     const TAB_DEFS = window.DASHBOARD_TAB_DEFS;
@@ -1544,8 +1444,8 @@
     //   - the latest reading is then checked against what the trendline predicted
     //
     // Status of the latest reading:
-    //   DANGER (blinks red)    outside the safe limits (dangerLow / dangerHigh in the data)
-    //   WATCH  (blinks orange) outside the trendline's 95% prediction interval: the range where the
+    //   DANGER (red)    outside the safe limits (dangerLow / dangerHigh in the data)
+    //   WATCH  (orange) outside the trendline's 95% prediction interval: the range where the
     //                          trend expects the next reading to land 95 times out of 100. With few
     //                          readings the range is wider, so a small dataset doesn't cause false alarms.
     //   NORMAL                 neither
@@ -1708,7 +1608,6 @@
 
       if (tab.single) { buildSingle(tab, holder, tabBtn); return; }
 
-      // Worst status in the tab decides the tab's blinking
       let worst = "normal";
       results.forEach(function (r) { if (RANK[r.status] > RANK[worst]) worst = r.status; });
       const flagged = tab.series.map(function (s, i) { return { s: s, r: results[i], i: i }; })
@@ -1756,7 +1655,6 @@
         btn.addEventListener("click", function () {
           const on = btn.getAttribute("aria-pressed") !== "true";
           btn.setAttribute("aria-pressed", on);
-          holder.dataset[btn.dataset.toggle.replace("-", "")] = on;   // remembered when switching measures
           applyToggles(holder);
         });
       });
@@ -2070,24 +1968,6 @@
       try { renderAll(); } catch (err) { console.error("Data tabs:", err); }
     });
     })();
-
-    // ---- Keep every blinking warning in step ----
-    // Each blinking box, tab and graph normally starts its own 1-second clock when it appears,
-    // so they drift out of step. Pinning every blink to the same start time (0) makes them all
-    // flash on and off together, red and orange alike.
-    (function () {
-      function syncBlinks() {
-        if (!document.getAnimations) return;   // very old browsers: blinks still work, just not in step
-        document.getAnimations().forEach(function (a) {
-          if (a.animationName && a.animationName.indexOf("blink") !== -1) a.startTime = 0;
-        });
-      }
-      document.addEventListener("animationstart", function (e) {
-        if (e.animationName.indexOf("blink") !== -1) syncBlinks();
-      });
-      syncBlinks();
-    })();
   </script>
-<script src="main.js"></script>
 </body>
 </html>
